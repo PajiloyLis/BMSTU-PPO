@@ -28,7 +28,7 @@ public class EmployeeRepository : IEmployeeRepository
                 .Where(u => u.Id == employee.Id || u.Email == employee.Email || u.Phone == employee.Phone)
                 .FirstOrDefaultAsync();
 
-            if (employee is not null)
+            if (foundEmployee is not null)
                 throw new EmployeeAlreadyExistsException(
                     $"Employee with email - {newEmployee.Email} or phone - {employee.Phone} or id - {employee.Id} already exists");
 
@@ -93,30 +93,30 @@ public class EmployeeRepository : IEmployeeRepository
         }
     }
 
-    public async Task<Employee> UpdateEmployeeAsync(Employee updatedEmployee)
+    public async Task<Employee> UpdateEmployeeAsync(UpdateEmployee updatedUpdateEmployee)
     {
         try
         {
             //Check for users with another Id and same Phone or Email
-            var existingEmployeesCount = await _context.EmployeeDb.Where(u => u.Id != updatedEmployee.EmployeeId)
-                .Where(u => u.Email == updatedEmployee.Email ||
-                            (u.Phone != null && updatedEmployee.PhoneNumber != null &&
-                             u.Phone == updatedEmployee.PhoneNumber)).AsNoTracking()
+            var existingEmployeesCount = await _context.EmployeeDb.Where(u => u.Id != updatedUpdateEmployee.EmployeeId)
+                .Where(u => u.Email == updatedUpdateEmployee.Email ||
+                            (updatedUpdateEmployee.PhoneNumber != null &&
+                             u.Phone == updatedUpdateEmployee.PhoneNumber)).AsNoTracking()
                 .CountAsync();
 
             if (existingEmployeesCount > 0)
                 throw new EmployeeAlreadyExistsException(
-                    $"Employee with email - {updatedEmployee.Email} or phone - {updatedEmployee.PhoneNumber}");
-            var employee = await _context.EmployeeDb.FirstOrDefaultAsync(u => u.Id == updatedEmployee.EmployeeId);
+                    $"Employee with email - {updatedUpdateEmployee.Email} or phone - {updatedUpdateEmployee.PhoneNumber}");
+            var employee = await _context.EmployeeDb.FirstOrDefaultAsync(u => u.Id == updatedUpdateEmployee.EmployeeId);
             if (employee is null)
-                throw new EmployeeNotFoundException($"Employee with id - {updatedEmployee.EmployeeId} not found");
+                throw new EmployeeNotFoundException($"Employee with id - {updatedUpdateEmployee.EmployeeId} not found");
 
-            employee.Email = updatedEmployee.Email ?? employee.Email;
-            employee.Phone = updatedEmployee.PhoneNumber ?? employee.Phone;
-            employee.FullName = updatedEmployee.FullName ?? employee.FullName;
-            employee.BirthDate = updatedEmployee.BirthDate;
-            employee.Photo = updatedEmployee.Photo ?? employee.Photo;
-            employee.Duties = updatedEmployee.Duties ?? employee.Duties;
+            employee.Email = updatedUpdateEmployee.Email ?? employee.Email;
+            employee.Phone = updatedUpdateEmployee.PhoneNumber ?? employee.Phone;
+            employee.FullName = updatedUpdateEmployee.FullName ?? employee.FullName;
+            employee.BirthDate = updatedUpdateEmployee.BirthDate ?? employee.BirthDate;
+            employee.Photo = updatedUpdateEmployee.Photo ?? employee.Photo;
+            employee.Duties = updatedUpdateEmployee.Duties ?? employee.Duties;
 
             await _context.SaveChangesAsync();
 
@@ -124,12 +124,12 @@ public class EmployeeRepository : IEmployeeRepository
         }
         catch (EmployeeNotFoundException e)
         {
-            _logger.LogWarning(e, $"Error getting employee with id - {updatedEmployee.EmployeeId}");
+            _logger.LogWarning(e, $"Error getting employee with id - {updatedUpdateEmployee.EmployeeId}");
             throw;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error updating employee with id - {updatedEmployee.EmployeeId}");
+            _logger.LogError(e, $"Error updating employee with id - {updatedUpdateEmployee.EmployeeId}");
             throw;
         }
     }

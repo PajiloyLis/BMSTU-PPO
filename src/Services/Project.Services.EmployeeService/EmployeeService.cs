@@ -41,17 +41,23 @@ public class EmployeeService : IEmployeeService
         }
     }
 
-    public async Task<Employee> UpdateEmployeeAsync(Guid id, string fullName, string? phoneNumber, string email,
-        DateOnly birthday,
+    public async Task<Employee> UpdateEmployeeAsync(Guid id, string? fullName, string? phoneNumber, string? email,
+        DateOnly? birthday,
         string? photoPath, string? duties)
     {
         try
         {
-            var employee = await _employeeRepository.UpdateEmployeeAsync(new Employee(id, fullName, phoneNumber, email,
+            var employee = await _employeeRepository.UpdateEmployeeAsync(new UpdateEmployee(id, fullName, phoneNumber,
+                email,
                 birthday,
                 photoPath, duties));
 
             return employee;
+        }
+        catch (EmployeeAlreadyExistsException e)
+        {
+            _logger.LogWarning(e, "Employee with such parameters already exists");
+            throw;
         }
         catch (EmployeeNotFoundException e)
         {

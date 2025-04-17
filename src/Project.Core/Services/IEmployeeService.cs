@@ -8,7 +8,8 @@ public interface IEmployeeService
         string? photoPath,
         string? duties);
 
-    Task<Employee> UpdateEmployeeAsync(Guid id, string fullName, string? phoneNumber, string email, DateOnly birthday,
+    Task<Employee> UpdateEmployeeAsync(Guid id, string? fullName, string? phoneNumber, string? email,
+        DateOnly? birthday,
         string? photoPath, string? duties);
 
     Task<Employee> GetEmployeeByIdAsync(Guid userId);

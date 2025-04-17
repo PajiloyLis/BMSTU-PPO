@@ -44,7 +44,7 @@ public class CompanyRepository : ICompanyRepository
         }
     }
 
-    public async Task<Company> UpdateCompanyAsync(Company company)
+    public async Task<Company> UpdateCompanyAsync(UpdateCompany company)
     {
         try
         {
@@ -62,7 +62,7 @@ public class CompanyRepository : ICompanyRepository
                 throw new CompanyNotFoundException($"Company with id {company.CompanyId} not found");
 
             companyToUpdate.Title = company.Title ?? companyToUpdate.Title;
-            companyToUpdate.RegistrationDate = company.RegistrationDate;
+            companyToUpdate.RegistrationDate = company.RegistrationDate ?? companyToUpdate.RegistrationDate;
             companyToUpdate.PhoneNumber = company.PhoneNumber ?? companyToUpdate.PhoneNumber;
             companyToUpdate.Email = company.Email ?? companyToUpdate.Email;
             companyToUpdate.Inn = company.Inn ?? companyToUpdate.Inn;
@@ -148,7 +148,7 @@ public class CompanyRepository : ICompanyRepository
             var companyPage =
                 new CompanyPage(await query.Select(company => CompanyConverter.Convert(company)).ToListAsync(),
                     new Page(pageNumber, pagesCount, pageSize));
-            
+
             return companyPage;
         }
         catch (Exception e)

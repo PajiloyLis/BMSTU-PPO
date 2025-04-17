@@ -3,7 +3,7 @@ namespace Project.Core.Models;
 public class CreationEmployee
 {
     public CreationEmployee(string fullName,
-        string? phoneNumber,
+        string phoneNumber,
         string email,
         DateOnly birthDate,
         string? photo,
@@ -20,7 +20,7 @@ public class CreationEmployee
 
     public string FullName { get; set; }
 
-    public string? PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
     public string Email { get; set; }
 

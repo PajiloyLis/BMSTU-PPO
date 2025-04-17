@@ -8,7 +8,7 @@ public interface ICompanyRepository
 
     public Task<Company> GetCompanyByIdAsync(Guid companyId);
 
-    public Task<Company> UpdateCompanyAsync(Company company);
+    public Task<Company> UpdateCompanyAsync(UpdateCompany company);
 
     public Task<CompanyPage> GetCompaniesAsync(int pageNumber, int pageSize);
 

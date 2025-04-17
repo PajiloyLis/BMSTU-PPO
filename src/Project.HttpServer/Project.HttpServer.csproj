@@ -30,4 +30,10 @@
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Dto\Project.Dto.Http\Project.Dto.Http.csproj"/>
+        <ProjectReference Include="..\Dto\Project.Dto.Http.Converters\Project.Dto.Http.Converters.csproj"/>
+        <ProjectReference Include="..\Project.Core\Project.Core.csproj"/>
+    </ItemGroup>
+
 </Project>

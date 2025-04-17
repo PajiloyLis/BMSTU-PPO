@@ -21,7 +21,7 @@ public static class EmployeeConverter
     }
 
     [return: NotNullIfNotNull(nameof(employee))]
-    public static EmployeeDb? Convert(Employee? employee)
+    public static EmployeeDb? Convert(UpdateEmployee? employee)
     {
         if (employee == null)
             return null;
@@ -38,6 +38,22 @@ public static class EmployeeConverter
 
     [return: NotNullIfNotNull(nameof(employee))]
     public static EmployeeDb? Convert(CreationEmployee? employee)
+    {
+        if (employee == null)
+            return null;
+
+        return new EmployeeDb(Guid.NewGuid(),
+            employee.FullName,
+            employee.PhoneNumber,
+            employee.Email,
+            employee.BirthDate,
+            employee.Photo,
+            employee.Duties
+        );
+    }
+
+    [return: NotNullIfNotNull(nameof(employee))]
+    public static EmployeeDb? Convert(Employee? employee)
     {
         if (employee == null)
             return null;

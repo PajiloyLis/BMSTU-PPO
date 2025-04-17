@@ -4,7 +4,7 @@ public class EmployeeDb
 {
     public EmployeeDb(Guid id,
         string fullName,
-        string? phone,
+        string phone,
         string email,
         DateOnly birthDate,
         string? photo,
@@ -23,7 +23,7 @@ public class EmployeeDb
 
     public string FullName { get; set; }
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
     public string Email { get; set; }
 

@@ -1,12 +1,12 @@
 namespace Project.Core.Models;
 
-public class Employee
+public class UpdateEmployee
 {
-    public Employee(Guid employeeId,
-        string fullName,
-        string phoneNumber,
-        string email,
-        DateOnly birthDate,
+    public UpdateEmployee(Guid employeeId,
+        string? fullName,
+        string? phoneNumber,
+        string? email,
+        DateOnly? birthDate,
         string? photo,
         string? duties
     )
@@ -20,15 +20,19 @@ public class Employee
         Duties = duties;
     }
 
+    public UpdateEmployee()
+    {
+    }
+
     public Guid EmployeeId { get; set; }
 
-    public string FullName { get; set; }
+    public string? FullName { get; set; }
 
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
-    public DateOnly BirthDate { get; set; }
+    public DateOnly? BirthDate { get; set; }
 
     public string? Photo { get; set; }
 

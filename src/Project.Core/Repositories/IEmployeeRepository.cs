@@ -4,13 +4,13 @@ namespace Project.Core.Repositories;
 
 public interface IEmployeeRepository
 {
-    public Task<Employee> AddEmployeeAsync(CreationEmployee newEmployee);
+    Task<Employee> AddEmployeeAsync(CreationEmployee newEmployee);
 
-    public Task<Employee> UpdateEmployeeAsync(Employee employee);
+    Task<Employee> UpdateEmployeeAsync(UpdateEmployee updateEmployee);
 
-    public Task<Employee> GetEmployeeByIdAsync(Guid employeeId);
+    Task<Employee> GetEmployeeByIdAsync(Guid employeeId);
 
-    public Task<EmployeePage> GetSubordinatesByDirectorIdAsync(Guid directorId);
+    Task<EmployeePage> GetSubordinatesByDirectorIdAsync(Guid directorId);
 
-    public Task DeleteEmployeeAsync(Guid employeeId);
+    Task DeleteEmployeeAsync(Guid employeeId);
 }
