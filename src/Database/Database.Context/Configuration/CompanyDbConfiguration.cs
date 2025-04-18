@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Database.Context.Configuration;
 
+/// <summary>
+/// Company configuration.
+/// </summary>
 public class CompanyDbConfiguration : IEntityTypeConfiguration<CompanyDb>
 {
     public void Configure(EntityTypeBuilder<CompanyDb> builder)

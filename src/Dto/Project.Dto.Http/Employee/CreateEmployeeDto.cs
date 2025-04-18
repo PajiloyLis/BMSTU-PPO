@@ -2,6 +2,9 @@
 
 namespace Project.Dto.Http;
 
+/// <summary>
+/// Dto for employee creation request
+/// </summary>
 public class CreateEmployeeDto
 {
     public CreateEmployeeDto(string fullName,
@@ -20,26 +23,44 @@ public class CreateEmployeeDto
         Duties = duties;
     }
 
+    /// <summary>
+    /// Employee's full name
+    /// </summary>
     [JsonRequired]
     [JsonPropertyName("fullName")]
     public string FullName { get; set; }
 
+    /// <summary>
+    /// Employee's business phone number
+    /// </summary>
     [JsonRequired]
     [JsonPropertyName("phoneNumber")]
     public string? PhoneNumber { get; set; }
 
+    /// <summary>
+    /// Employee's business email address
+    /// </summary>
     [JsonRequired]
     [JsonPropertyName("email")]
     public string Email { get; set; }
 
+    /// <summary>
+    /// Employee's birthday
+    /// </summary>
     [JsonRequired]
     [JsonPropertyName("birthday")]
     public DateOnly Birthday { get; set; }
 
+    /// <summary>
+    /// Employee's photo filesystem path
+    /// </summary>
     [JsonRequired]
     [JsonPropertyName("photoPath")]
     public string? PhotoPath { get; set; }
 
+    /// <summary>
+    /// Employee's duties json formatted
+    /// </summary>
     [JsonRequired]
     [JsonPropertyName("duties")]
     public string? Duties { get; set; }

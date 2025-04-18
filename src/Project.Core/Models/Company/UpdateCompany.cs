@@ -1,5 +1,8 @@
 namespace Project.Core.Models;
 
+/// <summary>
+/// Update company model
+/// </summary>
 public class UpdateCompany
 {
     public UpdateCompany(Guid companyId,
@@ -24,23 +27,48 @@ public class UpdateCompany
         Address = address;
     }
 
-    public Guid CompanyId { get; set; }
+    /// <summary>
+    /// Company's id
+    /// </summary>
+    public Guid CompanyId { get; init; }
 
+    /// <summary>
+    /// Company's name
+    /// </summary>
     public string? Title { get; set; }
 
+    /// <summary>
+    /// Company's registration date
+    /// </summary>
     public DateOnly? RegistrationDate { get; set; }
 
+    /// <summary>
+    /// Company's contact phone number
+    /// </summary>
     public string? PhoneNumber { get; set; }
 
+    /// <summary>
+    /// Company's contact email
+    /// </summary>
     public string? Email { get; set; }
 
+    /// <summary>
+    /// Company's inn
+    /// </summary>
     public string? Inn { get; set; }
 
+    /// <summary>
+    /// Company's kpp
+    /// </summary>
     public string? Kpp { get; set; }
 
+    /// <summary>
+    /// Company's ogrn
+    /// </summary>
     public string? Ogrn { get; set; }
 
+    /// <summary>
+    /// Company's registered address
+    /// </summary>
     public string? Address { get; set; }
-}
-
 }

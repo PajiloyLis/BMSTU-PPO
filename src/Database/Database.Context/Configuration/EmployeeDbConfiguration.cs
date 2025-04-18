@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Database.Context.Configuration;
 
+/// <summary>
+/// Employee configuration.
+/// </summary>
 public class EmployeeDbConfiguration : IEntityTypeConfiguration<EmployeeDb>
 {
     public void Configure(EntityTypeBuilder<EmployeeDb> builder)

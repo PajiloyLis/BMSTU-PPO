@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Database.Context;
 
+/// <summary>
+/// Database context.
+/// </summary>
 public class ProjectDbContext : DbContext
 {
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options)

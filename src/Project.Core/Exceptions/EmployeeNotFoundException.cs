@@ -1,5 +1,8 @@
 namespace Project.Core.Exceptions;
 
+/// <summary>
+/// Exception when employee required id doesn't exist
+/// </summary>
 public class EmployeeNotFoundException : Exception
 {
     public EmployeeNotFoundException()

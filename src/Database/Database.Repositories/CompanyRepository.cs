@@ -26,11 +26,13 @@ public class CompanyRepository : ICompanyRepository
         {
             var foundCompany =
                 await _context.CompanyDb
-                    .Where(e => e.CompanyId == company.CompanyId || e.PhoneNumber == company.PhoneNumber ||
-                                e.Email == company.Email).FirstOrDefaultAsync();
+                    .Where(e => e.CompanyId == company.CompanyId || e.Title == company.Title ||
+                                e.PhoneNumber == company.PhoneNumber ||
+                                e.Email == company.Email || e.Inn == company.Inn ||
+                                e.Kpp == company.Kpp || e.Ogrn == company.Ogrn).FirstOrDefaultAsync();
             if (foundCompany is not null)
                 throw new CompanyAlreadyExistsException(
-                    $"Company with email - {company.Email} or phone - {company.PhoneNumber} or id - {company.CompanyId} already exists");
+                    $"Company with same title - {company.Title} or phone - {company.PhoneNumber} or email - {company.Email} or inn - {company.Inn} or kpp - {company.Kpp} or ogrn - {company.Ogrn} or id - {company.CompanyId} already exists");
 
             await _context.CompanyDb.AddAsync(company);
             await _context.SaveChangesAsync();
@@ -55,7 +57,7 @@ public class CompanyRepository : ICompanyRepository
 
             if (existingCompanyCount > 0)
                 throw new CompanyAlreadyExistsException(
-                    $"Company with another id, but same title - {company.Title} or phone - {company.PhoneNumber} or email - {company.Email} or inn - {company.Inn} or kpp - {company.Kpp} or ogrn - {company.Ogrn}");
+                    $"Company with another id, but same title - {company.Title} or phone - {company.PhoneNumber} or email - {company.Email} or inn - {company.Inn} or kpp - {company.Kpp} or ogrn - {company.Ogrn} already exists");
 
             var companyToUpdate = await _context.CompanyDb.FirstOrDefaultAsync(e => e.CompanyId == company.CompanyId);
             if (companyToUpdate is null)

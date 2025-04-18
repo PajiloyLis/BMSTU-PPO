@@ -1,5 +1,8 @@
 namespace Project.Core.Exceptions;
 
+/// <summary>
+/// Exception when company with same unique fields already exists
+/// </summary>
 public class CompanyAlreadyExistsException : Exception
 {
     public CompanyAlreadyExistsException()
