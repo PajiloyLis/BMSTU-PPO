@@ -16,7 +16,7 @@ public interface ICompanyRepository
     public Task<Company> AddCompanyAsync(CreationCompany newCompany);
 
     /// <summary>
-    /// 
+    /// Asynchronous search company by
     /// </summary>
     /// <param name="companyId"></param>
     /// <returns></returns>

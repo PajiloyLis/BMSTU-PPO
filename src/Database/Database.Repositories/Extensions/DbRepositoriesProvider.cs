@@ -9,6 +9,7 @@ public static class DbRepositoriesProvider
     {
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IEducationRepository, EducationRepository>();
         return services;
     }
 }

@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Project.Core.Models;
 
 /// <summary>
@@ -16,11 +18,24 @@ public class CreationCompany
     )
     {
         Title = title;
+        if (registrationDate > DateOnly.FromDateTime(DateTime.Today))
+            throw new ArgumentException("Registration Date is invalid");
         RegistrationDate = registrationDate;
+        if (!Regex.IsMatch(phoneNumber, @"^\+\d{5,17}$"))
+            throw new ArgumentException("Phone Number is invalid");
         PhoneNumber = phoneNumber;
+        if (!Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") ||
+            email.Length > 254)
+            throw new ArgumentException("Email is invalid");
         Email = email;
+        if (!Regex.IsMatch(inn, @"^[0-9]{10}$"))
+            throw new ArgumentException("Inn is invalid");
         Inn = inn;
+        if(!Regex.IsMatch(kpp, @"^[0-9]{9}$"))
+            throw new ArgumentException("Kpp is invalid");
         Kpp = kpp;
+        if (!Regex.IsMatch(ogrn, @"^[0-9]{13}$"))
+            throw new ArgumentException("OGRN is invalid");
         Ogrn = ogrn;
         Address = address;
     }

@@ -4,7 +4,7 @@ namespace Project.Core.Services;
 
 public interface IEmployeeService
 {
-    Task<Employee> AddEmployeeAsync(string fullName, string? phoneNumber, string email, DateOnly birthday,
+    Task<Employee> AddEmployeeAsync(string fullName, string phoneNumber, string email, DateOnly birthday,
         string? photoPath,
         string? duties);
 

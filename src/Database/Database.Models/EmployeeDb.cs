@@ -1,4 +1,6 @@
-﻿namespace Database.Models;
+﻿using System.Collections;
+
+namespace Database.Models;
 
 /// <summary>
 /// Database employee model.
@@ -56,4 +58,6 @@ public class EmployeeDb
     /// Employee duties json formated
     /// </summary>
     public string? Duties { get; set; }
+    
+    public ICollection<EducationDb> Educations;
 }

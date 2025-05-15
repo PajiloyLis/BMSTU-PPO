@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.RegularExpressions;
+
 namespace Project.Core.Models;
 
 public class UpdateEmployee
@@ -11,13 +14,43 @@ public class UpdateEmployee
         string? duties
     )
     {
+        if (!Guid.TryParse(employeeId.ToString(), out _))
+            throw new ArgumentException("Employee Id is invalid");
         EmployeeId = employeeId;
+
+        if (fullName is not null && !Regex.IsMatch(fullName, @"^[A-ZА-ЯЁ][a-zа-яё]+(?: [A-ZА-ЯЁ][a-zа-яё]+){1,2}$"))
+            throw new ArgumentException("Invalid employee name");
         FullName = fullName;
+
+        if (phoneNumber is not null && !Regex.IsMatch(phoneNumber, @"^\+\d{5,17}$"))
+            throw new ArgumentException("Invalid phone number");
         PhoneNumber = phoneNumber;
+
+        if (email is not null && (!Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") ||
+                                  email.Length > 254))
+            throw new ArgumentException("Invalid employee email");
         Email = email;
+
+        if (birthDate is not null && birthDate > DateOnly.FromDateTime(DateTime.Today))
+            throw new ArgumentException("Invalid employee birth date");
         BirthDate = birthDate;
         Photo = photo;
-        Duties = duties;
+        try
+        {
+            if (duties is not null)
+            {
+                JsonDocument.Parse(duties);
+                Duties = duties;
+            }
+            else
+            {
+                Duties = duties;
+            }
+        }
+        catch (JsonException e)
+        {
+            throw new ArgumentException("Invalid duties JSON exception");
+        }
     }
 
     public UpdateEmployee()

@@ -17,14 +17,13 @@ public class EmployeeService : IEmployeeService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Employee> AddEmployeeAsync(string fullName, string? phoneNumber, string email, DateOnly birthday,
+    public async Task<Employee> AddEmployeeAsync(string fullName, string phoneNumber, string email, DateOnly birthday,
         string? photoPath, string? duties)
     {
         try
         {
-            var employee = await _employeeRepository.AddEmployeeAsync(new CreationEmployee(fullName, phoneNumber, email,
-                birthday,
-                photoPath, duties));
+            var employeeToAdd = new CreationEmployee(fullName, phoneNumber, email, birthday, photoPath, duties);
+            var employee = await _employeeRepository.AddEmployeeAsync(employeeToAdd);
 
             return employee;
         }
@@ -32,6 +31,11 @@ public class EmployeeService : IEmployeeService
         {
             _logger.LogWarning(e,
                 $"Employee with email - {email} or phone number - {phoneNumber} or generated id already exists");
+            throw;
+        }
+        catch (ArgumentException e)
+        {
+            _logger.LogWarning(e, "Employee with incorrect parameters passed");
             throw;
         }
         catch (Exception e)
@@ -47,10 +51,8 @@ public class EmployeeService : IEmployeeService
     {
         try
         {
-            var employee = await _employeeRepository.UpdateEmployeeAsync(new UpdateEmployee(id, fullName, phoneNumber,
-                email,
-                birthday,
-                photoPath, duties));
+            var employeeToUpdate = new UpdateEmployee(id, fullName, phoneNumber, email, birthday, photoPath, duties);
+            var employee = await _employeeRepository.UpdateEmployeeAsync(employeeToUpdate);
 
             return employee;
         }

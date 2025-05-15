@@ -20,21 +20,21 @@ public static class EmployeeConverter
         );
     }
 
-    [return: NotNullIfNotNull(nameof(employee))]
-    public static EmployeeDb? Convert(UpdateEmployee? employee)
-    {
-        if (employee == null)
-            return null;
-
-        return new EmployeeDb(employee.EmployeeId,
-            employee.FullName,
-            employee.PhoneNumber,
-            employee.Email,
-            employee.BirthDate,
-            employee.Photo,
-            employee.Duties
-        );
-    }
+    // [return: NotNullIfNotNull(nameof(employee))]
+    // public static EmployeeDb? Convert(UpdateEmployee? employee)
+    // {
+    //     if (employee == null)
+    //         return null;
+    //
+    //     return new EmployeeDb(employee.EmployeeId,
+    //         employee.FullName,
+    //         employee.PhoneNumber,
+    //         employee.Email,
+    //         employee.BirthDate,
+    //         employee.Photo,
+    //         employee.Duties
+    //     );
+    // }
 
     [return: NotNullIfNotNull(nameof(employee))]
     public static EmployeeDb? Convert(CreationEmployee? employee)

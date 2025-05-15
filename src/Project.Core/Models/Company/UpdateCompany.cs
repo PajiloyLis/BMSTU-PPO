@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Project.Core.Models;
 
 /// <summary>
@@ -16,13 +18,27 @@ public class UpdateCompany
         string? address
     )
     {
+        if(!Guid.TryParse(companyId.ToString(), out _))
+            throw new ArgumentException("Company Id is invalid");
         CompanyId = companyId;
         Title = title;
+        if(registrationDate is not null && registrationDate > DateOnly.FromDateTime(DateTime.Today))
+            throw new ArgumentException("Registration Date is invalid");
         RegistrationDate = registrationDate;
+        if(phoneNumber is not null && !Regex.IsMatch(phoneNumber, @"^\+\d{5,17}$"))
+            throw new ArgumentException("Phone Number is invalid");
         PhoneNumber = phoneNumber;
+        if(email is not null && !Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+            throw new ArgumentException("Email is invalid");
         Email = email;
+        if (inn is not null && !Regex.IsMatch(inn, @"^[0-9]{10}$"))
+            throw new ArgumentException("Inn is invalid");
         Inn = inn;
+        if(kpp is not null && !Regex.IsMatch(kpp, @"^[0-9]{9}$"))
+            throw new ArgumentException("Kpp is invalid");
         Kpp = kpp;
+        if (ogrn is not null && !Regex.IsMatch(ogrn, @"^[0-9]{13}$"))
+            throw new ArgumentException("OGRN is invalid");
         Ogrn = ogrn;
         Address = address;
     }

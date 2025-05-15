@@ -21,10 +21,13 @@ public class ProjectDbContext : DbContext
 
     public DbSet<CompanyDb> CompanyDb { get; set; }
 
+    public DbSet<EducationDb> EducationDb { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new EmployeeDbConfiguration());
         modelBuilder.ApplyConfiguration(new CompanyDbConfiguration());
+        modelBuilder.ApplyConfiguration(new EducationDbConfiguration());
     }
 }

@@ -72,6 +72,11 @@ public class EmployeeController : ControllerBase
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status400BadRequest, new ErrorDto(e.GetType().Name, e.Message));
         }
+        catch (ArgumentException e)
+        {
+            _logger.LogWarning(e, e.Message);
+            return StatusCode(StatusCodes.Status400BadRequest, new ErrorDto(e.GetType().Name, e.Message));
+        }
         catch (Exception e)
         {
             _logger.LogError(e, e.Message);
@@ -105,6 +110,11 @@ public class EmployeeController : ControllerBase
             return StatusCode(StatusCodes.Status404NotFound, new ErrorDto(e.GetType().Name, e.Message));
         }
         catch (EmployeeAlreadyExistsException e)
+        {
+            _logger.LogWarning(e, e.Message);
+            return StatusCode(StatusCodes.Status400BadRequest, new ErrorDto(e.GetType().Name, e.Message));
+        }
+        catch (ArgumentException e)
         {
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status400BadRequest, new ErrorDto(e.GetType().Name, e.Message));
