@@ -1,4 +1,3 @@
-using Castle.Components.DictionaryAdapter.Xml;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
@@ -60,7 +59,7 @@ public class CompanyServiceTests
             "123456789",
             "1234567890123",
             "г. Москва, ул. Пушкина, д. 57");
-        
+
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedCompany.CompanyId, result.CompanyId);
@@ -114,7 +113,7 @@ public class CompanyServiceTests
             .ThrowsAsync(new CompanyNotFoundException());
 
         // Act & Assert
-        await Assert.ThrowsAsync<CompanyNotFoundException>(() => 
+        await Assert.ThrowsAsync<CompanyNotFoundException>(() =>
             _companyService.GetCompanyByIdAsync(companyId));
         _mockRepository.Verify(x => x.GetCompanyByIdAsync(companyId), Times.Once);
     }
@@ -181,7 +180,7 @@ public class CompanyServiceTests
             .ThrowsAsync(new CompanyNotFoundException());
 
         // Act & Assert
-        await Assert.ThrowsAsync<CompanyNotFoundException>(() => 
+        await Assert.ThrowsAsync<CompanyNotFoundException>(() =>
             _companyService.UpdateCompanyAsync(companyId, "New Title", null, null, null, null, null, null, null));
         _mockRepository.Verify(x => x.UpdateCompanyAsync(It.IsAny<UpdateCompany>()), Times.Once);
     }
@@ -194,7 +193,7 @@ public class CompanyServiceTests
         var pageSize = 10;
         var expectedCompanies = new List<Company>
         {
-            new Company(
+            new(
                 Guid.NewGuid(),
                 "Company 1",
                 new DateOnly(2020, 1, 1),
@@ -205,7 +204,7 @@ public class CompanyServiceTests
                 "1234567890123",
                 "Address 1"
             ),
-            new Company(
+            new(
                 Guid.NewGuid(),
                 "Company 2",
                 new DateOnly(2020, 2, 1),
@@ -226,7 +225,7 @@ public class CompanyServiceTests
                 pageNumber,
                 2,
                 10
-                )
+            )
         );
         _mockRepository.Setup(x => x.GetCompaniesAsync(pageNumber, pageSize))
             .ReturnsAsync(expectedPage);
@@ -275,7 +274,7 @@ public class CompanyServiceTests
             .ThrowsAsync(new CompanyAlreadyExistsException());
 
         // Act & Assert
-        await Assert.ThrowsAsync<CompanyAlreadyExistsException>(() => 
+        await Assert.ThrowsAsync<CompanyAlreadyExistsException>(() =>
             _companyService.AddCompanyAsync(
                 companyToAdd.Title,
                 companyToAdd.RegistrationDate,

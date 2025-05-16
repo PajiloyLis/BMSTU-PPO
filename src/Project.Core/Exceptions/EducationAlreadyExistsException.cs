@@ -10,7 +10,7 @@ public class EducationAlreadyExistsException : Exception
     {
     }
 
-    public EducationAlreadyExistsException(string message, Exception innerException) 
+    public EducationAlreadyExistsException(string message, Exception innerException)
         : base(message, innerException)
     {
     }

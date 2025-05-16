@@ -5,7 +5,7 @@ namespace Database.Models;
 /// </summary>
 public class CompanyDb
 {
-    public CompanyDb(Guid companyId,
+    public CompanyDb(Guid id,
         string title,
         DateOnly registrationDate,
         string phoneNumber,
@@ -13,10 +13,33 @@ public class CompanyDb
         string inn,
         string kpp,
         string ogrn,
-        string address
-    )
+        string address)
     {
-        CompanyId = companyId;
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Title cannot be empty");
+
+        if (registrationDate > DateOnly.FromDateTime(DateTime.Today))
+            throw new ArgumentException("RegistrationDate cannot be later than today");
+
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+            throw new ArgumentException("PhoneNumber cannot be empty");
+
+        if (string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("Email cannot be empty");
+
+        if (string.IsNullOrWhiteSpace(inn))
+            throw new ArgumentException("Inn cannot be empty");
+
+        if (string.IsNullOrWhiteSpace(kpp))
+            throw new ArgumentException("Kpp cannot be empty");
+
+        if (string.IsNullOrWhiteSpace(ogrn))
+            throw new ArgumentException("Ogrn cannot be empty");
+
+        if (string.IsNullOrWhiteSpace(address))
+            throw new ArgumentException("Address cannot be empty");
+
+        Id = id;
         Title = title;
         RegistrationDate = registrationDate;
         PhoneNumber = phoneNumber;
@@ -30,7 +53,7 @@ public class CompanyDb
     /// <summary>
     /// Company id
     /// </summary>
-    public Guid CompanyId { get; init; }
+    public Guid Id { get; init; }
 
     /// <summary>
     /// Company name
@@ -71,4 +94,8 @@ public class CompanyDb
     /// Company registered address
     /// </summary>
     public string Address { get; set; }
+
+    public ICollection<PostDb> Posts { get; set; }
+
+    public ICollection<PositionDb> Positions { get; set; }
 }

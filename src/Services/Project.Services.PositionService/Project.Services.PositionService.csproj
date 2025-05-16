@@ -5,7 +5,11 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Project.Services.Education_</RootNamespace>
+        <RootNamespace>Project.Services.Position</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Project.Core\Project.Core.csproj"/>
+    </ItemGroup>
 
 </Project>

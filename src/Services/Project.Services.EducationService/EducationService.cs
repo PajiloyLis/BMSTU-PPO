@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Project.Core.Exceptions;
-using Project.Core.Models.Education;
+using Project.Core.Models;
 using Project.Core.Repositories;
 using Project.Core.Services;
 

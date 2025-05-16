@@ -11,7 +11,10 @@ public interface ICompanyRepository
     /// Asynchronous company addition method
     /// </summary>
     /// <param name="newCompany"><see cref="Project.Core.Models.CreationCompany"/>> model to add</param>
-    /// <exception cref="Project.Core.Exceptions.CompanyAlreadyExistsException"> If company with one of unique parameters already exists</exception>
+    /// <exception cref="Project.Core.Exceptions.CompanyAlreadyExistsException">
+    /// If company with one of unique parameters
+    /// already exists
+    /// </exception>
     /// <returns><see cref="Project.Core.Models.Company"/> model representing added company entity</returns>
     public Task<Company> AddCompanyAsync(CreationCompany newCompany);
 

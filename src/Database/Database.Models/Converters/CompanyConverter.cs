@@ -46,7 +46,7 @@ public static class CompanyConverter
         if (company == null)
             return null;
 
-        return new Company(company.CompanyId,
+        return new Company(company.Id,
             company.Title,
             company.RegistrationDate,
             company.PhoneNumber,

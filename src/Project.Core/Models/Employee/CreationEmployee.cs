@@ -14,19 +14,19 @@ public class CreationEmployee
     )
     {
         if (!Regex.IsMatch(fullName, @"^[A-ZА-ЯЁ][a-zа-яё]+(?: [A-ZА-ЯЁ][a-zа-яё]+){1,2}$"))
-            throw new ArgumentException("Invalid employee name");
+            throw new ArgumentException("Invalid employee name", nameof(fullName));
         FullName = fullName;
 
         if (!Regex.IsMatch(phoneNumber, @"^\+\d{5,17}$"))
-            throw new ArgumentException("Invalid phone number");
+            throw new ArgumentException("Invalid phone number", nameof(phoneNumber));
         PhoneNumber = phoneNumber;
 
         if (!Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") || email.Length > 254)
-            throw new ArgumentException("Invalid employee email");
+            throw new ArgumentException("Invalid employee email", nameof(email));
         Email = email;
 
         if (birthDate > DateOnly.FromDateTime(DateTime.Today))
-            throw new ArgumentException("Invalid employee birth date");
+            throw new ArgumentException("Invalid employee birth date", nameof(birthDate));
         BirthDate = birthDate;
         Photo = photo;
         try
@@ -43,7 +43,7 @@ public class CreationEmployee
         }
         catch (JsonException e)
         {
-            throw new ArgumentException("Invalid duties JSON exception");
+            throw new ArgumentException("Invalid duties JSON exception", nameof(duties));
         }
     }
 

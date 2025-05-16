@@ -1,4 +1,4 @@
-namespace Project.Core.Models.Education;
+namespace Project.Core.Models;
 
 public class UpdateEducation
 {
@@ -7,19 +7,19 @@ public class UpdateEducation
         DateOnly? startDate = null, DateOnly? endDate = null)
     {
         if (!Guid.TryParse(id.ToString(), out _))
-            throw new ArgumentException("Id cannot be empty");
+            throw new ArgumentException("Id is invalid", nameof(id));
 
         if (!Guid.TryParse(employeeId.ToString(), out _))
-            throw new ArgumentException("EmployeeId cannot be empty");
+            throw new ArgumentException("EmployeeId is invalid", nameof(employeeId));
 
         if (startDate is not null && endDate is not null && startDate > endDate)
-            throw new ArgumentException("StartDate cannot be later than EndDate");
+            throw new ArgumentException("StartDate is invalid", nameof(startDate));
 
         if (startDate is not null && startDate > DateOnly.FromDateTime(DateTime.Today))
-            throw new ArgumentException("StartDate cannot be later than today");
+            throw new ArgumentException("StartDate is invalid", nameof(startDate));
 
         if (endDate is not null && endDate > DateOnly.FromDateTime(DateTime.Today))
-            throw new ArgumentException("EndDate cannot be later than today");
+            throw new ArgumentException("EndDate is invalid", nameof(endDate));
 
         if (level is not null)
             Level = level.ToEducationLevel();

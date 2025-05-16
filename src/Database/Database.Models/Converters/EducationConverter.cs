@@ -1,11 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
-using Project.Core.Models.Education;
+using Project.Core.Models;
 
 namespace Database.Models.Converters;
 
 public static class EducationConverter
 {
-
     [return: NotNullIfNotNull(nameof(education))]
     public static EducationDb? Convert(CreateEducation? education)
     {

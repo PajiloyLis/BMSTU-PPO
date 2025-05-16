@@ -1,15 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Database.Models;
 
 public class EducationDb
 {
-    public Guid Id { get; set; }
-    public Guid EmployeeId { get; set; }
-    public string Institution { get; set; }
-    public string Level { get; set; }
-    public string StudyField { get; set; }
-    public DateOnly StartDate { get; set; }
-    public DateOnly? EndDate { get; set; }
-
     public EducationDb()
     {
         Institution = string.Empty;
@@ -22,16 +17,16 @@ public class EducationDb
     {
         if (string.IsNullOrWhiteSpace(institution))
             throw new ArgumentException("Institution cannot be empty");
-        
+
         if (string.IsNullOrWhiteSpace(level))
             throw new ArgumentException("Level cannot be empty");
-        
+
         if (string.IsNullOrWhiteSpace(studyField))
             throw new ArgumentException("StudyField cannot be empty");
-        
+
         if (startDate > DateOnly.FromDateTime(DateTime.Today) || (endDate is not null && startDate > endDate))
             throw new ArgumentException("StartDate cannot be later than EndDate or later than today");
-        
+
         if (endDate is not null && endDate > DateOnly.FromDateTime(DateTime.Today))
             throw new ArgumentException("EndDate cannot be later than today");
 
@@ -43,4 +38,20 @@ public class EducationDb
         StartDate = startDate;
         EndDate = endDate;
     }
+
+    [Key] public Guid Id { get; set; }
+
+    [Required] public Guid EmployeeId { get; set; }
+
+    [Required] public string Institution { get; set; }
+
+    [Required] public string Level { get; set; }
+
+    [Required] public string StudyField { get; set; }
+
+    [Required] public DateOnly StartDate { get; set; }
+
+    public DateOnly? EndDate { get; set; }
+
+    [ForeignKey(nameof(EmployeeId))] public EmployeeDb Employee { get; set; }
 }

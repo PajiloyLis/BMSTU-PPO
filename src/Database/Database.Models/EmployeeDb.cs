@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Database.Models;
 
@@ -15,6 +15,18 @@ public class EmployeeDb
         string? photo,
         string? duties)
     {
+        if (string.IsNullOrWhiteSpace(fullName))
+            throw new ArgumentException("FullName cannot be empty");
+
+        if (string.IsNullOrWhiteSpace(phone))
+            throw new ArgumentException("Phone cannot be empty");
+
+        if (string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("Email cannot be empty");
+
+        if (birthDate > DateOnly.FromDateTime(DateTime.Today))
+            throw new ArgumentException("BirthDate cannot be later than today");
+
         Id = id;
         FullName = fullName;
         Phone = phone;
@@ -27,26 +39,31 @@ public class EmployeeDb
     /// <summary>
     /// Employee id.
     /// </summary>
+    [Key]
     public Guid Id { get; init; }
 
     /// <summary>
     /// Employee full name.
     /// </summary>
+    [Required]
     public string FullName { get; set; }
 
     /// <summary>
     /// Employee business phone number.
     /// </summary>
+    [Required]
     public string Phone { get; set; }
 
     /// <summary>
     /// Employee business email.
     /// </summary>
+    [Required]
     public string Email { get; set; }
 
     /// <summary>
     /// Employee birthday.
     /// </summary>
+    [Required]
     public DateOnly BirthDate { get; set; }
 
     /// <summary>
@@ -57,7 +74,8 @@ public class EmployeeDb
     /// <summary>
     /// Employee duties json formated
     /// </summary>
+    [Required]
     public string? Duties { get; set; }
-    
-    public ICollection<EducationDb> Educations;
+
+    public ICollection<EducationDb> Educations { get; set; }
 }

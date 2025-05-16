@@ -25,7 +25,7 @@ public class EducationLevelNotFoundException : Exception
     /// </summary>
     /// <param name="message">Сообщение об ошибке</param>
     /// <param name="innerException">Внутреннее исключение</param>
-    public EducationLevelNotFoundException(string message, Exception innerException) 
+    public EducationLevelNotFoundException(string message, Exception innerException)
         : base(message, innerException)
     {
     }

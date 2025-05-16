@@ -19,23 +19,23 @@ public class CreationCompany
     {
         Title = title;
         if (registrationDate > DateOnly.FromDateTime(DateTime.Today))
-            throw new ArgumentException("Registration Date is invalid");
+            throw new ArgumentException("Registration Date is invalid", nameof(registrationDate));
         RegistrationDate = registrationDate;
         if (!Regex.IsMatch(phoneNumber, @"^\+\d{5,17}$"))
-            throw new ArgumentException("Phone Number is invalid");
+            throw new ArgumentException("Phone Number is invalid", nameof(phoneNumber));
         PhoneNumber = phoneNumber;
         if (!Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") ||
             email.Length > 254)
-            throw new ArgumentException("Email is invalid");
+            throw new ArgumentException("Email is invalid", nameof(email));
         Email = email;
         if (!Regex.IsMatch(inn, @"^[0-9]{10}$"))
-            throw new ArgumentException("Inn is invalid");
+            throw new ArgumentException("Inn is invalid", nameof(inn));
         Inn = inn;
-        if(!Regex.IsMatch(kpp, @"^[0-9]{9}$"))
-            throw new ArgumentException("Kpp is invalid");
+        if (!Regex.IsMatch(kpp, @"^[0-9]{9}$"))
+            throw new ArgumentException("Kpp is invalid", nameof(kpp));
         Kpp = kpp;
         if (!Regex.IsMatch(ogrn, @"^[0-9]{13}$"))
-            throw new ArgumentException("OGRN is invalid");
+            throw new ArgumentException("OGRN is invalid", nameof(ogrn));
         Ogrn = ogrn;
         Address = address;
     }

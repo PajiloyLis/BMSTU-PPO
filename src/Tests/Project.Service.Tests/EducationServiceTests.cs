@@ -2,7 +2,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
-using Project.Core.Models.Education;
 using Project.Core.Repositories;
 using Project.Services.EducationService;
 using Xunit;
@@ -107,7 +106,7 @@ public class EducationServiceTests
             .ThrowsAsync(new EducationNotFoundException());
 
         //Act & Assert
-        await Assert.ThrowsAsync<EducationNotFoundException>(() => 
+        await Assert.ThrowsAsync<EducationNotFoundException>(() =>
             _educationService.GetEducationByIdAsync(educationId));
         _mockRepository.Verify(x => x.GetEducationByIdAsync(educationId), Times.Once);
     }
@@ -172,7 +171,7 @@ public class EducationServiceTests
             .ThrowsAsync(new EducationNotFoundException());
 
         //Act & Assert
-        await Assert.ThrowsAsync<EducationNotFoundException>(() => 
+        await Assert.ThrowsAsync<EducationNotFoundException>(() =>
             _educationService.UpdateEducationAsync(educationId, employeeId, "New Institution"));
         _mockRepository.Verify(x => x.UpdateEducationAsync(It.IsAny<UpdateEducation>()), Times.Once);
     }
@@ -186,7 +185,7 @@ public class EducationServiceTests
         var pageSize = 10;
         var expectedEducations = new List<Education>
         {
-            new Education(
+            new(
                 Guid.NewGuid(),
                 employeeId,
                 "МГУ",
@@ -195,7 +194,7 @@ public class EducationServiceTests
                 new DateOnly(2020, 9, 1),
                 new DateOnly(2024, 6, 3)
             ),
-            new Education(
+            new(
                 Guid.NewGuid(),
                 employeeId,
                 "СПбГУ",
@@ -248,7 +247,7 @@ public class EducationServiceTests
             .ThrowsAsync(new EducationNotFoundException());
 
         //Act & Assert
-        await Assert.ThrowsAsync<EducationNotFoundException>(() => 
+        await Assert.ThrowsAsync<EducationNotFoundException>(() =>
             _educationService.DeleteEducationAsync(educationId));
         _mockRepository.Verify(x => x.DeleteEducationAsync(educationId), Times.Once);
     }
@@ -263,8 +262,7 @@ public class EducationServiceTests
             "МГУ",
             "Высшее (бакалавриат)",
             "Информатика",
-            new DateOnly(2020, 9, 1),
-            null
+            new DateOnly(2020, 9, 1)
         );
 
         var expectedEducation = new Education(
@@ -286,8 +284,7 @@ public class EducationServiceTests
             "МГУ",
             "Высшее (бакалавриат)",
             "Информатика",
-            new DateOnly(2020, 9, 1),
-            null);
+            new DateOnly(2020, 9, 1));
 
         //Assert
         Assert.NotNull(result);
@@ -310,7 +307,7 @@ public class EducationServiceTests
         var endDate = new DateOnly(2020, 6, 30);
 
         //Act & Assert
-        await Assert.ThrowsAsync<ArgumentException>(() => 
+        await Assert.ThrowsAsync<ArgumentException>(() =>
             _educationService.AddEducationAsync(
                 employeeId,
                 "МГУ",
@@ -318,7 +315,7 @@ public class EducationServiceTests
                 "Информатика",
                 startDate,
                 endDate));
-        
+
         _mockRepository.Verify(x => x.AddEducationAsync(It.IsAny<CreateEducation>()), Times.Never);
     }
 
@@ -331,7 +328,7 @@ public class EducationServiceTests
         var endDate = DateOnly.FromDateTime(DateTime.Now.AddYears(4));
 
         //Act & Assert
-        await Assert.ThrowsAsync<ArgumentException>(() => 
+        await Assert.ThrowsAsync<ArgumentException>(() =>
             _educationService.AddEducationAsync(
                 employeeId,
                 "МГУ",
@@ -339,7 +336,7 @@ public class EducationServiceTests
                 "Информатика",
                 startDate,
                 endDate));
-        
+
         _mockRepository.Verify(x => x.AddEducationAsync(It.IsAny<CreateEducation>()), Times.Never);
     }
 
@@ -352,7 +349,7 @@ public class EducationServiceTests
         var endDate = DateOnly.FromDateTime(DateTime.Now.AddYears(4));
 
         //Act
-        await Assert.ThrowsAsync<ArgumentException>(() =>  _educationService.AddEducationAsync(
+        await Assert.ThrowsAsync<ArgumentException>(() => _educationService.AddEducationAsync(
             employeeId,
             "МГУ",
             "Высшее (бакалавриат)",

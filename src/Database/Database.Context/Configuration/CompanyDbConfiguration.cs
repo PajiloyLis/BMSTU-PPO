@@ -11,8 +11,8 @@ public class CompanyDbConfiguration : IEntityTypeConfiguration<CompanyDb>
 {
     public void Configure(EntityTypeBuilder<CompanyDb> builder)
     {
-        builder.HasKey(keyExpression => keyExpression.CompanyId);
-        builder.Property(keyExpression => keyExpression.CompanyId).HasDefaultValueSql("gen_random_uuid()");
+        builder.HasKey(keyExpression => keyExpression.Id);
+        builder.Property(keyExpression => keyExpression.Id).HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(keyExpression => keyExpression.Title).HasColumnType("text").IsRequired();
         builder.HasIndex(keyExpression => keyExpression.Title).IsUnique();

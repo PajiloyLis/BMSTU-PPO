@@ -1,4 +1,4 @@
-using Project.Core.Models.Education;
+using Project.Core.Models;
 
 namespace Project.Core.Services;
 

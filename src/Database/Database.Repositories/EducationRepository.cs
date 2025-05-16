@@ -1,12 +1,9 @@
 using Database.Context;
 using Database.Models.Converters;
-using Database.Models;
-using Database.Models.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
-using Project.Core.Models.Education;
 using Project.Core.Repositories;
 
 namespace Database.Repositories;
@@ -28,22 +25,23 @@ public class EducationRepository : IEducationRepository
         {
             var educationDb = EducationConverter.Convert(education);
             var existingEducation = await _context.EducationDb
-                .FirstOrDefaultAsync(e => e.EmployeeId == educationDb.EmployeeId && 
-                                        e.Institution == educationDb.Institution &&
-                                        e.StudyField == educationDb.StudyField &&
-                                        e.StartDate == educationDb.StartDate &&
-                                        e.EndDate == educationDb.EndDate);
+                .FirstOrDefaultAsync(e => e.EmployeeId == educationDb.EmployeeId &&
+                                          e.Institution == educationDb.Institution &&
+                                          e.StudyField == educationDb.StudyField &&
+                                          e.StartDate == educationDb.StartDate &&
+                                          e.EndDate == educationDb.EndDate);
 
             if (existingEducation is not null)
             {
                 _logger.LogWarning("Education already exists for employee {EmployeeId}", education.EmployeeId);
-                throw new EducationAlreadyExistsException($"Education already exists for employee {education.EmployeeId}");
+                throw new EducationAlreadyExistsException(
+                    $"Education already exists for employee {education.EmployeeId}");
             }
 
             await _context.EducationDb.AddAsync(educationDb);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Education with id {Id} was added for employee {EmployeeId}", 
+            _logger.LogInformation("Education with id {Id} was added for employee {EmployeeId}",
                 educationDb.Id, education.EmployeeId);
 
             return EducationConverter.Convert(educationDb);
@@ -90,13 +88,14 @@ public class EducationRepository : IEducationRepository
                 _logger.LogWarning("Education with id {Id} not found for update", education.Id);
                 throw new EducationNotFoundException($"Education with id {education.Id} not found");
             }
+
             var existingEducation = await _context.EducationDb
-                .Where(e => e.Id != education.Id && 
-                    (e.EmployeeId == education.EmployeeId &&
-                    e.Institution == education.Institution &&
-                    e.StudyField == education.StudyField &&
-                    e.StartDate == education.StartDate &&
-                    e.EndDate == education.EndDate))
+                .Where(e => e.Id != education.Id &&
+                            e.EmployeeId == education.EmployeeId &&
+                            e.Institution == education.Institution &&
+                            e.StudyField == education.StudyField &&
+                            e.StartDate == education.StartDate &&
+                            e.EndDate == education.EndDate)
                 .FirstOrDefaultAsync();
 
             if (existingEducation is not null)
@@ -136,7 +135,7 @@ public class EducationRepository : IEducationRepository
                 .Select(e => EducationConverter.Convert(e))
                 .ToListAsync();
 
-            _logger.LogInformation("Got {Count} educations for employee {EmployeeId} (page {Page}, size {Size})", 
+            _logger.LogInformation("Got {Count} educations for employee {EmployeeId} (page {Page}, size {Size})",
                 educations.Count, employeeId, pageNumber, pageSize);
 
             return new EducationPage(educations, new Page(pageNumber, totalCount, pageSize));

@@ -1,10 +1,7 @@
-namespace Project.Core.Models.Education;
+namespace Project.Core.Models;
 
 public class EducationPage
 {
-    public IReadOnlyList<Education> Educations { get; }
-    public Page Page { get; }
-
     public EducationPage()
     {
         Educations = new List<Education>();
@@ -16,4 +13,7 @@ public class EducationPage
         Educations = educations;
         Page = page;
     }
+
+    public IReadOnlyList<Education> Educations { get; }
+    public Page Page { get; }
 }

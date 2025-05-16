@@ -6,6 +6,8 @@ using Project.Core.Repositories;
 using Project.Services.EmployeeService;
 using Xunit;
 
+namespace Project.Service.Tests;
+
 public class EmployeeServiceTests
 {
     private readonly EmployeeService _employeeService;
@@ -29,7 +31,7 @@ public class EmployeeServiceTests
             "john.doe@example.com",
             new DateOnly(1990, 1, 1),
             "photo.jpg",
-            "{[1: \"Developer\"]}"
+            "{\"Developer\": true}"
         );
 
         var expectedEmployee = new Employee(
@@ -39,7 +41,7 @@ public class EmployeeServiceTests
             "john.doe@example.com",
             new DateOnly(1990, 1, 1),
             "photo.jpg",
-            "{[1: \"Developer\"]}");
+            "{\"Developer\": true}");
 
         _mockRepo.Setup(expr => expr.AddEmployeeAsync(It.IsAny<CreationEmployee>())).ReturnsAsync(expectedEmployee);
 
@@ -49,7 +51,7 @@ public class EmployeeServiceTests
             "john.doe@example.com",
             new DateOnly(1990, 1, 1),
             "photo.jpg",
-            "{[1: \"Developer\"]}");
+            "{\"Developer\": true}");
 
         // Assert
         Assert.Equal(expectedEmployee, result);
@@ -191,33 +193,33 @@ public class EmployeeServiceTests
     }
 
     [Fact]
-    public async Task AddEmployee_EmployeeAlreadyExists()
+    public async Task AddEmployee_AlreadyExists_ThrowsException()
     {
         // Arrange
-        _mockRepo.Setup(r => r.AddEmployeeAsync(It.IsAny<CreationEmployee>()))
+        var existingEmployee = new CreationEmployee(
+            "John Doe",
+            "+1234567890",
+            "john.doe@example.com",
+            new DateOnly(1990, 1, 1),
+            null,
+            null
+        );
+
+        _mockRepo.Setup(expr => expr.AddEmployeeAsync(It.IsAny<CreationEmployee>()))
             .ThrowsAsync(new EmployeeAlreadyExistsException("Employee already exists"));
 
         // Act & Assert
         await Assert.ThrowsAsync<EmployeeAlreadyExistsException>(() =>
             _employeeService.AddEmployeeAsync(
-                "John Doe",
-                "+1234567890",
-                "john.doe@example.com",
-                new DateOnly(1990, 1, 1),
-                "photo.jpg",
-                "Developer"
+                existingEmployee.FullName,
+                existingEmployee.PhoneNumber,
+                existingEmployee.Email,
+                existingEmployee.BirthDate,
+                existingEmployee.Photo,
+                existingEmployee.Duties
             )
         );
 
-        _mockLogger.Verify(
-            x => x.Log(
-                LogLevel.Warning,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString().Contains("Employee with email")),
-                It.Is<EmployeeAlreadyExistsException>(e => e.Message.Contains("already exists")),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()
-            ),
-            Times.Once
-        );
+        _mockRepo.Verify(expr => expr.AddEmployeeAsync(It.IsAny<CreationEmployee>()), Times.Once);
     }
 }

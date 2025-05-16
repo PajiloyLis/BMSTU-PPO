@@ -10,7 +10,7 @@ public class EducationNotFoundException : Exception
     {
     }
 
-    public EducationNotFoundException(string message, Exception innerException) 
+    public EducationNotFoundException(string message, Exception innerException)
         : base(message, innerException)
     {
     }

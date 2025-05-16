@@ -1,7 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using Project.Core.Exceptions;
 
-namespace Project.Core.Models.Education;
+namespace Project.Core.Models;
 
 /// <summary>
 /// Уровни образования
@@ -87,5 +86,4 @@ public static class EducationLevelExtensions
             _ => throw new EducationLevelNotFoundException($"Неизвестный уровень образования: {displayString}")
         };
     }
-    
 }
