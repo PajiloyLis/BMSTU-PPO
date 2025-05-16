@@ -24,3 +24,12 @@
 /src/Project.HttpServer/obj/*
 /src/Project.HttpServer/obj/Debug/*
 /src/Project.HttpServer/obj/
+/src/Services/Project.Services.EducationService/bin/
+/src/Services/Project.Services.EducationService/obj/
+/src/Services/Project.Services.PositionService/bin/
+/src/Services/Project.Services.PositionService/obj/
+/src/Services/Project.Services.PostService/bin/
+/src/Services/Project.Services.PostService/obj/
+/src/Tests/Project.Service.Tests/bin/
+/src/Tests/Project.Service.Tests/obj/
+
