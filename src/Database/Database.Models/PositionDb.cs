@@ -39,5 +39,7 @@ public class PositionDb
 
     public ICollection<PositionDb> Children { get; set; } = new List<PositionDb>();
 
+    public ICollection<ScoreDb> Scores {get; set; } = new List<ScoreDb>();
+
     [ForeignKey(nameof(CompanyId))] public CompanyDb Company { get; set; } = null;
 }

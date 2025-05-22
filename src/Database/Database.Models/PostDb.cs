@@ -52,4 +52,6 @@ public class PostDb
     public Guid CompanyId { get; set; }
 
     [ForeignKey(nameof(CompanyId))] public CompanyDb Company { get; set; }
+
+    public ICollection<PostHistoryDb> PostHistories { get; set; } = new List<PostHistoryDb>();
 }

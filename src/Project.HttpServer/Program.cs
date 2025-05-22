@@ -13,7 +13,6 @@ public static class Program
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
         }
     }
 }

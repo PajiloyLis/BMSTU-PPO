@@ -2,14 +2,14 @@ namespace Project.Core.Models.Score;
 
 public class Score
 {
-    public Guid Id { get; init; }
-    public Guid EmployeeId { get; set; }
-    public Guid AuthorId { get; set; }
-    public Guid PositionId { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public int EfficiencyScore { get; set; }
-    public int EngagementScore { get; set; }
-    public int CompetencyScore { get; set; }
+    public Guid Id { get; }
+    public Guid EmployeeId { get; }
+    public Guid AuthorId { get; }
+    public Guid PositionId { get; }
+    public DateTimeOffset CreatedAt { get; }
+    public int EfficiencyScore { get; }
+    public int EngagementScore { get; }
+    public int CompetencyScore { get; }
 
     public Score(Guid id, Guid employeeId, Guid authorId, Guid positionId, DateTimeOffset createdAt, int efficiencyScore,
         int engagementScore, int competencyScore)

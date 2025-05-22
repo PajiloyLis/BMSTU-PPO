@@ -77,5 +77,9 @@ public class EmployeeDb
     [Required]
     public string? Duties { get; set; }
 
-    public ICollection<EducationDb> Educations { get; set; }
+    public ICollection<EducationDb> Educations { get; set; } = new List<EducationDb>();
+
+    public ICollection<ScoreDb> Scores { get; set; } = new List<ScoreDb>();
+
+    public ICollection<PostHistoryDb> PostHistories { get; set; } = new List<PostHistoryDb>();
 }

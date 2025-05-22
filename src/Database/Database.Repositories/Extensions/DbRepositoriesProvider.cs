@@ -12,6 +12,8 @@ public static class DbRepositoriesProvider
         services.AddScoped<IEducationRepository, EducationRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IPositionRepository, PositionRepository>();
+        services.AddScoped<IScoreRepository, ScoreRepository>();
+        services.AddScoped<IPostHistoryRepository, PostHistoryRepository>();
         return services;
     }
 }

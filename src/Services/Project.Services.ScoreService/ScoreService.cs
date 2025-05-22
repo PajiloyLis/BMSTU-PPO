@@ -21,7 +21,7 @@ public class ScoreService : IScoreService
         try
         {
             var result = await _repository.AddScoreAsync(createScore);
-            _logger.LogInformation("Score with id {Id} was added", result.Id);
+            _logger.LogInformation("Score for employee {EmployeeId} was added", result.EmployeeId);
             return result;
         }
         catch (Exception e)

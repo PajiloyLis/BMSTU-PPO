@@ -27,6 +27,10 @@ public class ProjectDbContext : DbContext
 
     public DbSet<PositionDb> PositionDb { get; set; }
 
+    public DbSet<ScoreDb> ScoreDb { get; set; }
+
+    public DbSet<PostHistoryDb> PostHistoryDb { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -35,5 +39,7 @@ public class ProjectDbContext : DbContext
         modelBuilder.ApplyConfiguration(new EducationDbConfiguration());
         modelBuilder.ApplyConfiguration(new PostDbConfiguration());
         modelBuilder.ApplyConfiguration(new PositionDbConfiguration());
+        modelBuilder.ApplyConfiguration(new PostHistoryDbConfiguration());
+        modelBuilder.ApplyConfiguration(new ScoreDbConfiguration());
     }
 }

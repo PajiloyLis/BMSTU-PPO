@@ -20,7 +20,10 @@
         <ProjectReference Include="..\..\Services\Project.Services.EmployeeService\Project.Services.EmployeeService.csproj"/>
         <ProjectReference Include="..\..\Services\Project.Services.EmployeeService\Project.Services.EmployeeService.csproj"/>
         <ProjectReference Include="..\..\Services\Project.Services.CompanyService\Project.Services.CompanyService.csproj"/>
+        <ProjectReference Include="..\..\Services\Project.Services.PositionService\Project.Services.PositionService.csproj" />
+        <ProjectReference Include="..\..\Services\Project.Services.PostHistoryService\Project.Services.PostHistoryService.csproj" />
         <ProjectReference Include="..\..\Services\Project.Services.PostService\Project.Services.PostService.csproj"/>
+        <ProjectReference Include="..\..\Services\Project.Services.ScoreService\Project.Services.ScoreService.csproj" />
     </ItemGroup>
 
 </Project>
