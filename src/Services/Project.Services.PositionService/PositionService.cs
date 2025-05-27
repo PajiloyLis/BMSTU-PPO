@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Project.Core.Models;
+using Project.Core.Models.PositionHistory;
 using Project.Core.Repositories;
 using Project.Core.Services;
 
@@ -78,7 +79,7 @@ public class PositionService : IPositionService
         }
     }
 
-    public async Task<PositionPage> GetSubordinatesAsync(Guid parentId, int pageNumber, int pageSize)
+    public async Task<PositionHierarchyPage> GetSubordinatesAsync(Guid parentId, int pageNumber, int pageSize)
     {
         try
         {

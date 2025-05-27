@@ -29,10 +29,10 @@ public class CreateEducation
         EndDate = endDate;
     }
 
-    public Guid EmployeeId { get; }
-    public string Institution { get; }
-    public EducationLevel Level { get; }
-    public string StudyField { get; }
-    public DateOnly StartDate { get; }
-    public DateOnly? EndDate { get; }
+    public Guid EmployeeId { get; set; }
+    public string Institution { get; set; }
+    public EducationLevel Level { get; set; }
+    public string StudyField { get; set; }
+    public DateOnly StartDate { get; set; }
+    public DateOnly? EndDate { get; set; }
 }

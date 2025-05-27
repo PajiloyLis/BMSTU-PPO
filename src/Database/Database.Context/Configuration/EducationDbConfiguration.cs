@@ -26,8 +26,11 @@ public class EducationDbConfiguration : IEntityTypeConfiguration<EducationDb>
 
         builder.Property(e => e.Level)
             .HasColumnName("education_level")
-            .HasColumnType("education_level")
+            .HasColumnType("text")
             .IsRequired();
+
+        builder.HasCheckConstraint("education_level_check",
+            "education_level in ('Высшее (бакалавриат)', 'Высшее (магистратура)', 'Высшее (специалитет)', 'Среднее профессиональное (ПКР)', 'Среднее профессиональное (ПССЗ)','Программы переподготовки', 'Курсы повышения квалификации' )");
 
         builder.Property(e => e.StudyField)
             .HasColumnName("study_field")

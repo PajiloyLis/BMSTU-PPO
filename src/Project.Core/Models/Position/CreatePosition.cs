@@ -2,11 +2,8 @@ namespace Project.Core.Models;
 
 public class CreatePosition
 {
-    public CreatePosition(Guid parentId, string title, Guid companyId)
+    public CreatePosition(Guid? parentId, string title, Guid companyId)
     {
-        if (!Guid.TryParse(parentId.ToString(), out _))
-            throw new ArgumentException("Invalid ParentId format", nameof(parentId));
-
         if (!Guid.TryParse(companyId.ToString(), out _))
             throw new ArgumentException("Invalid CompanyId format", nameof(companyId));
 
@@ -17,7 +14,7 @@ public class CreatePosition
         CompanyId = companyId;
     }
 
-    public Guid ParentId { get; init; }
+    public Guid? ParentId { get; init; }
     public string Title { get; init; }
     public Guid CompanyId { get; init; }
 }

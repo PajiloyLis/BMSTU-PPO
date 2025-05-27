@@ -131,7 +131,7 @@ public class PostRepository : IPostRepository
             var totalItems = await _context.PostDb
                 .CountAsync(p => p.CompanyId == companyId);
 
-            var page = new Page(pageNumber, totalItems, pageSize);
+            var page = new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems);
             var result = new PostPage(posts.Select(p => PostConverter.Convert(p)!).ToList(), page);
 
             _logger.LogInformation("Posts for company {CompanyId} were retrieved", companyId);

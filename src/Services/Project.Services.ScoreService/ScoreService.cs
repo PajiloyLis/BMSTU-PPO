@@ -21,7 +21,7 @@ public class ScoreService : IScoreService
         try
         {
             var result = await _repository.AddScoreAsync(createScore);
-            _logger.LogInformation("Score with id {Id} was added", result.Id);
+            _logger.LogInformation("Score for employee {EmployeeId} was added", result.EmployeeId);
             return result;
         }
         catch (Exception e)
@@ -61,7 +61,8 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresAsync(int pageNumber, int pageSize, DateTimeOffset? startDate, DateTimeOffset? endDate)
+    public async Task<ScorePage> GetScoresAsync(int pageNumber, int pageSize, DateTimeOffset? startDate,
+        DateTimeOffset? endDate)
     {
         try
         {
@@ -76,7 +77,8 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByEmployeeAsync(Guid employeeId, int page, int pageSize, DateTimeOffset? startDate, DateTimeOffset? endDate)
+    public async Task<ScorePage> GetScoresByEmployeeAsync(Guid employeeId, int page, int pageSize,
+        DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
@@ -91,7 +93,8 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByAuthorAsync(Guid authorId, int page, int pageSize, DateTimeOffset? startDate, DateTimeOffset? endDate)
+    public async Task<ScorePage> GetScoresByAuthorAsync(Guid authorId, int page, int pageSize,
+        DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
@@ -106,22 +109,27 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresSubordinatesByEmployeeAsync(Guid employeeId, int page, int pageSize, DateTimeOffset? startDate, DateTimeOffset? endDate)
+    public async Task<ScorePage> GetScoresSubordinatesByEmployeeAsync(Guid employeeId, int page, int pageSize,
+        DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
-            var result = await _repository.GetScoresSubordinatesByEmployeeIdAsync(employeeId, page, pageSize, startDate, endDate);
+            var result =
+                await _repository.GetScoresSubordinatesByEmployeeIdAsync(employeeId, page, pageSize, startDate,
+                    endDate);
             _logger.LogInformation("Subordinates scores for employee {EmployeeId} were retrieved", employeeId);
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error occurred while getting subordinates scores for employee {EmployeeId}", employeeId);
+            _logger.LogError(e, "Error occurred while getting subordinates scores for employee {EmployeeId}",
+                employeeId);
             throw;
         }
     }
 
-    public async Task<ScorePage> GetScoresByPositionAsync(Guid positionId, int page, int pageSize, DateTimeOffset? startDate, DateTimeOffset? endDate)
+    public async Task<ScorePage> GetScoresByPositionAsync(Guid positionId, int page, int pageSize,
+        DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {

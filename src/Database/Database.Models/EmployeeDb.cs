@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Project.Database.Models;
 
 namespace Database.Models;
 
@@ -77,5 +78,13 @@ public class EmployeeDb
     [Required]
     public string? Duties { get; set; }
 
-    public ICollection<EducationDb> Educations { get; set; }
+    public ICollection<EducationDb> Educations { get; set; } = new List<EducationDb>();
+
+    public ICollection<ScoreDb> Scores { get; set; } = new List<ScoreDb>();
+    
+    public ICollection<ScoreDb> AuthoredScores { get; set; } = new List<ScoreDb>();
+
+    public ICollection<PostHistoryDb> PostHistories { get; set; } = new List<PostHistoryDb>();
+
+    public ICollection<PositionHistoryDb> PositionHistories { get; set; } = new List<PositionHistoryDb>();
 }

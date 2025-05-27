@@ -14,6 +14,6 @@ public class PositionPage
         Page = page;
     }
 
-    public IReadOnlyList<Position> Positions { get; }
-    public Page Page { get; }
+    public IReadOnlyList<Position> Positions { get; set; }
+    public Page Page { get; set; }
 }

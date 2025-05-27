@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Project.Database.Models;
 
 namespace Database.Models;
 
@@ -28,16 +29,16 @@ public class PositionDb
 
     [Key] public Guid Id { get; set; }
 
-    public Guid? ParentId { get; set; }
+    [ForeignKey(nameof(PositionDb))] public Guid? ParentId { get; set; }
 
     [Required] public string Title { get; set; } = null!;
 
-    [Required] public Guid CompanyId { get; set; }
+    [ForeignKey(nameof(CompanyDb))] public Guid CompanyId { get; set; }
 
     // Навигационные свойства
-    [ForeignKey(nameof(ParentId))] public PositionDb? Parent { get; set; }
-
     public ICollection<PositionDb> Children { get; set; } = new List<PositionDb>();
 
-    [ForeignKey(nameof(CompanyId))] public CompanyDb Company { get; set; } = null;
+    public ICollection<ScoreDb> Scores { get; set; } = new List<ScoreDb>();
+
+    public ICollection<PositionHistoryDb> PositionHistories { get; set; } = new List<PositionHistoryDb>();
 }

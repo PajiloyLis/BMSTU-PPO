@@ -14,6 +14,6 @@ public class PostPage
         Page = page;
     }
 
-    public IReadOnlyList<Post> Posts { get; }
-    public Page Page { get; }
+    public IReadOnlyList<Post> Posts { get; set; }
+    public Page Page { get; set; }
 }

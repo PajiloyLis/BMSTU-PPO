@@ -145,7 +145,7 @@ public class CompanyRepository : ICompanyRepository
             var usersCount = await query.CountAsync();
             var pagesCount = (int)Math.Ceiling((double)usersCount / pageSize);
 
-            query = query.Skip((pagesCount - 1) * pageSize).Take(pageSize);
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
             var companyPage =
                 new CompanyPage(await query.Select(company => CompanyConverter.Convert(company)).ToListAsync(),

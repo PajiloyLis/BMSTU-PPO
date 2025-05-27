@@ -1,4 +1,5 @@
 using Project.Core.Models;
+using Project.Core.Models.PositionHistory;
 
 namespace Project.Core.Repositories;
 
@@ -8,5 +9,5 @@ public interface IPositionRepository
     Task<Position> GetPositionByIdAsync(Guid id);
     Task<Position> UpdatePositionAsync(UpdatePosition position);
     Task DeletePositionAsync(Guid id);
-    Task<PositionPage> GetSubordinatesAsync(Guid parentId, int pageNumber, int pageSize);
+    Task<PositionHierarchyPage> GetSubordinatesAsync(Guid parentId, int pageNumber, int pageSize);
 }

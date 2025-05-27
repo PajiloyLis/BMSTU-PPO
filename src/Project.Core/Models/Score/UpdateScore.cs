@@ -2,13 +2,7 @@ namespace Project.Core.Models.Score;
 
 public class UpdateScore
 {
-    public Guid Id { get; }
-    public DateTimeOffset? CreatedAt { get; }
-    public int? EfficiencyScore { get; }
-    public int? EngagementScore { get; }
-    public int? CompetencyScore { get; }
-
-    public UpdateScore(Guid id, DateTimeOffset? createdAt = null, int? efficiencyScore = null, 
+    public UpdateScore(Guid id, DateTimeOffset? createdAt = null, int? efficiencyScore = null,
         int? engagementScore = null, int? competencyScore = null)
     {
         if (id == Guid.Empty)
@@ -19,10 +13,10 @@ public class UpdateScore
 
         if (efficiencyScore.HasValue && (efficiencyScore.Value < 1 || efficiencyScore.Value > 5))
             throw new ArgumentException("EfficiencyScore must be between 1 and 5", nameof(efficiencyScore));
-        
+
         if (engagementScore.HasValue && (engagementScore.Value < 1 || engagementScore.Value > 5))
             throw new ArgumentException("EngagementScore must be between 1 and 5", nameof(engagementScore));
-        
+
         if (competencyScore.HasValue && (competencyScore.Value < 1 || competencyScore.Value > 5))
             throw new ArgumentException("CompetencyScore must be between 1 and 5", nameof(competencyScore));
 
@@ -32,4 +26,10 @@ public class UpdateScore
         EngagementScore = engagementScore;
         CompetencyScore = competencyScore;
     }
-} 
+
+    public Guid Id { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
+    public int? EfficiencyScore { get; set; }
+    public int? EngagementScore { get; set; }
+    public int? CompetencyScore { get; set; }
+}

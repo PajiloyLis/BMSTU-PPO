@@ -41,7 +41,7 @@ public class EducationDb
 
     [Key] public Guid Id { get; set; }
 
-    [Required] public Guid EmployeeId { get; set; }
+    [ForeignKey(nameof(EmployeeDb))] public Guid EmployeeId { get; set; }
 
     [Required] public string Institution { get; set; }
 
@@ -52,6 +52,4 @@ public class EducationDb
     [Required] public DateOnly StartDate { get; set; }
 
     public DateOnly? EndDate { get; set; }
-
-    [ForeignKey(nameof(EmployeeId))] public EmployeeDb Employee { get; set; }
 }
