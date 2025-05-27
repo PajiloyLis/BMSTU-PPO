@@ -14,6 +14,6 @@ public class EducationPage
         Page = page;
     }
 
-    public IReadOnlyList<Education> Educations { get; }
-    public Page Page { get; }
+    public IReadOnlyList<Education> Educations { get; set; }
+    public Page Page { get; set; }
 }

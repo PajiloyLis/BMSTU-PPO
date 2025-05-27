@@ -14,7 +14,7 @@ public class PostDbConfiguration : IEntityTypeConfiguration<PostDb>
         builder.Property(p => p.Id)
             .HasColumnName("id")
             .HasColumnType("uuid")
-            .HasDefaultValueSql("gen_random_uuid()");
+            .HasDefaultValueSql("gen_random_uuid()").ValueGeneratedNever().IsRequired();
 
         builder.Property(p => p.Title)
             .HasColumnName("title")
@@ -28,14 +28,15 @@ public class PostDbConfiguration : IEntityTypeConfiguration<PostDb>
 
         builder.Property(p => p.CompanyId)
             .HasColumnName("company_id")
-            .HasColumnType("uuid")
+            .HasColumnType("uuid").ValueGeneratedNever()
             .IsRequired();
 
         builder.HasCheckConstraint("salary_check", "salary > 0");
 
         builder.HasOne<CompanyDb>()
-            .WithMany(e => e.Posts)
+            .WithMany(c => c.Posts)
             .HasForeignKey(p => p.CompanyId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
     }
 }

@@ -1,7 +1,19 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Database.Context;
+using Database.Repositories.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using Project.Core.Models;
+using Project.Services.CompanyService.Extensions;
+using Project.Services.EducationService.Extensions;
+using Project.Services.EmployeeService.Extensions;
+using Project.Services.PositionHistoryService.Extensions;
+using Project.Services.PositionService.Extensions;
+using Project.Services.PostHistoryService.Extensions;
+using Project.Services.PostService.Extensions;
+using Project.Services.ScoreService.Extensions;
 
 namespace Project.HttpServer.Extensions;
 
@@ -60,7 +72,14 @@ public static class ServiceProviderExtension
     public static IServiceCollection AddProjectServices(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
-        // TODO
+        serviceCollection.AddCompanyService();
+        serviceCollection.AddEducationService();
+        serviceCollection.AddEmployeeService();
+        serviceCollection.AddPostHistoryService();
+        serviceCollection.AddPostService();
+        serviceCollection.AddPositionService();
+        serviceCollection.AddPositionHistoryService();
+        serviceCollection.AddScoreService();
         return serviceCollection;
     }
 
@@ -72,7 +91,9 @@ public static class ServiceProviderExtension
 
         serviceCollection.AddSingleton(dataSource);
 
-        // TODO serviceCollection.AddDbContext<>()
+        serviceCollection.AddDbContext<ProjectDbContext>((serviceProvider, options) =>
+            options.UseNpgsql(serviceProvider.GetRequiredService<NpgsqlDataSource>()).EnableSensitiveDataLogging()  // Показывает значения параметров
+                .LogTo(Console.WriteLine, LogLevel.Information));
 
         return serviceCollection;
     }
@@ -86,7 +107,7 @@ public static class ServiceProviderExtension
 
     public static IServiceCollection AddProjectDbRepositories(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddProjectDbRepositories();
+        serviceCollection.AddDbRepositories();
         return serviceCollection;
     }
 }

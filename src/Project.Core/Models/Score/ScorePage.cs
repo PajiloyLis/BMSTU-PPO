@@ -2,9 +2,6 @@ namespace Project.Core.Models.Score;
 
 public class ScorePage
 {
-    public IReadOnlyList<Score> Items { get; }
-    public Page Page { get; }
-
     public ScorePage()
     {
         Items = new List<Score>();
@@ -16,4 +13,7 @@ public class ScorePage
         Items = items;
         Page = page;
     }
-} 
+
+    public IReadOnlyList<Score> Items { get; set; }
+    public Page Page { get; set; }
+}

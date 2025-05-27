@@ -19,8 +19,8 @@ public class CreatePost
         CompanyId = companyId;
     }
 
-    public Guid Id { get; }
-    public string Title { get; }
-    public decimal Salary { get; }
-    public Guid CompanyId { get; }
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public decimal Salary { get; set; }
+    public Guid CompanyId { get; set; }
 }

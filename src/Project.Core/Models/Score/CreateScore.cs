@@ -2,23 +2,15 @@ namespace Project.Core.Models.Score;
 
 public class CreateScore
 {
-    public Guid EmployeeId { get; }
-    public Guid AuthorId { get; }
-    public Guid PositionId { get; }
-    public DateTimeOffset CreatedAt { get; }
-    public int EfficiencyScore { get; }
-    public int EngagementScore { get; }
-    public int CompetencyScore { get; }
-
     public CreateScore(Guid employeeId, Guid authorId, Guid positionId, DateTimeOffset createdAt,
         int efficiencyScore, int engagementScore, int competencyScore)
     {
         if (employeeId == Guid.Empty)
             throw new ArgumentException("EmployeeId cannot be empty", nameof(employeeId));
-        
+
         if (authorId == Guid.Empty)
             throw new ArgumentException("AuthorId cannot be empty", nameof(authorId));
-        
+
         if (positionId == Guid.Empty)
             throw new ArgumentException("PositionId cannot be empty", nameof(positionId));
 
@@ -27,10 +19,10 @@ public class CreateScore
 
         if (efficiencyScore < 1 || efficiencyScore > 5)
             throw new ArgumentException("EfficiencyScore must be between 1 and 5", nameof(efficiencyScore));
-        
+
         if (engagementScore < 1 || engagementScore > 5)
             throw new ArgumentException("EngagementScore must be between 1 and 5", nameof(engagementScore));
-        
+
         if (competencyScore < 1 || competencyScore > 5)
             throw new ArgumentException("CompetencyScore must be between 1 and 5", nameof(competencyScore));
 
@@ -42,4 +34,12 @@ public class CreateScore
         EngagementScore = engagementScore;
         CompetencyScore = competencyScore;
     }
-} 
+
+    public Guid EmployeeId { get; set; }
+    public Guid AuthorId { get; set; }
+    public Guid PositionId { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public int EfficiencyScore { get; set; }
+    public int EngagementScore { get; set; }
+    public int CompetencyScore { get; set; }
+}

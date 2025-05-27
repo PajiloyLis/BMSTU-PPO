@@ -32,12 +32,12 @@ public class PositionDbConfiguration : IEntityTypeConfiguration<PositionDb>
             .HasColumnType("uuid")
             .IsRequired();
 
-        builder.HasOne(p => p.Parent)
+        builder.HasOne<PositionDb>()
             .WithMany(p => p.Children)
             .HasForeignKey(p => p.ParentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(p => p.Company)
+        builder.HasOne<CompanyDb>()
             .WithMany(c => c.Positions)
             .HasForeignKey(p => p.CompanyId)
             .OnDelete(DeleteBehavior.Cascade);

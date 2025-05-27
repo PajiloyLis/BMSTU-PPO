@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.PositionHistory;
 using Project.Core.Repositories;
 
 namespace Database.Repositories;
@@ -143,24 +144,23 @@ public class PositionRepository : IPositionRepository
         }
     }
 
-    public async Task<PositionPage> GetSubordinatesAsync(Guid parentId, int pageNumber, int pageSize)
+    public async Task<PositionHierarchyPage> GetSubordinatesAsync(Guid parentId, int pageNumber, int pageSize)
     {
         try
         {
-            var positions = await _context.PositionDb
-                .Where(p => p.ParentId == parentId)
+            var query = _context.GetSubordinatesById(parentId)
+                .OrderBy(x => x.Level)
+                .ThenBy(x => x.Title);
+            
+            var positions = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Select(p => PositionHierarchyConverter.Convert(p))
                 .ToListAsync();
 
-            var totalItems = await _context.PositionDb
-                .CountAsync(p => p.ParentId == parentId);
-
-            var page = new Page(pageNumber, totalItems, pageSize);
-            var result = new PositionPage(positions.Select(p => PositionConverter.Convert(p)!).ToList(), page);
-
-            _logger.LogInformation("Subordinates for position {ParentId} were retrieved", parentId);
-            return result;
+            var totalItems = await query.CountAsync();
+            
+            return new PositionHierarchyPage(positions, new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems));
         }
         catch (Exception e)
         {

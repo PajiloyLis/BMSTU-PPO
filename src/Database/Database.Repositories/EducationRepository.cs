@@ -138,7 +138,7 @@ public class EducationRepository : IEducationRepository
             _logger.LogInformation("Got {Count} educations for employee {EmployeeId} (page {Page}, size {Size})",
                 educations.Count, employeeId, pageNumber, pageSize);
 
-            return new EducationPage(educations, new Page(pageNumber, totalCount, pageSize));
+            return new EducationPage(educations, new Page(pageNumber, (int)Math.Ceiling(totalCount/(double)pageSize), totalCount));
         }
         catch (Exception e)
         {

@@ -48,6 +48,8 @@ public class CompanyDb
         Kpp = kpp;
         Ogrn = ogrn;
         Address = address;
+        Posts = new List<PostDb>();
+        Positions = new List<PositionDb>();
     }
 
     /// <summary>

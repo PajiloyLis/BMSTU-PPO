@@ -11,8 +11,9 @@ public class PostDb
     public PostDb()
     {
         Title = string.Empty;
+        PostHistories = new List<PostHistoryDb>();
     }
-
+    
     public PostDb(Guid id, string title, decimal salary, Guid companyId)
     {
         if (string.IsNullOrWhiteSpace(title))
@@ -25,6 +26,7 @@ public class PostDb
         Title = title;
         Salary = salary;
         CompanyId = companyId;
+        PostHistories = new List<PostHistoryDb>();
     }
 
     /// <summary>
@@ -48,10 +50,8 @@ public class PostDb
     /// <summary>
     /// Company id.
     /// </summary>
-    [Required]
+    [ForeignKey(nameof(CompanyDb))]
     public Guid CompanyId { get; set; }
 
-    [ForeignKey(nameof(CompanyId))] public CompanyDb Company { get; set; }
-
-    public ICollection<PostHistoryDb> PostHistories { get; set; } = new List<PostHistoryDb>();
+    public ICollection<PostHistoryDb> PostHistories { get; set; }
 }
