@@ -162,8 +162,8 @@ public class PostHistoryRepository : IPostHistoryRepository
         Guid employeeId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate)
+        DateOnly? startDate,
+        DateOnly? endDate)
     {
         try
         {
@@ -172,9 +172,13 @@ public class PostHistoryRepository : IPostHistoryRepository
                 employeeId, startDate, endDate, pageNumber, pageSize);
 
             var query = _context.PostHistoryDb
-                .Where(ph => ph.EmployeeId == employeeId &&
-                             ph.StartDate >= startDate &&
-                             (!ph.EndDate.HasValue || ph.EndDate <= endDate));
+                .Where(ph => ph.EmployeeId == employeeId);
+            
+            if (startDate.HasValue)
+                query = query.Where(ph => ph.EndDate == null || ph.EndDate >= startDate);
+            if (endDate.HasValue)
+                query = query.Where(ph =>
+                    (ph.EndDate == null && endDate == DateOnly.FromDateTime(DateTime.Today)) || ph.EndDate <= endDate);
 
             var totalItems = await query.CountAsync();
             var items = await query
@@ -187,7 +191,7 @@ public class PostHistoryRepository : IPostHistoryRepository
                 "Successfully retrieved {Count} post history records for employee {EmployeeId}",
                 items.Count, employeeId);
 
-            return new PostHistoryPage(items, new Page(pageNumber, totalItems, pageSize));
+            return new PostHistoryPage(items, new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems));
         }
         catch (Exception ex)
         {
@@ -200,8 +204,8 @@ public class PostHistoryRepository : IPostHistoryRepository
         Guid managerId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate)
+        DateOnly? startDate,
+        DateOnly? endDate)
     {
         try
         {
@@ -209,16 +213,17 @@ public class PostHistoryRepository : IPostHistoryRepository
                 "Getting subordinates post history for manager {ManagerId} from {StartDate} to {EndDate}, page {PageNumber}, size {PageSize}",
                 managerId, startDate, endDate, pageNumber, pageSize);
 
-            var query = _context.PostHistoryDb
-                .Join(_context.EmployeeDb,
-                    ph => ph.EmployeeId,
-                    e => e.Id,
-                    (ph, e) => new { PostHistory = ph, Employee = e })
-                .Where(x => x.Employee.Id == managerId &&
-                            x.PostHistory.StartDate >= startDate &&
-                            (!x.PostHistory.EndDate.HasValue || x.PostHistory.EndDate <= endDate))
-                .Select(x => x.PostHistory);
-
+            var employees = await _context.GetCurrentSubordinatesIdByEmployeeId(managerId).Select(ph => ph.EmployeeId)
+                .ToListAsync();
+            
+            var query = _context.PostHistoryDb.Where(ph => employees.Contains(ph.EmployeeId));
+            
+            if (startDate.HasValue)
+                query = query.Where(ph => ph.EndDate == null || ph.EndDate >= startDate);
+            if (endDate.HasValue)
+                query = query.Where(ph =>
+                    (ph.EndDate == null && endDate == DateOnly.FromDateTime(DateTime.Today)) || ph.EndDate <= endDate);
+            
             var totalItems = await query.CountAsync();
             var items = await query
                 .Skip((pageNumber - 1) * pageSize)
@@ -230,7 +235,7 @@ public class PostHistoryRepository : IPostHistoryRepository
                 "Successfully retrieved {Count} subordinates post history records for manager {ManagerId}",
                 items.Count, managerId);
 
-            return new PostHistoryPage(items, new Page(pageNumber, totalItems, pageSize));
+            return new PostHistoryPage(items, new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems));
         }
         catch (Exception ex)
         {

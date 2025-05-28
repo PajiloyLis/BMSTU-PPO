@@ -63,4 +63,9 @@ public interface IPositionHistoryRepository
         Guid managerId,
         int pageNumber,
         int pageSize);
+
+    Task<PositionHistoryPage> GetCurrentSubordinatesPositionHistoryAsync(
+        Guid managerId,
+        int pageNumber,
+        int pageSize, DateOnly? startDate, DateOnly? endDate);
 }
