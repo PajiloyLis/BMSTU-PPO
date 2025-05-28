@@ -233,7 +233,7 @@ public class PostHistoryServiceTests
 
         //Act
         var result =
-            await _postHistoryService.GetPostHistoryByEmployeeAsync(employeeId, pageNumber, pageSize, startDate,
+            await _postHistoryService.GetPostHistoryByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate,
                 endDate);
 
         //Assert

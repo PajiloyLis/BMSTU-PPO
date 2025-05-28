@@ -64,7 +64,7 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<PostPage> GetPostsAsync(Guid companyId, int pageNumber, int pageSize)
+    public async Task<PostPage> GetPostsByCompanyIdAsync(Guid companyId, int pageNumber, int pageSize)
     {
         try
         {

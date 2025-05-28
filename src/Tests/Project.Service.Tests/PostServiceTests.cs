@@ -182,7 +182,7 @@ public class PostServiceTests
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _postService.GetPostsAsync(companyId, pageNumber, pageSize);
+        var result = await _postService.GetPostsByCompanyIdAsync(companyId, pageNumber, pageSize);
 
         //Assert
         Assert.NotNull(result);

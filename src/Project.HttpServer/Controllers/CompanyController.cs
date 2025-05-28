@@ -23,7 +23,7 @@ public class CompanyController : ControllerBase
         _companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
     }
 
-    [HttpGet]
+    [HttpGet("{companyId:guid}")]
     [SwaggerOperation("getCompanyById")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(CompanyDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
@@ -97,13 +97,15 @@ public class CompanyController : ControllerBase
     {
         try
         {
-            var updatedCompany = await _companyService.UpdateCompanyAsync(updateCompany.Id,
-                updateCompany.FullName,
+            var updatedCompany = await _companyService.UpdateCompanyAsync(updateCompany.CompanyId,
+                updateCompany.Title,
+                updateCompany.RegistrationDate,
                 updateCompany.PhoneNumber,
                 updateCompany.Email,
-                updateCompany.Birthday,
-                updateCompany.PhotoPath,
-                updateCompany.Duties);
+                updateCompany.Inn,
+                updateCompany.Kpp,
+                updateCompany.Ogrn,
+                updateCompany.Address);
 
             return Ok(CompanyConverter.Convert(updatedCompany));
         }
@@ -129,7 +131,7 @@ public class CompanyController : ControllerBase
         }
     }
 
-    [HttpDelete]
+    [HttpDelete("{companyId:guid}")]
     [SwaggerOperation("deleteCompany")]
     [SwaggerResponse(StatusCodes.Status204NoContent, type: typeof(bool))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
@@ -147,6 +149,26 @@ public class CompanyController : ControllerBase
         {
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status404NotFound, new ErrorDto(e.GetType().Name, e.Message));
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorDto(e.GetType().Name, e.Message));
+        }
+    }
+    
+    [HttpGet]
+    [SwaggerOperation("getCompanies")]
+    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(IEnumerable<CompanyDto>))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, type: typeof(ErrorDto))]
+    public async Task<IActionResult> GetCompanies([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var companies = await _companyService.GetCompaniesAsync(pageNumber, pageSize);
+
+            return Ok(companies.Companies.Select(CompanyConverter.Convert));
         }
         catch (Exception e)
         {

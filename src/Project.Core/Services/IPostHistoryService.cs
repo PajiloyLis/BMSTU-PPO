@@ -56,7 +56,7 @@ public interface IPostHistoryService
     /// <param name="startDate">Start date of the range</param>
     /// <param name="endDate">End date of the range</param>
     /// <returns>Paginated list of post history records</returns>
-    Task<PostHistoryPage> GetPostHistoryByEmployeeAsync(
+    Task<PostHistoryPage> GetPostHistoryByEmployeeIdAsync(
         Guid employeeId,
         int pageNumber,
         int pageSize,

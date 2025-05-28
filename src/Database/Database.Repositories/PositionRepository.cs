@@ -39,7 +39,7 @@ public class PositionRepository : IPositionRepository
             {
                 _logger.LogWarning("Position with title {Title} already exists in company {CompanyId}", position.Title,
                     position.CompanyId);
-                throw new PositionAlreadyExistException(
+                throw new PositionAlreadyExistsException(
                     $"Position with title {position.Title} already exists in company {position.CompanyId}");
             }
 
@@ -49,7 +49,7 @@ public class PositionRepository : IPositionRepository
             _logger.LogInformation("Position with id {Id} was added", positionDb.Id);
             return PositionConverter.Convert(positionDb)!;
         }
-        catch (Exception e) when (e is not PositionAlreadyExistException)
+        catch (Exception e) when (e is not PositionAlreadyExistsException)
         {
             _logger.LogError(e, "Error occurred while adding position");
             throw;
@@ -102,7 +102,7 @@ public class PositionRepository : IPositionRepository
             {
                 _logger.LogWarning("Position with title {Title} already exists in company {CompanyId}", position.Title,
                     position.CompanyId);
-                throw new PositionAlreadyExistException(
+                throw new PositionAlreadyExistsException(
                     $"Position with title {position.Title} already exists in company {position.CompanyId}");
             }
 
@@ -113,7 +113,7 @@ public class PositionRepository : IPositionRepository
             _logger.LogInformation("Position with id {Id} was updated", position.Id);
             return PositionConverter.Convert(positionDb)!;
         }
-        catch (Exception e) when (e is not PositionNotFoundException and not PositionAlreadyExistException)
+        catch (Exception e) when (e is not PositionNotFoundException and not PositionAlreadyExistsException)
         {
             _logger.LogError(e, "Error occurred while updating position with id {Id}", position.Id);
             throw;
