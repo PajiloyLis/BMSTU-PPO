@@ -6,10 +6,6 @@ namespace Project.Database.Models;
 
 public class PositionHistoryDb
 {
-    public PositionHistoryDb()
-    {
-    }
-
     public PositionHistoryDb(Guid positionId, Guid employeeId, DateOnly startDate, DateOnly? endDate = null)
     {
         PositionId = positionId;
