@@ -44,6 +44,7 @@
     &lt;TestId&gt;xUnit::3971F637-EB50-4170-A65E-4B2081267F99::net9.0::Project.Repository.Tests.PostRepositoryTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::3971F637-EB50-4170-A65E-4B2081267F99::net9.0::Project.Repository.Tests.ScoreRepositoryTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::3971F637-EB50-4170-A65E-4B2081267F99::net9.0::Project.Repository.Tests.PositionHistoryRepositoryTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::3971F637-EB50-4170-A65E-4B2081267F99::net9.0::Project.Repository.Tests.PostHistoryRepositoryTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	

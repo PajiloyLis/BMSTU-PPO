@@ -55,8 +55,8 @@ public interface IPostHistoryRepository
         Guid employeeId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate);
+        DateOnly? startDate,
+        DateOnly? endDate);
 
     /// <summary>
     /// Gets paginated post history records for subordinates of a specific manager within a date range
@@ -71,14 +71,6 @@ public interface IPostHistoryRepository
         Guid managerId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate);
-
-    /// <summary>
-    /// Checks if a post history record exists
-    /// </summary>
-    /// <param name="postId">Post ID</param>
-    /// <param name="employeeId">Employee ID</param>
-    /// <returns>True if record exists, false otherwise</returns>
-    // Task<bool> ExistsAsync(Guid postId, Guid employeeId);
+        DateOnly? startDate,
+        DateOnly? endDate);
 }

@@ -107,8 +107,8 @@ public class PostHistoryService : IPostHistoryService
         Guid employeeId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate)
+        DateOnly? startDate,
+        DateOnly? endDate)
     {
         try
         {
@@ -130,8 +130,8 @@ public class PostHistoryService : IPostHistoryService
         Guid managerId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate)
+        DateOnly? startDate,
+        DateOnly? endDate)
     {
         try
         {

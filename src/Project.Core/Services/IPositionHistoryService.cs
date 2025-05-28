@@ -73,8 +73,13 @@ public interface IPositionHistoryService
     /// <param name="pageNumber">Page number (1-based)</param>
     /// <param name="pageSize">Number of items per page</param>
     /// <returns>Paginated list of current position history records for subordinates</returns>
-    Task<PositionHierarchyWithEmployeePage> GetCurrentSubordinatesPositionHistoryAsync(
+    Task<PositionHierarchyWithEmployeePage> GetCurrentSubordinatesAsync(
         Guid managerId,
         int pageNumber,
         int pageSize);
+    
+    Task<PositionHistoryPage> GetCurrentSubordinatesPositionHistoryAsync(
+        Guid managerId,
+        int pageNumber,
+        int pageSize, DateOnly? startDate, DateOnly? endDate);
 }

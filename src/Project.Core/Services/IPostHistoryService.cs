@@ -60,8 +60,8 @@ public interface IPostHistoryService
         Guid employeeId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate);
+        DateOnly? startDate,
+        DateOnly? endDate);
 
     /// <summary>
     /// Gets paginated post history records for subordinates of a specific manager within a date range
@@ -76,6 +76,6 @@ public interface IPostHistoryService
         Guid managerId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate);
+        DateOnly? startDate,
+        DateOnly? endDate);
 }

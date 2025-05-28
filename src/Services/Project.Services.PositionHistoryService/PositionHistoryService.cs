@@ -184,7 +184,7 @@ public class PositionHistoryService : IPositionHistoryService
         }
     }
 
-    public async Task<PositionHierarchyWithEmployeePage> GetCurrentSubordinatesPositionHistoryAsync(
+    public async Task<PositionHierarchyWithEmployeePage> GetCurrentSubordinatesAsync(
         Guid managerId,
         int pageNumber,
         int pageSize)
@@ -199,6 +199,41 @@ public class PositionHistoryService : IPositionHistoryService
                 managerId,
                 pageNumber,
                 pageSize);
+
+            _logger.LogInformation(
+                "Successfully retrieved {Count} current subordinates position history records for manager {ManagerId}",
+                result.Items.Count, managerId);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Error getting current subordinates position history for manager {ManagerId}",
+                managerId);
+            throw;
+        }
+    }
+    
+    public async Task<PositionHistoryPage> GetCurrentSubordinatesPositionHistoryAsync(
+        Guid managerId,
+        int pageNumber,
+        int pageSize,
+        DateOnly? startDate,
+        DateOnly? endDate)
+    {
+        try
+        {
+            _logger.LogInformation(
+                "Getting current subordinates position history for manager {ManagerId}, page {PageNumber}, size {PageSize}",
+                managerId, pageNumber, pageSize);
+
+            var result = await _repository.GetCurrentSubordinatesPositionHistoryAsync(
+                managerId,
+                pageNumber,
+                pageSize,
+                startDate,
+                endDate);
 
             _logger.LogInformation(
                 "Successfully retrieved {Count} current subordinates position history records for manager {ManagerId}",
