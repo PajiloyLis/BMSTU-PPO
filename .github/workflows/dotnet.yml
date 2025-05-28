@@ -34,7 +34,9 @@ jobs:
       run: dotnet build ./src/Project.sln --no-restore --configuration Debug
       
     - name: Run tests
-      run: dotnet test --no-build --configuration Release --verbosity normal
+      run: |
+        dotnet test ./src/Tests/Project.Repository.Tests/Project.Repository.Tests.csproj --no-build --configuration Release --verbosity normal
+        dotnet test ./src/Tests/Project.Service.Tests/Project.Service.Tests.csproj --no-build --configuration Release --verbosity normal
       env:
         # Для TestContainers
         TESTCONTAINERS_RYUK_DISABLED: "true"
