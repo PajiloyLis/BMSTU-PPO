@@ -215,7 +215,7 @@ public class EducationServiceTests
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _educationService.GetEducationsAsync(employeeId, pageNumber, pageSize);
+        var result = await _educationService.GetEducationsByEmployeeIdAsync(employeeId, pageNumber, pageSize);
 
         //Assert
         Assert.NotNull(result);

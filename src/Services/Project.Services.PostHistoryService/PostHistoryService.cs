@@ -103,7 +103,7 @@ public class PostHistoryService : IPostHistoryService
         }
     }
 
-    public async Task<PostHistoryPage> GetPostHistoryByEmployeeAsync(
+    public async Task<PostHistoryPage> GetPostHistoryByEmployeeIdAsync(
         Guid employeeId,
         int pageNumber,
         int pageSize,

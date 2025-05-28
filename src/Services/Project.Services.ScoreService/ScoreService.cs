@@ -16,11 +16,12 @@ public class ScoreService : IScoreService
         _logger = logger;
     }
 
-    public async Task<BaseScore> AddScoreAsync(CreateScore createScore)
+    public async Task<BaseScore> AddScoreAsync(Guid employeeId, Guid authorId, Guid positionId,
+        DateTimeOffset createdAt, int efficiencyScore, int engagementScore, int competencyScore)
     {
         try
         {
-            var result = await _repository.AddScoreAsync(createScore);
+            var result = await _repository.AddScoreAsync(new CreateScore(employeeId, authorId, positionId, createdAt, efficiencyScore, engagementScore, competencyScore));
             _logger.LogInformation("Score for employee {EmployeeId} was added", result.EmployeeId);
             return result;
         }
@@ -31,17 +32,18 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<BaseScore> UpdateScoreAsync(UpdateScore updateScore)
+    public async Task<BaseScore> UpdateScoreAsync(Guid id, DateTimeOffset? createdAt, int? efficiencyScore,
+        int? engagementScore, int? competencyScore)
     {
         try
         {
-            var result = await _repository.UpdateScoreAsync(updateScore);
-            _logger.LogInformation("Score with id {Id} was updated", updateScore.Id);
+            var result = await _repository.UpdateScoreAsync(new UpdateScore(id, createdAt, efficiencyScore, engagementScore, competencyScore));
+            _logger.LogInformation("Score with id {id} was updated", id);
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error occurred while updating score with id {Id}", updateScore.Id);
+            _logger.LogError(e, "Error occurred while updating score with id {id}", id);
             throw;
         }
     }
@@ -77,7 +79,7 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByEmployeeAsync(Guid employeeId, int page, int pageSize,
+    public async Task<ScorePage> GetScoresByEmployeeIdAsync(Guid employeeId, int page, int pageSize,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
@@ -93,7 +95,7 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByAuthorAsync(Guid authorId, int page, int pageSize,
+    public async Task<ScorePage> GetScoresByAuthorIdAsync(Guid authorId, int page, int pageSize,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
@@ -128,7 +130,7 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByPositionAsync(Guid positionId, int page, int pageSize,
+    public async Task<ScorePage> GetScoresByPositionIdAsync(Guid positionId, int page, int pageSize,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try

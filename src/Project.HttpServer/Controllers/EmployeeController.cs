@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Database.Models;
 using Microsoft.AspNetCore.Mvc;
 using Project.Core.Exceptions;
 using Project.Core.Services;
@@ -23,7 +24,7 @@ public class EmployeeController : ControllerBase
         _employeeService = emploteeService ?? throw new ArgumentNullException(nameof(emploteeService));
     }
 
-    [HttpGet]
+    [HttpGet("{employeeId:guid}")]
     [SwaggerOperation("getEmployeeById")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(EmployeeDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
@@ -127,7 +128,7 @@ public class EmployeeController : ControllerBase
         }
     }
 
-    [HttpDelete]
+    [HttpDelete("{employeeId:guid}")]
     [SwaggerOperation("deleteEmployee")]
     [SwaggerResponse(StatusCodes.Status204NoContent, type: typeof(bool))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]

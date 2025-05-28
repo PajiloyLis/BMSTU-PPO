@@ -59,12 +59,11 @@ public interface IPositionHistoryService
     /// <param name="startDate">Start date of the range</param>
     /// <param name="endDate">End date of the range</param>
     /// <returns>Paginated list of position history records</returns>
-    Task<PositionHistoryPage> GetPositionHistoryByEmployeeAsync(
-        Guid employeeId,
+    Task<PositionHistoryPage> GetPositionHistoryByEmployeeIdAsync(Guid employeeId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate);
+        DateOnly? startDate,
+        DateOnly? endDate);
 
     /// <summary>
     /// Gets paginated position history records for current subordinates of a specific manager

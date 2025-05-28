@@ -149,12 +149,11 @@ public class PositionHistoryService : IPositionHistoryService
         }
     }
 
-    public async Task<PositionHistoryPage> GetPositionHistoryByEmployeeAsync(
-        Guid employeeId,
+    public async Task<PositionHistoryPage> GetPositionHistoryByEmployeeIdAsync(Guid employeeId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate)
+        DateOnly? startDate,
+        DateOnly? endDate)
     {
         try
         {

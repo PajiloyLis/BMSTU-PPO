@@ -18,7 +18,7 @@ public class PositionService : IPositionService
         _logger = logger;
     }
 
-    public async Task<BasePosition> AddPositionAsync(Guid parentId, string title, Guid companyId)
+    public async Task<BasePosition> AddPositionAsync(Guid? parentId, string title, Guid companyId)
     {
         try
         {

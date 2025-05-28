@@ -118,7 +118,7 @@ public class PositionRepositoryTests : IAsyncLifetime
         var position2 = new CreatePosition(parentPosition.Id, "Developer", company.Id);
 
         // Act & Assert
-        await Assert.ThrowsAsync<PositionAlreadyExistException>(
+        await Assert.ThrowsAsync<PositionAlreadyExistsException>(
             () => _repository.AddPositionAsync(position2));
     }
 

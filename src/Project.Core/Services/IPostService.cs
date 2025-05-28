@@ -38,7 +38,7 @@ public interface IPostService
     /// <param name="pageNumber">Номер страницы</param>
     /// <param name="pageSize">Размер страницы</param>
     /// <returns>Страница с должностями</returns>
-    Task<PostPage> GetPostsAsync(Guid companyId, int pageNumber, int pageSize);
+    Task<PostPage> GetPostsByCompanyIdAsync(Guid companyId, int pageNumber, int pageSize);
 
     /// <summary>
     /// Удаляет должность

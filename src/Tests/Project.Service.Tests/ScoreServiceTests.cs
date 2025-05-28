@@ -54,7 +54,9 @@ public class ScoreServiceTests
             .ReturnsAsync(expectedScore);
 
         //Act
-        var result = await _scoreService.AddScoreAsync(createScore);
+        var result = await _scoreService.AddScoreAsync(createScore.EmployeeId, createScore.AuthorId,
+            createScore.PositionId, createScore.CreatedAt, createScore.EfficiencyScore, createScore.EngagementScore,
+            createScore.CompetencyScore);
 
         //Assert
         Assert.NotNull(result);
@@ -140,7 +142,7 @@ public class ScoreServiceTests
             .ReturnsAsync(expectedScore);
 
         //Act
-        var result = await _scoreService.UpdateScoreAsync(updateScore);
+        var result = await _scoreService.UpdateScoreAsync(updateScore.Id, updateScore.CreatedAt, updateScore.EfficiencyScore, updateScore.EngagementScore, updateScore.CompetencyScore);
 
         //Assert
         Assert.NotNull(result);
@@ -161,7 +163,7 @@ public class ScoreServiceTests
 
         //Act & Assert
         await Assert.ThrowsAsync<ScoreNotFoundException>(() =>
-            _scoreService.UpdateScoreAsync(updateScore));
+            _scoreService.UpdateScoreAsync(updateScore.Id, updateScore.CreatedAt, updateScore.EfficiencyScore, updateScore.EngagementScore, updateScore.CompetencyScore));
         _mockRepository.Verify(x => x.UpdateScoreAsync(It.IsAny<UpdateScore>()), Times.Once);
     }
 
@@ -249,7 +251,7 @@ public class ScoreServiceTests
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _scoreService.GetScoresByEmployeeAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+        var result = await _scoreService.GetScoresByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate);
 
         //Assert
         Assert.NotNull(result);
@@ -292,7 +294,7 @@ public class ScoreServiceTests
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _scoreService.GetScoresByAuthorAsync(authorId, pageNumber, pageSize, startDate, endDate);
+        var result = await _scoreService.GetScoresByAuthorIdAsync(authorId, pageNumber, pageSize, startDate, endDate);
 
         //Assert
         Assert.NotNull(result);
@@ -335,7 +337,8 @@ public class ScoreServiceTests
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _scoreService.GetScoresByPositionAsync(positionId, pageNumber, pageSize, startDate, endDate);
+        var result =
+            await _scoreService.GetScoresByPositionIdAsync(positionId, pageNumber, pageSize, startDate, endDate);
 
         //Assert
         Assert.NotNull(result);

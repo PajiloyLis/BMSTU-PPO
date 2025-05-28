@@ -66,7 +66,7 @@ public class EducationService : IEducationService
         }
     }
 
-    public async Task<EducationPage> GetEducationsAsync(Guid employeeId, int pageNumber, int pageSize)
+    public async Task<EducationPage> GetEducationsByEmployeeIdAsync(Guid employeeId, int pageNumber, int pageSize)
     {
         try
         {
