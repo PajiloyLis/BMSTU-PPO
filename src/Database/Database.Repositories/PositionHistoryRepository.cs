@@ -34,7 +34,6 @@ public class PositionHistoryRepository : IPositionHistoryRepository
             var positionHistoryDb = PositionHistoryConverter.Convert(createPositionHistory);
             if (positionHistoryDb == null)
                 throw new ArgumentNullException(nameof(createPositionHistory));
-
             await _context.PositionHistoryDb.AddAsync(positionHistoryDb);
             await _context.SaveChangesAsync();
 
@@ -200,8 +199,8 @@ public class PositionHistoryRepository : IPositionHistoryRepository
         Guid employeeId,
         int pageNumber,
         int pageSize,
-        DateOnly startDate,
-        DateOnly endDate)
+        DateOnly? startDate,
+        DateOnly? endDate)
     {
         try
         {
@@ -210,15 +209,18 @@ public class PositionHistoryRepository : IPositionHistoryRepository
                 employeeId, startDate, endDate, pageNumber, pageSize);
 
             var query = _context.PositionHistoryDb
-                .Where(x => x.EmployeeId == employeeId &&
-                            x.StartDate >= startDate &&
-                            ((x.EndDate == null && endDate == DateOnly.FromDateTime(DateTime.Today) || x.EndDate <= endDate)))
-                .OrderByDescending(x => x.StartDate);
+                .Where(x => x.EmployeeId == employeeId);
 
+            if (startDate.HasValue)
+                query = query.Where(s => s.EndDate == null || s.EndDate >= startDate);
+            if (endDate.HasValue)
+                query = query.Where(s => (s.EndDate== null && endDate == DateOnly.FromDateTime(DateTime.Today)) || s.EndDate <= endDate);
+            
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             var items = await query
+                .OrderByDescending(x => x.StartDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(x => PositionHistoryConverter.Convert(x)!)
@@ -228,7 +230,7 @@ public class PositionHistoryRepository : IPositionHistoryRepository
                 "Successfully retrieved {Count} position history records for employee {EmployeeId}",
                 items.Count, employeeId);
 
-            return new PositionHistoryPage(items, new Page(pageNumber, totalCount, totalPages));
+            return new PositionHistoryPage(items, new Page(pageNumber, totalPages, totalCount));
         }
         catch (Exception ex)
         {
@@ -239,7 +241,7 @@ public class PositionHistoryRepository : IPositionHistoryRepository
         }
     }
 
-    public async Task<PositionHierarchyWithEmployeePage> GetCurrentSubordinatesPositionHistoryAsync(
+    public async Task<PositionHierarchyWithEmployeePage> GetCurrentSubordinatesAsync(
         Guid managerId,
         int pageNumber,
         int pageSize)
@@ -267,7 +269,7 @@ public class PositionHistoryRepository : IPositionHistoryRepository
                 "Successfully retrieved {Count} current subordinates position history records for manager {ManagerId}",
                 items.Count, managerId);
 
-            return new PositionHierarchyWithEmployeePage(items, new Page(pageNumber, totalCount, totalPages));
+            return new PositionHierarchyWithEmployeePage(items, new Page(pageNumber, totalPages, totalCount));
         }
         catch (Exception ex)
         {

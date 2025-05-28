@@ -195,7 +195,7 @@ public class PositionHistoryService : IPositionHistoryService
                 "Getting current subordinates position history for manager {ManagerId}, page {PageNumber}, size {PageSize}",
                 managerId, pageNumber, pageSize);
 
-            var result = await _repository.GetCurrentSubordinatesPositionHistoryAsync(
+            var result = await _repository.GetCurrentSubordinatesAsync(
                 managerId,
                 pageNumber,
                 pageSize);
