@@ -28,7 +28,7 @@ jobs:
         path: /tmp/.testcontainers-cache
         key: ${{ runner.os }}-testcontainers-${{ hashFiles('**/*.csproj') }}
     - name: Restore dependencies
-      run: dotnet restore /src/Project.sln
+      run: dotnet restore ./src/Project.sln
       
     - name: Build
       run: dotnet build --no-restore --configuration Release
