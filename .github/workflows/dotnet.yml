@@ -31,7 +31,7 @@ jobs:
       run: dotnet restore ./src/Project.sln
       
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build ./src/Project.sln --no-restore --configuration Debug
       
     - name: Run tests
       run: dotnet test --no-build --configuration Release --verbosity normal
