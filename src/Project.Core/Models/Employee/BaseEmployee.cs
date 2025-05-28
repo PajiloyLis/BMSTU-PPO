@@ -1,11 +1,11 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace Project.Core.Models;
+namespace Project.Core.Models.Employee;
 
-public class Employee
+public class BaseEmployee
 {
-    public Employee(Guid employeeId,
+    public BaseEmployee(Guid employeeId,
         string fullName,
         string phoneNumber,
         string email,

@@ -1,19 +1,19 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Education;
 
 public class EducationPage
 {
     public EducationPage()
     {
-        Educations = new List<Education>();
+        Educations = new List<BaseEducation>();
         Page = new Page(1, 0, 10);
     }
 
-    public EducationPage(IReadOnlyList<Education> educations, Page page)
+    public EducationPage(IReadOnlyList<BaseEducation> educations, Page page)
     {
         Educations = educations;
         Page = page;
     }
 
-    public IReadOnlyList<Education> Educations { get; set; }
+    public IReadOnlyList<BaseEducation> Educations { get; set; }
     public Page Page { get; set; }
 }

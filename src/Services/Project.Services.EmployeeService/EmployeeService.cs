@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Employee;
 using Project.Core.Repositories;
 using Project.Core.Services;
 
@@ -17,7 +18,7 @@ public class EmployeeService : IEmployeeService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Employee> AddEmployeeAsync(string fullName, string phoneNumber, string email, DateOnly birthday,
+    public async Task<BaseEmployee> AddEmployeeAsync(string fullName, string phoneNumber, string email, DateOnly birthday,
         string? photoPath, string? duties)
     {
         try
@@ -45,7 +46,7 @@ public class EmployeeService : IEmployeeService
         }
     }
 
-    public async Task<Employee> UpdateEmployeeAsync(Guid id, string? fullName, string? phoneNumber, string? email,
+    public async Task<BaseEmployee> UpdateEmployeeAsync(Guid id, string? fullName, string? phoneNumber, string? email,
         DateOnly? birthday,
         string? photoPath, string? duties)
     {
@@ -91,7 +92,7 @@ public class EmployeeService : IEmployeeService
         }
     }
 
-    public async Task<Employee> GetEmployeeByIdAsync(Guid id)
+    public async Task<BaseEmployee> GetEmployeeByIdAsync(Guid id)
     {
         try
         {

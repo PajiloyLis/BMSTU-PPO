@@ -19,7 +19,7 @@ public static class PostHistoryConverter
     }
 
     [return: NotNullIfNotNull(nameof(postHistory))]
-    public static PostHistoryDb? Convert(PostHistory? postHistory)
+    public static PostHistoryDb? Convert(BasePostHistory? postHistory)
     {
         if (postHistory == null)
             return null;
@@ -32,12 +32,12 @@ public static class PostHistoryConverter
     }
 
     [return: NotNullIfNotNull(nameof(postHistory))]
-    public static PostHistory? Convert(PostHistoryDb? postHistory)
+    public static BasePostHistory? Convert(PostHistoryDb? postHistory)
     {
         if (postHistory == null)
             return null;
 
-        return new PostHistory(
+        return new BasePostHistory(
             postHistory.PostId,
             postHistory.EmployeeId,
             postHistory.StartDate,

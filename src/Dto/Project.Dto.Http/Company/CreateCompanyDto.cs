@@ -1,41 +1,24 @@
-using System.Text.RegularExpressions;
+using System.Text.Json.Serialization;
 
-namespace Project.Core.Models.Company;
+namespace Project.Dto.Http.Company;
 
-/// <summary>
-/// Company creation model
-/// </summary>
-public class CreationCompany
+public class CreateCompanyDto
 {
-    public CreationCompany(string title,
+    public CreateCompanyDto(string title,
         DateOnly registrationDate,
         string phoneNumber,
         string email,
         string inn,
         string kpp,
         string ogrn,
-        string address
-    )
+        string address)
     {
         Title = title;
-        if (registrationDate > DateOnly.FromDateTime(DateTime.Today))
-            throw new ArgumentException("Registration Date is invalid", nameof(registrationDate));
         RegistrationDate = registrationDate;
-        if (!Regex.IsMatch(phoneNumber, @"^\+\d{5,17}$"))
-            throw new ArgumentException("Phone Number is invalid", nameof(phoneNumber));
         PhoneNumber = phoneNumber;
-        if (!Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") ||
-            email.Length > 254)
-            throw new ArgumentException("Email is invalid", nameof(email));
         Email = email;
-        if (!Regex.IsMatch(inn, @"^[0-9]{10}$"))
-            throw new ArgumentException("Inn is invalid", nameof(inn));
         Inn = inn;
-        if (!Regex.IsMatch(kpp, @"^[0-9]{9}$"))
-            throw new ArgumentException("Kpp is invalid", nameof(kpp));
         Kpp = kpp;
-        if (!Regex.IsMatch(ogrn, @"^[0-9]{13}$"))
-            throw new ArgumentException("OGRN is invalid", nameof(ogrn));
         Ogrn = ogrn;
         Address = address;
     }
@@ -43,40 +26,56 @@ public class CreationCompany
     /// <summary>
     /// Company's name
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("title")]
     public string Title { get; set; }
 
     /// <summary>
     /// Company's registration date
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("registrationDate")]
     public DateOnly RegistrationDate { get; set; }
 
     /// <summary>
     /// Company's contact phone number
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("phoneNumber")]
     public string PhoneNumber { get; set; }
 
     /// <summary>
     /// Company's contact email
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("email")]
     public string Email { get; set; }
 
     /// <summary>
     /// Company's inn
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("inn")]
     public string Inn { get; set; }
 
     /// <summary>
     /// Company's kpp
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("kpp")]
     public string Kpp { get; set; }
 
     /// <summary>
     /// Company's ogrn
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("ogrn")]
     public string Ogrn { get; set; }
 
     /// <summary>
     /// Company's registered address
     /// </summary>
+    [JsonRequired]
+    [JsonPropertyName("address")]
     public string Address { get; set; }
 }

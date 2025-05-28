@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Project.Core.Models;
+using Project.Core.Models.Post;
 
 namespace Database.Models.Converters;
 
@@ -19,7 +20,7 @@ public static class PostConverter
     }
 
     [return: NotNullIfNotNull(nameof(post))]
-    public static PostDb? Convert(Post? post)
+    public static PostDb? Convert(BasePost? post)
     {
         if (post == null)
             return null;
@@ -31,12 +32,12 @@ public static class PostConverter
     }
 
     [return: NotNullIfNotNull(nameof(post))]
-    public static Post? Convert(PostDb? post)
+    public static BasePost? Convert(PostDb? post)
     {
         if (post == null)
             return null;
 
-        return new Post(post.Id,
+        return new BasePost(post.Id,
             post.Title,
             post.Salary,
             post.CompanyId);

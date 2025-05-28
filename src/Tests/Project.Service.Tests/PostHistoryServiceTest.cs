@@ -38,7 +38,7 @@ public class PostHistoryServiceTests
             endDate
         );
 
-        var expectedPostHistory = new PostHistory(
+        var expectedPostHistory = new BasePostHistory(
             postId,
             employeeId,
             startDate,
@@ -69,7 +69,7 @@ public class PostHistoryServiceTests
         //Arrange
         var postId = Guid.NewGuid();
         var employeeId = Guid.NewGuid();
-        var expectedPostHistory = new PostHistory(
+        var expectedPostHistory = new BasePostHistory(
             postId,
             employeeId,
             new DateOnly(2024, 1, 1),
@@ -117,7 +117,7 @@ public class PostHistoryServiceTests
             new DateOnly(2024, 12, 31)
         );
 
-        var expectedPostHistory = new PostHistory(
+        var expectedPostHistory = new BasePostHistory(
             postId,
             employeeId,
             updatePostHistory.StartDate!.Value,
@@ -206,7 +206,7 @@ public class PostHistoryServiceTests
         var startDate = new DateOnly(2024, 1, 1);
         var endDate = new DateOnly(2024, 12, 31);
 
-        var expectedPostHistories = new List<PostHistory>
+        var expectedPostHistories = new List<BasePostHistory>
         {
             new(
                 Guid.NewGuid(),
@@ -254,7 +254,7 @@ public class PostHistoryServiceTests
         var startDate = new DateOnly(2024, 1, 1);
         var endDate = new DateOnly(2024, 12, 31);
 
-        var expectedPostHistories = new List<PostHistory>
+        var expectedPostHistories = new List<BasePostHistory>
         {
             new(
                 Guid.NewGuid(),

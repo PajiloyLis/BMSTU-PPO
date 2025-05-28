@@ -12,7 +12,7 @@ public interface IPositionHistoryService
     /// <param name="startDate">Start date of the position</param>
     /// <param name="endDate">End date of the position (optional)</param>
     /// <returns>Created position history record</returns>
-    Task<PositionHistory> AddPositionHistoryAsync(
+    Task<BasePositionHistory> AddPositionHistoryAsync(
         Guid positionId,
         Guid employeeId,
         DateOnly startDate,
@@ -25,7 +25,7 @@ public interface IPositionHistoryService
     /// <param name="employeeId">Employee ID</param>
     /// <returns>Position history record</returns>
     /// <exception cref="PositionHistoryNotFoundException">Thrown when position history record is not found</exception>
-    Task<PositionHistory> GetPositionHistoryAsync(Guid positionId, Guid employeeId);
+    Task<BasePositionHistory> GetPositionHistoryAsync(Guid positionId, Guid employeeId);
 
     /// <summary>
     /// Updates an existing position history record
@@ -36,7 +36,7 @@ public interface IPositionHistoryService
     /// <param name="endDate">New end date (optional)</param>
     /// <returns>Updated position history record</returns>
     /// <exception cref="PositionHistoryNotFoundException">Thrown when position history record is not found</exception>
-    Task<PositionHistory> UpdatePositionHistoryAsync(
+    Task<BasePositionHistory> UpdatePositionHistoryAsync(
         Guid positionId,
         Guid employeeId,
         DateOnly? startDate = null,

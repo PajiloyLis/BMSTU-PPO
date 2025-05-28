@@ -1,19 +1,19 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Post;
 
 public class PostPage
 {
     public PostPage()
     {
-        Posts = new List<Post>();
+        Posts = new List<BasePost>();
         Page = new Page();
     }
 
-    public PostPage(IReadOnlyList<Post> posts, Page page)
+    public PostPage(IReadOnlyList<BasePost> posts, Page page)
     {
         Posts = posts;
         Page = page;
     }
 
-    public IReadOnlyList<Post> Posts { get; set; }
+    public IReadOnlyList<BasePost> Posts { get; set; }
     public Page Page { get; set; }
 }

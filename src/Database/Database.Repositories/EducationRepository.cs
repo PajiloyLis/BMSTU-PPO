@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Education;
 using Project.Core.Repositories;
 
 namespace Database.Repositories;
@@ -19,7 +20,7 @@ public class EducationRepository : IEducationRepository
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Education> AddEducationAsync(CreateEducation education)
+    public async Task<BaseEducation> AddEducationAsync(CreateEducation education)
     {
         try
         {
@@ -53,7 +54,7 @@ public class EducationRepository : IEducationRepository
         }
     }
 
-    public async Task<Education> GetEducationByIdAsync(Guid educationId)
+    public async Task<BaseEducation> GetEducationByIdAsync(Guid educationId)
     {
         try
         {
@@ -76,7 +77,7 @@ public class EducationRepository : IEducationRepository
         }
     }
 
-    public async Task<Education> UpdateEducationAsync(UpdateEducation education)
+    public async Task<BaseEducation> UpdateEducationAsync(UpdateEducation education)
     {
         try
         {

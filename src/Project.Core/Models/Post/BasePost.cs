@@ -1,8 +1,8 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Post;
 
-public class Post
+public class BasePost
 {
-    public Post(Guid id, string title, decimal salary, Guid companyId)
+    public BasePost(Guid id, string title, decimal salary, Guid companyId)
     {
         if (!Guid.TryParse(id.ToString(), out _))
             throw new ArgumentException("Id cannot be empty", nameof(id));

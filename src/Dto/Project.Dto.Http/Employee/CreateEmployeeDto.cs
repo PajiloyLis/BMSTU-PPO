@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Project.Dto.Http;
+namespace Project.Dto.Http.Employee;
 
 /// <summary>
 /// Dto for employee creation request
@@ -8,7 +8,7 @@ namespace Project.Dto.Http;
 public class CreateEmployeeDto
 {
     public CreateEmployeeDto(string fullName,
-        string? phoneNumber,
+        string phoneNumber,
         string email,
         DateOnly birthday,
         string? photoPath,
@@ -35,7 +35,7 @@ public class CreateEmployeeDto
     /// </summary>
     [JsonRequired]
     [JsonPropertyName("phoneNumber")]
-    public string? PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
     /// <summary>
     /// Employee's business email address

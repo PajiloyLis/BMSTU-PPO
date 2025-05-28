@@ -1,8 +1,8 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Position;
 
-public class Position
+public class BasePosition
 {
-    public Position(Guid id, Guid parentId, string title, Guid companyId)
+    public BasePosition(Guid id, Guid parentId, string title, Guid companyId)
     {
         if (!Guid.TryParse(id.ToString(), out _)) throw new ArgumentException("Invalid Id format", nameof(id));
 

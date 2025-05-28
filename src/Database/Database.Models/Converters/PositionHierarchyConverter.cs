@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Project.Core.Models.Position;
 using Project.Core.Models.PositionHistory;
 
 namespace Database.Models.Converters;

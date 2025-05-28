@@ -1,4 +1,4 @@
-namespace Project.Core.Models.PositionHistory;
+namespace Project.Core.Models.Position;
 
 public class PositionHierarchy
 {

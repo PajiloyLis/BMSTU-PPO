@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Company;
 using Testcontainers.PostgreSql;
 using Xunit;
 

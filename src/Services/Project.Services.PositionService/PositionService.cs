@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Project.Core.Models;
+using Project.Core.Models.Position;
 using Project.Core.Models.PositionHistory;
 using Project.Core.Repositories;
 using Project.Core.Services;
@@ -17,7 +18,7 @@ public class PositionService : IPositionService
         _logger = logger;
     }
 
-    public async Task<Position> AddPositionAsync(Guid parentId, string title, Guid companyId)
+    public async Task<BasePosition> AddPositionAsync(Guid parentId, string title, Guid companyId)
     {
         try
         {
@@ -33,7 +34,7 @@ public class PositionService : IPositionService
         }
     }
 
-    public async Task<Position> GetPositionByIdAsync(Guid id)
+    public async Task<BasePosition> GetPositionByIdAsync(Guid id)
     {
         try
         {
@@ -48,7 +49,7 @@ public class PositionService : IPositionService
         }
     }
 
-    public async Task<Position> UpdatePositionAsync(Guid id, Guid companyId, Guid? parentId = null,
+    public async Task<BasePosition> UpdatePositionAsync(Guid id, Guid companyId, Guid? parentId = null,
         string? title = null)
     {
         try

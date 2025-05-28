@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Employee;
 using Project.Core.Repositories;
 
 namespace Database.Repositories;
@@ -19,7 +20,7 @@ public class EmployeeRepository : IEmployeeRepository
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Employee> AddEmployeeAsync(CreationEmployee newEmployee)
+    public async Task<BaseEmployee> AddEmployeeAsync(CreationEmployee newEmployee)
     {
         var employee = EmployeeConverter.Convert(newEmployee);
         try
@@ -71,7 +72,7 @@ public class EmployeeRepository : IEmployeeRepository
         return new EmployeePage();
     }
 
-    public async Task<Employee> GetEmployeeByIdAsync(Guid employeeId)
+    public async Task<BaseEmployee> GetEmployeeByIdAsync(Guid employeeId)
     {
         try
         {
@@ -93,7 +94,7 @@ public class EmployeeRepository : IEmployeeRepository
         }
     }
 
-    public async Task<Employee> UpdateEmployeeAsync(UpdateEmployee updatedUpdateEmployee)
+    public async Task<BaseEmployee> UpdateEmployeeAsync(UpdateEmployee updatedUpdateEmployee)
     {
         try
         {

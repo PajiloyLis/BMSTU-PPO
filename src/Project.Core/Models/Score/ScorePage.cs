@@ -4,16 +4,16 @@ public class ScorePage
 {
     public ScorePage()
     {
-        Items = new List<Score>();
+        Items = new List<BaseScore>();
         Page = new Page();
     }
 
-    public ScorePage(IReadOnlyList<Score> items, Page page)
+    public ScorePage(IReadOnlyList<BaseScore> items, Page page)
     {
         Items = items;
         Page = page;
     }
 
-    public IReadOnlyList<Score> Items { get; set; }
+    public IReadOnlyList<BaseScore> Items { get; set; }
     public Page Page { get; set; }
 }

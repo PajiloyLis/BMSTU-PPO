@@ -1,13 +1,13 @@
 using System.Text.RegularExpressions;
 
-namespace Project.Core.Models;
+namespace Project.Core.Models.Company;
 
 /// <summary>
 /// Base company model
 /// </summary>
-public class Company
+public class BaseCompany
 {
-    public Company(Guid companyId,
+    public BaseCompany(Guid companyId,
         string title,
         DateOnly registrationDate,
         string phoneNumber,

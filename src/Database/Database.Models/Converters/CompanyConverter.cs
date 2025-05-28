@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Project.Core.Models;
+using Project.Core.Models.Company;
 
 namespace Database.Models.Converters;
 
@@ -24,7 +25,7 @@ public static class CompanyConverter
     }
 
     [return: NotNullIfNotNull(nameof(company))]
-    public static CompanyDb? Convert(Company? company)
+    public static CompanyDb? Convert(BaseCompany? company)
     {
         if (company == null)
             return null;
@@ -41,12 +42,12 @@ public static class CompanyConverter
     }
 
     [return: NotNullIfNotNull(nameof(company))]
-    public static Company? Convert(CompanyDb? company)
+    public static BaseCompany? Convert(CompanyDb? company)
     {
         if (company == null)
             return null;
 
-        return new Company(company.Id,
+        return new BaseCompany(company.Id,
             company.Title,
             company.RegistrationDate,
             company.PhoneNumber,

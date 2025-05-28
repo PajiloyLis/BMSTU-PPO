@@ -12,7 +12,7 @@ public interface IPostHistoryRepository
     /// <param name="startDate">Start date of the post</param>
     /// <param name="endDate">End date of the post (optional)</param>
     /// <returns>Created post history record</returns>
-    Task<PostHistory> AddPostHistoryAsync(CreatePostHistory createPostHistory);
+    Task<BasePostHistory> AddPostHistoryAsync(CreatePostHistory createPostHistory);
 
     /// <summary>
     /// Gets a post history record by its ID
@@ -21,7 +21,7 @@ public interface IPostHistoryRepository
     /// <param name="employeeId">Employee ID</param>
     /// <returns>Post history record</returns>
     /// <exception cref="PostHistoryNotFoundException">Thrown when post history record is not found</exception>
-    Task<PostHistory> GetPostHistoryByIdAsync(Guid postId, Guid employeeId);
+    Task<BasePostHistory> GetPostHistoryByIdAsync(Guid postId, Guid employeeId);
 
     /// <summary>
     /// Updates an existing post history record
@@ -32,7 +32,7 @@ public interface IPostHistoryRepository
     /// <param name="endDate">New end date (optional)</param>
     /// <returns>Updated post history record</returns>
     /// <exception cref="PostHistoryNotFoundException">Thrown when post history record is not found</exception>
-    Task<PostHistory> UpdatePostHistoryAsync(UpdatePostHistory updatePostHistory);
+    Task<BasePostHistory> UpdatePostHistoryAsync(UpdatePostHistory updatePostHistory);
 
     /// <summary>
     /// Deletes a post history record

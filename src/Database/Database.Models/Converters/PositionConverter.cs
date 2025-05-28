@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Project.Core.Models;
+using Project.Core.Models.Position;
 
 namespace Database.Models.Converters;
 
@@ -20,7 +21,7 @@ public static class PositionConverter
     }
 
     [return: NotNullIfNotNull("position")]
-    public static PositionDb? Convert(Position? position)
+    public static PositionDb? Convert(BasePosition? position)
     {
         if (position is null)
             return null;
@@ -34,12 +35,12 @@ public static class PositionConverter
     }
 
     [return: NotNullIfNotNull("position")]
-    public static Position? Convert(PositionDb? position)
+    public static BasePosition? Convert(PositionDb? position)
     {
         if (position is null)
             return null;
 
-        return new Position(
+        return new BasePosition(
             position.Id,
             position.ParentId ?? Guid.Empty,
             position.Title,

@@ -1,43 +1,43 @@
 using System.ComponentModel.DataAnnotations;
+using Project.Dto.Http.Converters;
 using Microsoft.AspNetCore.Mvc;
 using Project.Core.Exceptions;
 using Project.Core.Services;
 using Project.Dto.Http;
-using Project.Dto.Http.Converters;
-using Project.Dto.Http.Employee;
+using Project.Dto.Http.Company;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Project.HttpServer.Controllers;
 
 [ApiController]
-[Route("api/employees")]
-public class EmployeeController : ControllerBase
+[Route("api/companies")]
+public class CompanyController : ControllerBase
 {
-    private readonly IEmployeeService _employeeService;
-    private readonly ILogger<EmployeeController> _logger;
+    private readonly ICompanyService _companyService;
+    private readonly ILogger<CompanyController> _logger;
 
-    public EmployeeController(ILogger<EmployeeController> logger,
-        IEmployeeService emploteeService)
+    public CompanyController(ILogger<CompanyController> logger,
+        ICompanyService companyService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _employeeService = emploteeService ?? throw new ArgumentNullException(nameof(emploteeService));
+        _companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
     }
 
     [HttpGet]
-    [SwaggerOperation("getEmployeeById")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(EmployeeDto))]
+    [SwaggerOperation("getCompanyById")]
+    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(CompanyDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status404NotFound, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, type: typeof(ErrorDto))]
-    public async Task<IActionResult> GetEmployee([FromRoute] [Required] Guid employeeId)
+    public async Task<IActionResult> GetCompany([FromRoute] [Required] Guid companyId)
     {
         try
         {
-            var employee = await _employeeService.GetEmployeeByIdAsync(employeeId);
+            var company = await _companyService.GetCompanyByIdAsync(companyId);
 
-            return Ok(EmployeeConverter.Convert(employee));
+            return Ok(CompanyConverter.Convert(company));
         }
-        catch (EmployeeNotFoundException e)
+        catch (CompanyNotFoundException e)
         {
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status404NotFound, new ErrorDto(e.GetType().Name, e.Message));
@@ -50,25 +50,27 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPost]
-    [SwaggerOperation("createEmployee")]
-    [SwaggerResponse(StatusCodes.Status201Created, type: typeof(EmployeeDto))]
+    [SwaggerOperation("createCompany")]
+    [SwaggerResponse(StatusCodes.Status201Created, type: typeof(CompanyDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, type: typeof(ErrorDto))]
-    public async Task<IActionResult> CreateEmployee([FromBody] [Required] CreateEmployeeDto newEmployee)
+    public async Task<IActionResult> CreateCompany([FromBody] [Required] CreateCompanyDto newCompany)
     {
         try
         {
-            var createdEmployee = await _employeeService.AddEmployeeAsync(newEmployee.FullName,
-                newEmployee.PhoneNumber,
-                newEmployee.Email,
-                newEmployee.Birthday,
-                newEmployee.PhotoPath,
-                newEmployee.Duties);
+            var createdCompany = await _companyService.AddCompanyAsync(newCompany.Title,
+                newCompany.RegistrationDate,
+                newCompany.PhoneNumber,
+                newCompany.Email,
+                newCompany.Inn,
+                newCompany.Kpp,
+                newCompany.Ogrn,
+                newCompany.Address);
 
-            return StatusCode(StatusCodes.Status201Created, EmployeeConverter.Convert(createdEmployee));
+            return StatusCode(StatusCodes.Status201Created, CompanyConverter.Convert(createdCompany));
         }
-        catch (EmployeeAlreadyExistsException e)
+        catch (CompanyAlreadyExistsException e)
         {
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status400BadRequest, new ErrorDto(e.GetType().Name, e.Message));
@@ -86,31 +88,31 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPut]
-    [SwaggerOperation("updateEmployee")]
-    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(EmployeeDto))]
+    [SwaggerOperation("updateCompany")]
+    [SwaggerResponse(StatusCodes.Status200OK, type: typeof(CompanyDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, type: typeof(ErrorDto))]
-    public async Task<IActionResult> UpdateEmployee([FromBody] [Required] UpdateEmployeeDto updateEmployee)
+    public async Task<IActionResult> UpdateCompany([FromBody] [Required] UpdateCompanyDto updateCompany)
     {
         try
         {
-            var updatedEmployee = await _employeeService.UpdateEmployeeAsync(updateEmployee.Id,
-                updateEmployee.FullName,
-                updateEmployee.PhoneNumber,
-                updateEmployee.Email,
-                updateEmployee.Birthday,
-                updateEmployee.PhotoPath,
-                updateEmployee.Duties);
+            var updatedCompany = await _companyService.UpdateCompanyAsync(updateCompany.Id,
+                updateCompany.FullName,
+                updateCompany.PhoneNumber,
+                updateCompany.Email,
+                updateCompany.Birthday,
+                updateCompany.PhotoPath,
+                updateCompany.Duties);
 
-            return Ok(EmployeeConverter.Convert(updatedEmployee));
+            return Ok(CompanyConverter.Convert(updatedCompany));
         }
-        catch (EmployeeNotFoundException e)
+        catch (CompanyNotFoundException e)
         {
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status404NotFound, new ErrorDto(e.GetType().Name, e.Message));
         }
-        catch (EmployeeAlreadyExistsException e)
+        catch (CompanyAlreadyExistsException e)
         {
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status400BadRequest, new ErrorDto(e.GetType().Name, e.Message));
@@ -128,20 +130,20 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpDelete]
-    [SwaggerOperation("deleteEmployee")]
+    [SwaggerOperation("deleteCompany")]
     [SwaggerResponse(StatusCodes.Status204NoContent, type: typeof(bool))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, type: typeof(ErrorDto))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, type: typeof(ErrorDto))]
-    public async Task<IActionResult> DeleteEmployee([FromRoute] [Required] Guid employeeId)
+    public async Task<IActionResult> DeleteCompany([FromRoute] [Required] Guid companyId)
     {
         try
         {
-            await _employeeService.DeleteEmployeeAsync(employeeId);
+            await _companyService.DeleteCompanyAsync(companyId);
 
             return StatusCode(StatusCodes.Status204NoContent);
         }
-        catch (EmployeeNotFoundException e)
+        catch (CompanyNotFoundException e)
         {
             _logger.LogWarning(e, e.Message);
             return StatusCode(StatusCodes.Status404NotFound, new ErrorDto(e.GetType().Name, e.Message));

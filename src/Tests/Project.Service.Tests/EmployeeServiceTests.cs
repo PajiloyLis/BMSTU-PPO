@@ -2,6 +2,7 @@
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Employee;
 using Project.Core.Repositories;
 using Project.Services.EmployeeService;
 using Xunit;
@@ -34,7 +35,7 @@ public class EmployeeServiceTests
             "{\"Developer\": true}"
         );
 
-        var expectedEmployee = new Employee(
+        var expectedEmployee = new BaseEmployee(
             Guid.NewGuid(),
             "John Doe",
             "+1234567890",
@@ -79,7 +80,7 @@ public class EmployeeServiceTests
             null
         );
 
-        var expectedEmployee = new Employee(
+        var expectedEmployee = new BaseEmployee(
             Guid.NewGuid(),
             "John Doe",
             "+1234567890",
@@ -124,7 +125,7 @@ public class EmployeeServiceTests
             null
         );
 
-        var expectedEmployee = new Employee(
+        var expectedEmployee = new BaseEmployee(
             Guid.NewGuid(),
             "John Doe",
             "+1234567890",
@@ -160,7 +161,7 @@ public class EmployeeServiceTests
     public async Task AddEmployee_NameValidationFailed()
     {
         // Arrange
-        var expectedEmployee = new Employee(
+        var expectedEmployee = new BaseEmployee(
             Guid.NewGuid(),
             "John Doe",
             "+1234567890",

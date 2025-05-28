@@ -1,19 +1,19 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Position;
 
 public class PositionPage
 {
     public PositionPage()
     {
-        Positions = new List<Position>();
+        Positions = new List<BasePosition>();
         Page = new Page();
     }
 
-    public PositionPage(IReadOnlyList<Position> positions, Page page)
+    public PositionPage(IReadOnlyList<BasePosition> positions, Page page)
     {
         Positions = positions;
         Page = page;
     }
 
-    public IReadOnlyList<Position> Positions { get; set; }
+    public IReadOnlyList<BasePosition> Positions { get; set; }
     public Page Page { get; set; }
 }

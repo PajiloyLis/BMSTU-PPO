@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace Project.Core.Models;
+namespace Project.Core.Models.Employee;
 
 public class CreationEmployee
 {

@@ -19,7 +19,7 @@ public static class PositionHistoryConverter
     }
 
     [return: NotNullIfNotNull("positionHistory")]
-    public static PositionHistoryDb? Convert(PositionHistory? positionHistory)
+    public static PositionHistoryDb? Convert(BasePositionHistory? positionHistory)
     {
         if (positionHistory == null)
             return null;
@@ -32,12 +32,12 @@ public static class PositionHistoryConverter
     }
 
     [return: NotNullIfNotNull("positionHistoryDb")]
-    public static PositionHistory? Convert(PositionHistoryDb? positionHistoryDb)
+    public static BasePositionHistory? Convert(PositionHistoryDb? positionHistoryDb)
     {
         if (positionHistoryDb == null)
             return null;
 
-        return new PositionHistory(
+        return new BasePositionHistory(
             positionHistoryDb.PositionId,
             positionHistoryDb.EmployeeId,
             positionHistoryDb.StartDate,

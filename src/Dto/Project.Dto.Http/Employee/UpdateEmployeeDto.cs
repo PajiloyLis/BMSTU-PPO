@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Project.Dto.Http;
+namespace Project.Dto.Http.Employee;
 
 /// <summary>
 /// Update employee dto

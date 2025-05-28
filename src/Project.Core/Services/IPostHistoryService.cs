@@ -12,7 +12,7 @@ public interface IPostHistoryService
     /// <param name="startDate">Start date of the post</param>
     /// <param name="endDate">End date of the post (optional)</param>
     /// <returns>Created post history record</returns>
-    Task<PostHistory> AddPostHistoryAsync(
+    Task<BasePostHistory> AddPostHistoryAsync(
         Guid postId,
         Guid employeeId,
         DateOnly startDate,
@@ -24,7 +24,7 @@ public interface IPostHistoryService
     /// <param name="postId">Post ID</param>
     /// <param name="employeeId">Employee ID</param>
     /// <returns>Post history record</returns>
-    Task<PostHistory> GetPostHistoryAsync(Guid postId, Guid employeeId);
+    Task<BasePostHistory> GetPostHistoryAsync(Guid postId, Guid employeeId);
 
     /// <summary>
     /// Updates an existing post history record
@@ -34,7 +34,7 @@ public interface IPostHistoryService
     /// <param name="startDate">New start date (optional)</param>
     /// <param name="endDate">New end date (optional)</param>
     /// <returns>Updated post history record</returns>
-    Task<PostHistory> UpdatePostHistoryAsync(
+    Task<BasePostHistory> UpdatePostHistoryAsync(
         Guid postId,
         Guid employeeId,
         DateOnly? startDate = null,
