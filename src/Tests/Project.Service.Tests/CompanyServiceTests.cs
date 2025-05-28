@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Company;
 using Project.Core.Repositories;
 using Project.Services.CompanyService;
 using Xunit;
@@ -37,7 +38,7 @@ public class CompanyServiceTests
             "г. Москва, ул. Пушкина, д. 57"
         );
 
-        var expectedCompany = new Company(
+        var expectedCompany = new BaseCompany(
             Guid.NewGuid(),
             "Roga  i kopita",
             new DateOnly(1995, 10, 12),
@@ -79,7 +80,7 @@ public class CompanyServiceTests
     {
         // Arrange
         var companyId = Guid.NewGuid();
-        var expectedCompany = new Company(
+        var expectedCompany = new BaseCompany(
             companyId,
             "Test Company",
             new DateOnly(2020, 1, 1),
@@ -135,7 +136,7 @@ public class CompanyServiceTests
             "Updated Address"
         );
 
-        var expectedCompany = new Company(
+        var expectedCompany = new BaseCompany(
             companyId,
             updateCompany.Title!,
             updateCompany.RegistrationDate!.Value,
@@ -191,7 +192,7 @@ public class CompanyServiceTests
         // Arrange
         var pageNumber = 1;
         var pageSize = 10;
-        var expectedCompanies = new List<Company>
+        var expectedCompanies = new List<BaseCompany>
         {
             new(
                 Guid.NewGuid(),

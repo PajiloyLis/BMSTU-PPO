@@ -22,7 +22,7 @@ public class PostHistoryRepository : IPostHistoryRepository
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<PostHistory> AddPostHistoryAsync(CreatePostHistory createPostHistory)
+    public async Task<BasePostHistory> AddPostHistoryAsync(CreatePostHistory createPostHistory)
     {
         try
         {
@@ -46,7 +46,7 @@ public class PostHistoryRepository : IPostHistoryRepository
         }
     }
 
-    public async Task<PostHistory> GetPostHistoryByIdAsync(Guid postId, Guid employeeId)
+    public async Task<BasePostHistory> GetPostHistoryByIdAsync(Guid postId, Guid employeeId)
     {
         try
         {
@@ -80,7 +80,7 @@ public class PostHistoryRepository : IPostHistoryRepository
         }
     }
 
-    public async Task<PostHistory> UpdatePostHistoryAsync(UpdatePostHistory updatePostHistory)
+    public async Task<BasePostHistory> UpdatePostHistoryAsync(UpdatePostHistory updatePostHistory)
     {
         try
         {

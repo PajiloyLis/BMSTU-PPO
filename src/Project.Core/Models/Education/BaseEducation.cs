@@ -1,8 +1,8 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Education;
 
-public class Education
+public class BaseEducation
 {
-    public Education(Guid id, Guid employeeId, string institution, string level, string studyField,
+    public BaseEducation(Guid id, Guid employeeId, string institution, string level, string studyField,
         DateOnly startDate, DateOnly? endDate)
     {
         if (!Guid.TryParse(id.ToString(), out _))

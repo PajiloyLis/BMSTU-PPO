@@ -1,16 +1,17 @@
 using System.Diagnostics.CodeAnalysis;
 using Project.Core.Models;
+using Project.Core.Models.Employee;
 
 namespace Database.Models.Converters;
 
 public static class EmployeeConverter
 {
     [return: NotNullIfNotNull(nameof(employee))]
-    public static Employee? Convert(EmployeeDb? employee)
+    public static BaseEmployee? Convert(EmployeeDb? employee)
     {
         if (employee is null) return null;
 
-        return new Employee(employee.Id,
+        return new BaseEmployee(employee.Id,
             employee.FullName,
             employee.Phone,
             employee.Email,
@@ -53,7 +54,7 @@ public static class EmployeeConverter
     }
 
     [return: NotNullIfNotNull(nameof(employee))]
-    public static EmployeeDb? Convert(Employee? employee)
+    public static EmployeeDb? Convert(BaseEmployee? employee)
     {
         if (employee == null)
             return null;

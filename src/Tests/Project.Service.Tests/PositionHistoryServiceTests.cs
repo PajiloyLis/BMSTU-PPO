@@ -43,7 +43,7 @@ public class PositionHistoryServiceTests
         var employeeId = Guid.NewGuid();
         var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-10));
         var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
-        var expectedPositionHistory = new PositionHistory(positionId, employeeId, startDate, endDate);
+        var expectedPositionHistory = new BasePositionHistory(positionId, employeeId, startDate, endDate);
 
         _repositoryMock.Setup(x => x.AddPositionHistoryAsync(It.IsAny<CreatePositionHistory>()))
             .ReturnsAsync(expectedPositionHistory);
@@ -84,7 +84,7 @@ public class PositionHistoryServiceTests
         var employeeId = Guid.NewGuid();
         var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-90));
         var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-30));
-        var expectedPositionHistory = new PositionHistory(positionId, employeeId, startDate, endDate);
+        var expectedPositionHistory = new BasePositionHistory(positionId, employeeId, startDate, endDate);
 
         _repositoryMock.Setup(x => x.UpdatePositionHistoryAsync(It.IsAny<UpdatePositionHistory>()))
             .ReturnsAsync(expectedPositionHistory);

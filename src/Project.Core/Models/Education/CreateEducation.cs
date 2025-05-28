@@ -1,4 +1,4 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Education;
 
 public class CreateEducation
 {

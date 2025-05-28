@@ -39,7 +39,7 @@ public class ScoreServiceTests
             3
         );
 
-        var expectedScore = new Score(
+        var expectedScore = new BaseScore(
             Guid.NewGuid(),
             employeeId,
             authorId,
@@ -73,7 +73,7 @@ public class ScoreServiceTests
     {
         //Arrange
         var scoreId = Guid.NewGuid();
-        var expectedScore = new Score(
+        var expectedScore = new BaseScore(
             scoreId,
             Guid.NewGuid(),
             Guid.NewGuid(),
@@ -125,7 +125,7 @@ public class ScoreServiceTests
             3
         );
 
-        var expectedScore = new Score(
+        var expectedScore = new BaseScore(
             scoreId,
             Guid.NewGuid(),
             Guid.NewGuid(),
@@ -174,7 +174,7 @@ public class ScoreServiceTests
         var startDate = DateTimeOffset.UtcNow.AddDays(-30);
         var endDate = DateTimeOffset.UtcNow;
 
-        var expectedScores = new List<Score>
+        var expectedScores = new List<BaseScore>
         {
             new(
                 Guid.NewGuid(),
@@ -226,7 +226,7 @@ public class ScoreServiceTests
         var startDate = DateTimeOffset.UtcNow.AddDays(-30);
         var endDate = DateTimeOffset.UtcNow;
 
-        var expectedScores = new List<Score>
+        var expectedScores = new List<BaseScore>
         {
             new(
                 Guid.NewGuid(),
@@ -269,7 +269,7 @@ public class ScoreServiceTests
         var startDate = DateTimeOffset.UtcNow.AddDays(-30);
         var endDate = DateTimeOffset.UtcNow;
 
-        var expectedScores = new List<Score>
+        var expectedScores = new List<BaseScore>
         {
             new(
                 Guid.NewGuid(),
@@ -312,7 +312,7 @@ public class ScoreServiceTests
         var startDate = DateTimeOffset.UtcNow.AddDays(-30);
         var endDate = DateTimeOffset.UtcNow;
 
-        var expectedScores = new List<Score>
+        var expectedScores = new List<BaseScore>
         {
             new(
                 Guid.NewGuid(),
@@ -355,7 +355,7 @@ public class ScoreServiceTests
         var startDate = DateTimeOffset.UtcNow.AddDays(-30);
         var endDate = DateTimeOffset.UtcNow;
 
-        var expectedScores = new List<Score>
+        var expectedScores = new List<BaseScore>
         {
             new(
                 Guid.NewGuid(),

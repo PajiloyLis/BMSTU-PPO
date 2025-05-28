@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Post;
 using Project.Core.Repositories;
 
 namespace Database.Repositories;
@@ -19,7 +20,7 @@ public class PostRepository : IPostRepository
         _logger = logger;
     }
 
-    public async Task<Post> AddPostAsync(CreatePost post)
+    public async Task<BasePost> AddPostAsync(CreatePost post)
     {
         try
         {
@@ -54,7 +55,7 @@ public class PostRepository : IPostRepository
         }
     }
 
-    public async Task<Post> GetPostByIdAsync(Guid postId)
+    public async Task<BasePost> GetPostByIdAsync(Guid postId)
     {
         try
         {
@@ -77,7 +78,7 @@ public class PostRepository : IPostRepository
         }
     }
 
-    public async Task<Post> UpdatePostAsync(UpdatePost post)
+    public async Task<BasePost> UpdatePostAsync(UpdatePost post)
     {
         try
         {

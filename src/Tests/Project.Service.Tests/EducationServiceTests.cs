@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Education;
 using Project.Core.Repositories;
 using Project.Services.EducationService;
 using Xunit;
@@ -35,7 +36,7 @@ public class EducationServiceTests
             new DateOnly(2024, 6, 30)
         );
 
-        var expectedEducation = new Education(
+        var expectedEducation = new BaseEducation(
             Guid.NewGuid(),
             employeeId,
             "МГУ",
@@ -74,7 +75,7 @@ public class EducationServiceTests
     {
         //Arrange
         var educationId = Guid.NewGuid();
-        var expectedEducation = new Education(
+        var expectedEducation = new BaseEducation(
             educationId,
             Guid.NewGuid(),
             "МГУ",
@@ -127,7 +128,7 @@ public class EducationServiceTests
             new DateOnly(2024, 6, 30)
         );
 
-        var expectedEducation = new Education(
+        var expectedEducation = new BaseEducation(
             educationId,
             employeeId,
             updateEducation.Institution!,
@@ -183,7 +184,7 @@ public class EducationServiceTests
         var employeeId = Guid.NewGuid();
         var pageNumber = 1;
         var pageSize = 10;
-        var expectedEducations = new List<Education>
+        var expectedEducations = new List<BaseEducation>
         {
             new(
                 Guid.NewGuid(),
@@ -265,7 +266,7 @@ public class EducationServiceTests
             new DateOnly(2020, 9, 1)
         );
 
-        var expectedEducation = new Education(
+        var expectedEducation = new BaseEducation(
             Guid.NewGuid(),
             employeeId,
             "МГУ",

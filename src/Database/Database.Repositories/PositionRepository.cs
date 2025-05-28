@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Position;
 using Project.Core.Models.PositionHistory;
 using Project.Core.Repositories;
 
@@ -20,7 +21,7 @@ public class PositionRepository : IPositionRepository
         _logger = logger;
     }
 
-    public async Task<Position> AddPositionAsync(CreatePosition position)
+    public async Task<BasePosition> AddPositionAsync(CreatePosition position)
     {
         try
         {
@@ -55,7 +56,7 @@ public class PositionRepository : IPositionRepository
         }
     }
 
-    public async Task<Position> GetPositionByIdAsync(Guid id)
+    public async Task<BasePosition> GetPositionByIdAsync(Guid id)
     {
         try
         {
@@ -78,7 +79,7 @@ public class PositionRepository : IPositionRepository
         }
     }
 
-    public async Task<Position> UpdatePositionAsync(UpdatePosition position)
+    public async Task<BasePosition> UpdatePositionAsync(UpdatePosition position)
     {
         try
         {

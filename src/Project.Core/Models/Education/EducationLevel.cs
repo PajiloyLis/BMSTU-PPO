@@ -1,6 +1,6 @@
 using Project.Core.Exceptions;
 
-namespace Project.Core.Models;
+namespace Project.Core.Models.Education;
 
 /// <summary>
 /// Уровни образования

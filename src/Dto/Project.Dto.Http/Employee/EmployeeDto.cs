@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Project.Dto.Http;
+namespace Project.Dto.Http.Employee;
 
 /// <summary>
 /// Employee dto
@@ -9,7 +9,7 @@ public class EmployeeDto
 {
     public EmployeeDto(Guid employeeId,
         string fullName,
-        string? phoneNumber,
+        string phoneNumber,
         string email,
         DateOnly birthday,
         string? photoPath,

@@ -23,7 +23,7 @@ public class PositionHistoryRepository : IPositionHistoryRepository
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<PositionHistory> AddPositionHistoryAsync(CreatePositionHistory createPositionHistory)
+    public async Task<BasePositionHistory> AddPositionHistoryAsync(CreatePositionHistory createPositionHistory)
     {
         try
         {
@@ -52,7 +52,7 @@ public class PositionHistoryRepository : IPositionHistoryRepository
         }
     }
 
-    public async Task<PositionHistory> GetPositionHistoryByIdAsync(Guid positionId, Guid employeeId)
+    public async Task<BasePositionHistory> GetPositionHistoryByIdAsync(Guid positionId, Guid employeeId)
     {
         try
         {
@@ -90,7 +90,7 @@ public class PositionHistoryRepository : IPositionHistoryRepository
         }
     }
 
-    public async Task<PositionHistory> UpdatePositionHistoryAsync(UpdatePositionHistory updatePositionHistory)
+    public async Task<BasePositionHistory> UpdatePositionHistoryAsync(UpdatePositionHistory updatePositionHistory)
     {
         try
         {
@@ -262,7 +262,7 @@ public class PositionHistoryRepository : IPositionHistoryRepository
         }
     }
 
-    public async Task<PositionHistory> GetCurrentEmployeePositionByEmployeeIdAsync(Guid employeeId)
+    public async Task<BasePositionHistory> GetCurrentEmployeePositionByEmployeeIdAsync(Guid employeeId)
     {
         try
         {

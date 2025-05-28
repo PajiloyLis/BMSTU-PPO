@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Project.Core.Models;
+using Project.Core.Models.Education;
 using Project.Core.Repositories;
 using Project.Core.Services;
 
@@ -16,7 +17,7 @@ public class EducationService : IEducationService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Education> AddEducationAsync(Guid employeeId, string institution, string level, string studyField,
+    public async Task<BaseEducation> AddEducationAsync(Guid employeeId, string institution, string level, string studyField,
         DateOnly startDate, DateOnly? endDate = null)
     {
         try
@@ -33,7 +34,7 @@ public class EducationService : IEducationService
         }
     }
 
-    public async Task<Education> GetEducationByIdAsync(Guid educationId)
+    public async Task<BaseEducation> GetEducationByIdAsync(Guid educationId)
     {
         try
         {
@@ -48,7 +49,7 @@ public class EducationService : IEducationService
         }
     }
 
-    public async Task<Education> UpdateEducationAsync(Guid educationId, Guid employeeId, string? institution = null,
+    public async Task<BaseEducation> UpdateEducationAsync(Guid educationId, Guid employeeId, string? institution = null,
         string? level = null, string? studyField = null, DateOnly? startDate = null, DateOnly? endDate = null)
     {
         try

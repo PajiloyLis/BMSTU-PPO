@@ -1,12 +1,14 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Project.Core.Models;
+using Project.Core.Models.Employee;
+using Project.Dto.Http.Employee;
 
 namespace Project.Dto.Http.Converters;
 
 public static class EmployeeConverter
 {
     [return: NotNullIfNotNull(nameof(employee))]
-    public static EmployeeDto? Convert(Employee? employee)
+    public static EmployeeDto? Convert(BaseEmployee? employee)
     {
         if (employee is null)
             return null;

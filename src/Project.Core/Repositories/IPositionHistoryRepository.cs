@@ -9,7 +9,7 @@ public interface IPositionHistoryRepository
     /// </summary>
     /// <param name="createPositionHistory">Position history data to create</param>
     /// <returns>Created position history record</returns>
-    Task<PositionHistory> AddPositionHistoryAsync(CreatePositionHistory createPositionHistory);
+    Task<BasePositionHistory> AddPositionHistoryAsync(CreatePositionHistory createPositionHistory);
 
     /// <summary>
     /// Gets a position history record by its ID
@@ -18,7 +18,7 @@ public interface IPositionHistoryRepository
     /// <param name="employeeId">Employee ID</param>
     /// <returns>Position history record</returns>
     /// <exception cref="PositionHistoryNotFoundException">Thrown when position history record is not found</exception>
-    Task<PositionHistory> GetPositionHistoryByIdAsync(Guid positionId, Guid employeeId);
+    Task<BasePositionHistory> GetPositionHistoryByIdAsync(Guid positionId, Guid employeeId);
 
     /// <summary>
     /// Updates an existing position history record
@@ -26,7 +26,7 @@ public interface IPositionHistoryRepository
     /// <param name="updatePositionHistory">Position history data to update</param>
     /// <returns>Updated position history record</returns>
     /// <exception cref="PositionHistoryNotFoundException">Thrown when position history record is not found</exception>
-    Task<PositionHistory> UpdatePositionHistoryAsync(UpdatePositionHistory updatePositionHistory);
+    Task<BasePositionHistory> UpdatePositionHistoryAsync(UpdatePositionHistory updatePositionHistory);
 
     /// <summary>
     /// Deletes a position history record

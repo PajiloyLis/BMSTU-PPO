@@ -16,7 +16,7 @@ public class ScoreService : IScoreService
         _logger = logger;
     }
 
-    public async Task<Score> AddScoreAsync(CreateScore createScore)
+    public async Task<BaseScore> AddScoreAsync(CreateScore createScore)
     {
         try
         {
@@ -31,7 +31,7 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<Score> UpdateScoreAsync(UpdateScore updateScore)
+    public async Task<BaseScore> UpdateScoreAsync(UpdateScore updateScore)
     {
         try
         {
@@ -46,7 +46,7 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<Score> GetScoreAsync(Guid id)
+    public async Task<BaseScore> GetScoreAsync(Guid id)
     {
         try
         {

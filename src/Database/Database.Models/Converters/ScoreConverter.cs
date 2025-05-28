@@ -24,7 +24,7 @@ public static class ScoreConverter
     }
 
     [return: NotNullIfNotNull(nameof(score))]
-    public static ScoreDb? Convert(Score? score)
+    public static ScoreDb? Convert(BaseScore? score)
     {
         if (score == null)
             return null;
@@ -42,12 +42,12 @@ public static class ScoreConverter
     }
 
     [return: NotNullIfNotNull(nameof(score))]
-    public static Score? Convert(ScoreDb? score)
+    public static BaseScore? Convert(ScoreDb? score)
     {
         if (score == null)
             return null;
 
-        return new Score(
+        return new BaseScore(
             score.Id,
             score.EmployeeId,
             score.AuthorId,

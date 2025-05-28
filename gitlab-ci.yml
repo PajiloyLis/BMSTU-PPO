@@ -6,11 +6,11 @@ variables:
   POSTGRES_USER: "test"
   POSTGRES_PASSWORD: "test"
   POSTGRES_HOST_AUTH_METHOD: "trust"
-  CONNECTION_STRING: "Host=postgres;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
-
+  
 services:
   - name: postgres:15-alpine
     alias: postgres
+    command: ["postgres", "-c", "log_statement=all"]
 
 .dotnet-setup: &dotnet-setup
   before_script:
@@ -56,3 +56,10 @@ integration_tests:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_COMMIT_BRANCH == "develop"
+      
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - $HOME/.nuget/packages
+    - $HOME/.docker/cache
+  policy: pull-push

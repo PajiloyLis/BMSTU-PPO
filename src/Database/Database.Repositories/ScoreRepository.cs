@@ -20,7 +20,7 @@ public class ScoreRepository : IScoreRepository
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Score> AddScoreAsync(CreateScore score)
+    public async Task<BaseScore> AddScoreAsync(CreateScore score)
     {
         try
         {
@@ -44,7 +44,7 @@ public class ScoreRepository : IScoreRepository
         }
     }
 
-    public async Task<Score> GetScoreByIdAsync(Guid id)
+    public async Task<BaseScore> GetScoreByIdAsync(Guid id)
     {
         try
         {
@@ -67,7 +67,7 @@ public class ScoreRepository : IScoreRepository
         }
     }
 
-    public async Task<Score> UpdateScoreAsync(UpdateScore score)
+    public async Task<BaseScore> UpdateScoreAsync(UpdateScore score)
     {
         try
         {

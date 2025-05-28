@@ -1,4 +1,4 @@
-namespace Project.Core.Models;
+namespace Project.Core.Models.Employee;
 
 public class EmployeePage
 {

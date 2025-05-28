@@ -1,15 +1,16 @@
 using Project.Core.Models;
+using Project.Core.Models.Education;
 
 namespace Project.Core.Services;
 
 public interface IEducationService
 {
-    Task<Education> AddEducationAsync(Guid employeeId, string institution, string level, string studyField,
+    Task<BaseEducation> AddEducationAsync(Guid employeeId, string institution, string level, string studyField,
         DateOnly startDate, DateOnly? endDate = null);
 
-    Task<Education> GetEducationByIdAsync(Guid educationId);
+    Task<BaseEducation> GetEducationByIdAsync(Guid educationId);
 
-    Task<Education> UpdateEducationAsync(Guid educationId, Guid employeeId, string? institution = null,
+    Task<BaseEducation> UpdateEducationAsync(Guid educationId, Guid employeeId, string? institution = null,
         string? level = null, string? studyField = null, DateOnly? startDate = null, DateOnly? endDate = null);
 
     Task<EducationPage> GetEducationsAsync(Guid employeeId, int pageNumber, int pageSize);

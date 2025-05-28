@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Company;
 using Project.Core.Repositories;
 
 namespace Database.Repositories;
@@ -19,7 +20,7 @@ public class CompanyRepository : ICompanyRepository
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Company> AddCompanyAsync(CreationCompany newCompany)
+    public async Task<BaseCompany> AddCompanyAsync(CreationCompany newCompany)
     {
         var company = CompanyConverter.Convert(newCompany);
         try
@@ -46,7 +47,7 @@ public class CompanyRepository : ICompanyRepository
         }
     }
 
-    public async Task<Company> UpdateCompanyAsync(UpdateCompany company)
+    public async Task<BaseCompany> UpdateCompanyAsync(UpdateCompany company)
     {
         try
         {
@@ -93,7 +94,7 @@ public class CompanyRepository : ICompanyRepository
         }
     }
 
-    public async Task<Company> GetCompanyByIdAsync(Guid companyId)
+    public async Task<BaseCompany> GetCompanyByIdAsync(Guid companyId)
     {
         try
         {

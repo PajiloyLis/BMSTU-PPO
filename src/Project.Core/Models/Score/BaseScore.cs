@@ -1,8 +1,8 @@
 namespace Project.Core.Models.Score;
 
-public class Score
+public class BaseScore
 {
-    public Score(Guid id, Guid employeeId, Guid authorId, Guid positionId, DateTimeOffset createdAt,
+    public BaseScore(Guid id, Guid employeeId, Guid authorId, Guid positionId, DateTimeOffset createdAt,
         int efficiencyScore,
         int engagementScore, int competencyScore)
     {

@@ -1,38 +1,40 @@
-namespace Project.Core.Models.PositionHistory;
+namespace Project.Core.Models.PostHistory;
 
-public class PositionHistory
+public class BasePostHistory
 {
-    public PositionHistory(
-        Guid positionId,
+    public BasePostHistory(
+        Guid postId,
         Guid employeeId,
         DateOnly startDate,
         DateOnly? endDate)
     {
-        if (positionId == Guid.Empty)
-            throw new ArgumentException("Position ID cannot be empty", nameof(positionId));
+        if (postId == Guid.Empty)
+            throw new ArgumentException("Post ID cannot be empty", nameof(postId));
 
         if (employeeId == Guid.Empty)
             throw new ArgumentException("Employee ID cannot be empty", nameof(employeeId));
 
-        if (startDate >= DateOnly.FromDateTime(DateTime.UtcNow))
-            throw new ArgumentException("Start date must be in the past", nameof(startDate));
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        if (startDate >= today)
+            throw new ArgumentException("Start date cannot be in the future", nameof(startDate));
 
         if (endDate is not null)
         {
-            if (endDate.Value > DateOnly.FromDateTime(DateTime.UtcNow))
+            if (endDate.Value > today)
                 throw new ArgumentException("End date cannot be in the future", nameof(endDate));
 
             if (endDate.Value <= startDate)
                 throw new ArgumentException("End date must be after start date", nameof(endDate));
         }
 
-        PositionId = positionId;
+        PostId = postId;
         EmployeeId = employeeId;
         StartDate = startDate;
         EndDate = endDate;
     }
 
-    public Guid PositionId { get; set; }
+    public Guid PostId { get; set; }
     public Guid EmployeeId { get; set; }
     public DateOnly StartDate { get; set; }
     public DateOnly? EndDate { get; set; }

@@ -4,9 +4,9 @@ namespace Project.Core.Repositories;
 
 public interface IScoreRepository
 {
-    Task<Score> AddScoreAsync(CreateScore score);
-    Task<Score> GetScoreByIdAsync(Guid id);
-    Task<Score> UpdateScoreAsync(UpdateScore score);
+    Task<BaseScore> AddScoreAsync(CreateScore score);
+    Task<BaseScore> GetScoreByIdAsync(Guid id);
+    Task<BaseScore> UpdateScoreAsync(UpdateScore score);
     Task DeleteScoreAsync(Guid id);
     Task<ScorePage> GetScoresAsync(int pageNumber, int pageSize, DateTimeOffset? startDate, DateTimeOffset? endDate);
 

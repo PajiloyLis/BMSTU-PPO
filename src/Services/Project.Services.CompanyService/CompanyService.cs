@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Company;
 using Project.Core.Repositories;
 using Project.Core.Services;
 
@@ -17,7 +18,7 @@ public class CompanyService : ICompanyService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<Company> AddCompanyAsync(string title, DateOnly registrationDate, string phoneNumber,
+    public async Task<BaseCompany> AddCompanyAsync(string title, DateOnly registrationDate, string phoneNumber,
         string email, string inn, string kpp, string ogrn, string address)
     {
         try
@@ -40,7 +41,7 @@ public class CompanyService : ICompanyService
         }
     }
 
-    public async Task<Company> GetCompanyByIdAsync(Guid companyId)
+    public async Task<BaseCompany> GetCompanyByIdAsync(Guid companyId)
     {
         try
         {
@@ -60,7 +61,7 @@ public class CompanyService : ICompanyService
         }
     }
 
-    public async Task<Company> UpdateCompanyAsync(Guid companyId, string? title, DateOnly? registrationDate,
+    public async Task<BaseCompany> UpdateCompanyAsync(Guid companyId, string? title, DateOnly? registrationDate,
         string? phoneNumber, string? email, string? inn,
         string? kpp, string? ogrn, string? address)
     {

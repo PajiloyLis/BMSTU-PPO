@@ -1,15 +1,16 @@
 using Project.Core.Models;
+using Project.Core.Models.Company;
 
 namespace Project.Core.Services;
 
 public interface ICompanyService
 {
-    Task<Company> AddCompanyAsync(string title, DateOnly registrationDate, string phoneNumber,
+    Task<BaseCompany> AddCompanyAsync(string title, DateOnly registrationDate, string phoneNumber,
         string email, string inn, string kpp, string ogrn, string address);
 
-    Task<Company> GetCompanyByIdAsync(Guid companyId);
+    Task<BaseCompany> GetCompanyByIdAsync(Guid companyId);
 
-    Task<Company> UpdateCompanyAsync(Guid companyId, string? title, DateOnly? registrationDate, string? phoneNumber,
+    Task<BaseCompany> UpdateCompanyAsync(Guid companyId, string? title, DateOnly? registrationDate, string? phoneNumber,
         string? email, string? inn, string? kpp, string? ogrn, string? address);
 
     Task<CompanyPage> GetCompaniesAsync(int pageNumber, int pageSize);

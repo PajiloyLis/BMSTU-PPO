@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Position;
 using Project.Core.Models.PositionHistory;
 using Project.Core.Repositories;
 using Project.Services.PositionService;
@@ -30,7 +31,7 @@ public class PositionServiceTests
         var companyId = Guid.NewGuid();
         var title = "Software Engineer";
 
-        var expectedPosition = new Position(
+        var expectedPosition = new BasePosition(
             Guid.NewGuid(),
             parentId,
             title,
@@ -57,7 +58,7 @@ public class PositionServiceTests
     {
         //Arrange
         var positionId = Guid.NewGuid();
-        var expectedPosition = new Position(
+        var expectedPosition = new BasePosition(
             positionId,
             Guid.NewGuid(),
             "Software Engineer",
@@ -100,7 +101,7 @@ public class PositionServiceTests
         var parentId = Guid.NewGuid();
         var title = "Senior Software Engineer";
 
-        var expectedPosition = new Position(
+        var expectedPosition = new BasePosition(
             positionId,
             parentId,
             title,

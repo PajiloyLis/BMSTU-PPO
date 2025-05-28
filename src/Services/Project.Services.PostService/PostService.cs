@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Project.Core.Models;
+using Project.Core.Models.Post;
 using Project.Core.Repositories;
 using Project.Core.Services;
 
@@ -16,7 +17,7 @@ public class PostService : IPostService
         _logger = logger;
     }
 
-    public async Task<Post> AddPostAsync(string title, decimal salary, Guid companyId)
+    public async Task<BasePost> AddPostAsync(string title, decimal salary, Guid companyId)
     {
         try
         {
@@ -32,7 +33,7 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<Post> GetPostByIdAsync(Guid postId)
+    public async Task<BasePost> GetPostByIdAsync(Guid postId)
     {
         try
         {
@@ -47,7 +48,7 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<Post> UpdatePostAsync(Guid postId, Guid companyId, string? title = null, decimal? salary = null)
+    public async Task<BasePost> UpdatePostAsync(Guid postId, Guid companyId, string? title = null, decimal? salary = null)
     {
         try
         {

@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Post;
 using Project.Core.Repositories;
 using Project.Services.PostService;
 using Xunit;
@@ -32,7 +33,7 @@ public class PostServiceTests
             companyId
         );
 
-        var expectedPost = new Post(
+        var expectedPost = new BasePost(
             Guid.NewGuid(),
             "Software Engineer",
             100000,
@@ -62,7 +63,7 @@ public class PostServiceTests
     {
         //Arrange
         var postId = Guid.NewGuid();
-        var expectedPost = new Post(
+        var expectedPost = new BasePost(
             postId,
             "Software Engineer",
             100000,
@@ -109,7 +110,7 @@ public class PostServiceTests
             150000
         );
 
-        var expectedPost = new Post(
+        var expectedPost = new BasePost(
             postId,
             updatePost.Title!,
             updatePost.Salary!.Value,
@@ -156,7 +157,7 @@ public class PostServiceTests
         var companyId = Guid.NewGuid();
         var pageNumber = 1;
         var pageSize = 10;
-        var expectedPosts = new List<Post>
+        var expectedPosts = new List<BasePost>
         {
             new(
                 Guid.NewGuid(),

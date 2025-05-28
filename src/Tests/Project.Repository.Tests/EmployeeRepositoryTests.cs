@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.Employee;
 using Testcontainers.PostgreSql;
 using Xunit;
 using IContainer = DotNet.Testcontainers.Containers.IContainer;
