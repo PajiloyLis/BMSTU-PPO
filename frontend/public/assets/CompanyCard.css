@@ -1,0 +1,39 @@
+.companies-container {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.company-card {
+    width: 90%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #48872B;
+}
+
+.contacts-wrapper {
+    width: 320px; /* Фиксированная ширина для контактов */
+    min-width: 320px; /* Запрещаем уменьшение */
+}
+
+.company-title {
+    flex: 1;
+    padding-right: 20px;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+.contact-info {
+    text-align: left; /* Выравнивание текста по левому краю */
+    width: 100%; /* Занимает всю ширину wrapper'а */
+}

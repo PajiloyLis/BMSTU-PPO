@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header-with-button {
+            background: #293325;
+            color: white;
+            padding: 20px;
+            text-align: -moz-left;
+        }
+
+        .header-button{
+            background: #4CBB17;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            border-radius: 10px;
+            border: none;
+        }
+
+        section {
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        #companies-container {
+            width: 75%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .company-card {
+            width: 90%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #48872B;
+        }
+
+        .contacts-wrapper {
+            width: 320px; /* Фиксированная ширина для контактов */
+            min-width: 320px; /* Запрещаем уменьшение */
+        }
+
+        .company-title {
+            flex: 1;
+            padding-right: 20px;
+            margin-bottom: auto;
+            margin-top: auto;
+        }
+
+        .contact-info {
+            text-align: left; /* Выравнивание текста по левому краю */
+            width: 100%; /* Занимает всю ширину wrapper'а */
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="header-with-button" style="display: flex; align-items: center;  justify-content: space-between;">
+    <h1>Группа компаний Кек</h1>
+    <button class="header-button">Войти</button>
+</div>
+
+<div id="companies-container">
+    <div class="loading">Загрузка</div>
+</div>
+
+<script src = '../scripts/app.js'></script>
+<main>
+
+</main>
+
+<footer>
+    © 2025 Группа компаний Кек
+</footer>
+</body>
+</html>

@@ -32,4 +32,7 @@
 /src/Services/Project.Services.PostService/obj/
 /src/Tests/Project.Service.Tests/bin/
 /src/Tests/Project.Service.Tests/obj/
- 
+/frontend/.idea
+/src.zip
+/src/Tests/Project.Controller.Tests/bin/
+/src/Tests/Project.Controller.Tests/obj/

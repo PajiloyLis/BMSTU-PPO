@@ -29,6 +29,7 @@
     &lt;TestId&gt;xUnit::EBB52F54-1C52-48EB-8A78-B37799AE914A::net9.0::Project.Tests.Controllers.EmployeeControllerTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EBB52F54-1C52-48EB-8A78-B37799AE914A::net9.0::Project.Tests.Controllers.EducationControllerTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::EBB52F54-1C52-48EB-8A78-B37799AE914A::net9.0::Project.Tests.Controllers.PositionControllerTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::EBB52F54-1C52-48EB-8A78-B37799AE914A::net9.0::Project.Tests.Controllers.PositionHistoryControllerTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=498f2c01_002Dff12_002D4157_002D8b56_002Dd275b487133b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="EducationRepositoryTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
