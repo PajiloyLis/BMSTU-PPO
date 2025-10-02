@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Database.Models;
 
@@ -41,7 +43,7 @@ public class EducationDb
 
     [Key] public Guid Id { get; set; }
 
-    [ForeignKey(nameof(EmployeeDb))] public Guid EmployeeId { get; set; }
+    [Column("employee_id")][ForeignKey(nameof(EmployeeDb))] public Guid EmployeeId { get; set; }
 
     [Required] public string Institution { get; set; }
 
@@ -52,4 +54,30 @@ public class EducationDb
     [Required] public DateOnly StartDate { get; set; }
 
     public DateOnly? EndDate { get; set; }
+}
+
+public class EducationMongoDb
+{
+    [BsonId]
+    [BsonRepresentation(BsonType.String)]
+    public Guid Id { get; set; }
+    
+    [BsonRepresentation(BsonType.String)]
+    public Guid EmployeeId { get; set; }
+    
+    public string Institution { get; set; } = string.Empty;
+    public string StudyField { get; set; } = string.Empty;
+    public string Level { get; set; } = string.Empty;
+    
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime StartDate { get; set; }
+    
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime? EndDate { get; set; }
+    
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime CreatedAt { get; set; }
+    
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime UpdatedAt { get; set; }
 }

@@ -213,8 +213,8 @@ public class EducationRepositoryTests : IAsyncLifetime
         }
 
         // Act
-        var page1 = await _repository.GetEducationsAsync(employee.Id, pageNumber: 1, pageSize: 3);
-        var page2 = await _repository.GetEducationsAsync(employee.Id, pageNumber: 2, pageSize: 3);
+        var page1 = await _repository.GetEducationsAsync(employee.Id);
+        var page2 = await _repository.GetEducationsAsync(employee.Id);
 
         Assert.NotNull(page1);
         Assert.NotNull(page2);

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Database.Models;
+using Microsoft.AspNetCore.Authorization;
 using Project.Dto.Http.Converters;
 using Microsoft.AspNetCore.Mvc;
 using Project.Core.Exceptions;
@@ -164,9 +165,9 @@ public class EducationController :ControllerBase
     {
         try
         {
-            var educations = await _educationService.GetEducationsByEmployeeIdAsync(employeeId, pageNumber, pageSize);
+            var educations = await _educationService.GetEducationsByEmployeeIdAsync(employeeId);
 
-            return Ok(educations.Educations.Select(EducationConverter.Convert));
+            return Ok(educations.Select(EducationConverter.Convert));
         }
         catch (Exception e)
         {

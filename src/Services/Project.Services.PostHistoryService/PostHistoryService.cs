@@ -1,22 +1,29 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models.PostHistory;
 using Project.Core.Repositories;
 using Project.Core.Services;
+using StackExchange.Redis;
 
 namespace Project.Services.PostHistoryService;
 
 public class PostHistoryService : IPostHistoryService
 {
+    public static bool CacheDirty;
+    private readonly IDatabaseAsync _cache;
+    private readonly IConnectionMultiplexer _connectionMultiplexer;
     private readonly ILogger<PostHistoryService> _logger;
     private readonly IPostHistoryRepository _repository;
 
     public PostHistoryService(
         IPostHistoryRepository repository,
-        ILogger<PostHistoryService> logger)
+        ILogger<PostHistoryService> logger, IConnectionMultiplexer cache)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _connectionMultiplexer = cache ?? throw new ArgumentNullException(nameof(cache));
+        _cache = cache.GetDatabase() ?? throw new ArgumentNullException(nameof(cache));
     }
 
     public async Task<BasePostHistory> AddPostHistoryAsync(
@@ -28,7 +35,8 @@ public class PostHistoryService : IPostHistoryService
         try
         {
             var createPostHistory = new CreatePostHistory(postId, employeeId, startDate, endDate);
-            return await _repository.AddPostHistoryAsync(createPostHistory);
+            var postHistory = await _repository.AddPostHistoryAsync(createPostHistory);
+            return postHistory;
         }
         catch (Exception ex)
         {
@@ -42,7 +50,8 @@ public class PostHistoryService : IPostHistoryService
     {
         try
         {
-            return await _repository.GetPostHistoryByIdAsync(postId, employeeId);
+            var postHistory = await _repository.GetPostHistoryByIdAsync(postId, employeeId);
+            return postHistory;
         }
         catch (PostHistoryNotFoundException)
         {
@@ -67,7 +76,8 @@ public class PostHistoryService : IPostHistoryService
         try
         {
             var updatePostHistory = new UpdatePostHistory(postId, employeeId, startDate, endDate);
-            return await _repository.UpdatePostHistoryAsync(updatePostHistory);
+            var postHistory = await _repository.UpdatePostHistoryAsync(updatePostHistory);
+            return postHistory;
         }
         catch (PostHistoryNotFoundException)
         {
@@ -103,10 +113,7 @@ public class PostHistoryService : IPostHistoryService
         }
     }
 
-    public async Task<PostHistoryPage> GetPostHistoryByEmployeeIdAsync(
-        Guid employeeId,
-        int pageNumber,
-        int pageSize,
+    public async Task<IEnumerable<BasePostHistory>> GetPostHistoryByEmployeeIdAsync(Guid employeeId,
         DateOnly? startDate,
         DateOnly? endDate)
     {
@@ -114,8 +121,6 @@ public class PostHistoryService : IPostHistoryService
         {
             return await _repository.GetPostHistoryByEmployeeIdAsync(
                 employeeId,
-                pageNumber,
-                pageSize,
                 startDate,
                 endDate);
         }
@@ -126,10 +131,7 @@ public class PostHistoryService : IPostHistoryService
         }
     }
 
-    public async Task<PostHistoryPage> GetSubordinatesPostHistoryAsync(
-        Guid managerId,
-        int pageNumber,
-        int pageSize,
+    public async Task<IEnumerable<BasePostHistory>> GetSubordinatesPostHistoryAsync(Guid managerId,
         DateOnly? startDate,
         DateOnly? endDate)
     {
@@ -137,8 +139,6 @@ public class PostHistoryService : IPostHistoryService
         {
             return await _repository.GetSubordinatesPostHistoryAsync(
                 managerId,
-                pageNumber,
-                pageSize,
                 startDate,
                 endDate);
         }
@@ -147,5 +147,10 @@ public class PostHistoryService : IPostHistoryService
             _logger.LogError(ex, "Error getting subordinates post history for manager {ManagerId}", managerId);
             throw;
         }
+    }
+
+    private async Task DeleteCache()
+    {
+        await _cache.ExecuteAsync("FLUSHDB");
     }
 }

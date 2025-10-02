@@ -15,10 +15,14 @@ public class Startup
     {
         services.AddProjectControllers()
             .AddProjectSwaggerGen()
-            .AddProjectDbRepositories()
+            // .AddProjectDbRepositories()
+            .AddProjectMongoDbRepositories()
+            .AddHttpContextAccessor()
+            .AddProjectRedisCache(Configuration)
             .AddProjectAuthorization(Configuration)
             .AddProjectCors(Configuration.GetValue("AllowedHeaders", "AllowAllHeaders"))
-            .AddProjectDbContext(Configuration)
+            // .AddProjectDbContext(Configuration)
+            .AddProjectMongoDbContext(Configuration)
             .AddProjectServices(Configuration);
     }
 

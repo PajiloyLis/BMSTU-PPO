@@ -13,7 +13,7 @@ public interface IEducationService
     Task<BaseEducation> UpdateEducationAsync(Guid educationId, Guid employeeId, string? institution = null,
         string? level = null, string? studyField = null, DateOnly? startDate = null, DateOnly? endDate = null);
 
-    Task<EducationPage> GetEducationsByEmployeeIdAsync(Guid employeeId, int pageNumber, int pageSize);
+    Task<IEnumerable<BaseEducation>> GetEducationsByEmployeeIdAsync(Guid employeeId);
 
     Task DeleteEducationAsync(Guid educationId);
 }

@@ -27,7 +27,7 @@ public class PositionHistoryDbConfiguration : IEntityTypeConfiguration<PositionH
 
         builder.Property(x => x.EndDate)
             .HasColumnName("end_date").IsRequired(false);
-
+        
         builder.HasCheckConstraint("CK_position_history_start_date", "start_date < CURRENT_DATE");
         builder.HasCheckConstraint("CK_position_history_end_date", "end_date <= CURRENT_DATE");
 

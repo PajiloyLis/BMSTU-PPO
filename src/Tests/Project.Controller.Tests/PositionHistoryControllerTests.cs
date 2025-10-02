@@ -318,7 +318,7 @@ namespace Project.Tests.Controllers
             var page = new Page(1, 2, 10);
             var pagedResult = new PositionHistoryPage(histories, page);
 
-            _mockService.Setup(x => x.GetPositionHistoryByEmployeeIdAsync(employeeId, 1, 10, null, null))
+            _mockService.Setup(x => x.GetPositionHistoryByEmployeeIdAsync(employeeId, null, null))
                 .ReturnsAsync(pagedResult);
 
             // Act
@@ -346,7 +346,7 @@ namespace Project.Tests.Controllers
             var page = new Page(1, 1, 10);
             var pagedResult = new PositionHistoryPage(histories, page);
 
-            _mockService.Setup(x => x.GetPositionHistoryByEmployeeIdAsync(employeeId, 1, 10, startDate, endDate))
+            _mockService.Setup(x => x.GetPositionHistoryByEmployeeIdAsync(employeeId, startDate, endDate))
                 .ReturnsAsync(pagedResult);
 
             // Act
@@ -373,7 +373,7 @@ namespace Project.Tests.Controllers
             var page = new Page(1, 1, 10);
             var pagedResult = new PositionHistoryPage(histories, page);
 
-            _mockService.Setup(x => x.GetCurrentSubordinatesPositionHistoryAsync(employeeId, 1, 10, null, null))
+            _mockService.Setup(x => x.GetCurrentSubordinatesPositionHistoryAsync(employeeId, null, null))
                 .ReturnsAsync(pagedResult);
 
             // Act
@@ -400,7 +400,7 @@ namespace Project.Tests.Controllers
             var page = new Page(1, 1, 10);
             var pagedResult = new PositionHierarchyWithEmployeePage(subordinates, page);
 
-            _mockService.Setup(x => x.GetCurrentSubordinatesAsync(employeeId, 1, 10))
+            _mockService.Setup(x => x.GetCurrentSubordinatesAsync(employeeId))
                 .ReturnsAsync(pagedResult);
 
             // Act

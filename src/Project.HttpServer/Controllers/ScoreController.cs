@@ -153,9 +153,9 @@ public class ScoreController : ControllerBase
     {
         try
         {
-            var scores = await _scoreService.GetScoresByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+            var scores = await _scoreService.GetScoresByEmployeeIdAsync(employeeId, startDate, endDate);
 
-            return Ok(scores.Items.Select(ScoreConverter.Convert));
+            return Ok(scores.Select(ScoreConverter.Convert));
         }
         catch (Exception e)
         {
@@ -174,9 +174,9 @@ public class ScoreController : ControllerBase
     {
         try
         {
-            var scores = await _scoreService.GetScoresByAuthorIdAsync(authorId, pageNumber, pageSize, startDate, endDate);
+            var scores = await _scoreService.GetScoresByAuthorIdAsync(authorId, startDate, endDate);
 
-            return Ok(scores.Items.Select(ScoreConverter.Convert));
+            return Ok(scores.Select(ScoreConverter.Convert));
         }
         catch (Exception e)
         {
@@ -195,9 +195,9 @@ public class ScoreController : ControllerBase
     {
         try
         {
-            var scores = await _scoreService.GetScoresByPositionIdAsync(positionId, pageNumber, pageSize, startDate, endDate);
+            var scores = await _scoreService.GetScoresByPositionIdAsync(positionId, startDate, endDate);
 
-            return Ok(scores.Items.Select(ScoreConverter.Convert));
+            return Ok(scores.Select(ScoreConverter.Convert));
         }
         catch (Exception e)
         {
@@ -216,9 +216,9 @@ public class ScoreController : ControllerBase
     {
         try
         {
-            var scores = await _scoreService.GetScoresSubordinatesByEmployeeAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+            var scores = await _scoreService.GetScoresSubordinatesByEmployeeAsync(employeeId, startDate, endDate);
 
-            return Ok(scores.Items.Select(ScoreConverter.Convert));
+            return Ok(scores.Select(ScoreConverter.Convert));
         }
         catch (Exception e)
         {

@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.PositionHistory;
 using Project.Core.Models.Score;
 using Project.Core.Repositories;
+
 
 namespace Database.Repositories;
 
@@ -120,7 +122,7 @@ public class ScoreRepository : IScoreRepository
         }
     }
 
-    public async Task<ScorePage> GetScoresAsync(int pageNumber, int pageSize, DateTimeOffset? startDate,
+    public async Task<IEnumerable<BaseScore>> GetScoresAsync(DateTimeOffset? startDate,
         DateTimeOffset? endDate)
     {
         try
@@ -132,18 +134,12 @@ public class ScoreRepository : IScoreRepository
             if (endDate.HasValue)
                 query = query.Where(s => s.CreatedAt <= endDate.Value.ToUniversalTime());
 
-            var totalItems = await query.CountAsync();
             var scores = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Select(s => ScoreConverter.Convert(s)!)
                 .ToListAsync();
 
-            var page = new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems);
-            var result = new ScorePage(scores, page);
-
-            _logger.LogInformation("Scores were retrieved (page {Page}, size {Size})", pageNumber, pageSize);
-            return result;
+            _logger.LogInformation("Scores were retrieved");
+            return scores;
         }
         catch (Exception e)
         {
@@ -152,7 +148,7 @@ public class ScoreRepository : IScoreRepository
         }
     }
 
-    public async Task<ScorePage> GetScoresByEmployeeIdAsync(Guid employeeId, int pageNumber, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresByEmployeeIdAsync(Guid employeeId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
@@ -164,19 +160,14 @@ public class ScoreRepository : IScoreRepository
             if (endDate.HasValue)
                 query = query.Where(s => s.CreatedAt <= endDate.Value.ToUniversalTime());
 
-            var totalItems = await query.CountAsync();
             var scores = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Select(s => ScoreConverter.Convert(s)!)
                 .ToListAsync();
 
-            var page = new Page(pageNumber, totalItems, pageSize);
-            var result = new ScorePage(scores, page);
 
-            _logger.LogInformation("Scores for employee {EmployeeId} were retrieved (page {Page}, size {Size})",
-                employeeId, pageNumber, pageSize);
-            return result;
+            _logger.LogInformation("Scores for employee {EmployeeId} were retrieved",
+                employeeId);
+            return scores;
         }
         catch (Exception e)
         {
@@ -185,7 +176,7 @@ public class ScoreRepository : IScoreRepository
         }
     }
 
-    public async Task<ScorePage> GetScoresByPositionIdAsync(Guid positionId, int pageNumber, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresByPositionIdAsync(Guid positionId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
@@ -197,19 +188,13 @@ public class ScoreRepository : IScoreRepository
             if (endDate.HasValue)
                 query = query.Where(s => s.CreatedAt <= endDate.Value.DateTime);
 
-            var totalItems = await query.CountAsync();
             var scores = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Select(s => ScoreConverter.Convert(s)!)
                 .ToListAsync();
 
-            var page = new Page(pageNumber, totalItems, pageSize);
-            var result = new ScorePage(scores, page);
-
-            _logger.LogInformation("Scores for position {PositionId} were retrieved (page {Page}, size {Size})",
-                positionId, pageNumber, pageSize);
-            return result;
+            _logger.LogInformation("Scores for position {PositionId} were retrieved",
+                positionId);
+            return scores;
         }
         catch (Exception e)
         {
@@ -218,7 +203,7 @@ public class ScoreRepository : IScoreRepository
         }
     }
 
-    public async Task<ScorePage> GetScoresByAuthorIdAsync(Guid authorId, int pageNumber, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresByAuthorIdAsync(Guid authorId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
@@ -230,19 +215,13 @@ public class ScoreRepository : IScoreRepository
             if (endDate.HasValue)
                 query = query.Where(s => s.CreatedAt <= endDate.Value.DateTime);
 
-            var totalItems = await query.CountAsync();
             var scores = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Select(s => ScoreConverter.Convert(s)!)
                 .ToListAsync();
 
-            var page = new Page(pageNumber, totalItems, pageSize);
-            var result = new ScorePage(scores, page);
-
-            _logger.LogInformation("Scores by author {AuthorId} were retrieved (page {Page}, size {Size})",
-                authorId, pageNumber, pageSize);
-            return result;
+            _logger.LogInformation("Scores by author {AuthorId} were retrieved",
+                authorId);
+            return scores;
         }
         catch (Exception e)
         {
@@ -251,13 +230,13 @@ public class ScoreRepository : IScoreRepository
         }
     }
 
-    public async Task<ScorePage> GetScoresSubordinatesByEmployeeIdAsync(Guid employeeId, int pageNumber, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresSubordinatesByEmployeeIdAsync(Guid employeeId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
-            // Get all positions that are subordinates of the employee's position
-            var employees = await _context.GetCurrentSubordinatesIdByEmployeeId(employeeId).Select(x => x.EmployeeId).ToListAsync();
+            var subordinates = await GetAllCurrentSubordinates(employeeId);
+            var employees = subordinates.Select(x => x.EmployeeId).ToList();
             
             if (employees == null)
             {
@@ -272,25 +251,57 @@ public class ScoreRepository : IScoreRepository
             if (endDate.HasValue)
                 query = query.Where(s => s.CreatedAt <= endDate.Value.ToUniversalTime());
 
-            var totalItems = await query.CountAsync();
             var scores = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Select(s => ScoreConverter.Convert(s)!)
                 .ToListAsync();
 
-            var page = new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems);
-            var result = new ScorePage(scores, page);
-
             _logger.LogInformation(
-                "Scores for subordinates of employee {EmployeeId} were retrieved (page {Page}, size {Size})",
-                employeeId, pageNumber, pageSize);
-            return result;
+                "Scores for subordinates of employee {EmployeeId} were retrieved",
+                employeeId);
+            return scores;
         }
         catch (Exception e) when (e is not ScoreNotFoundException)
         {
             _logger.LogError(e, "Error occurred while getting scores for subordinates of employee {EmployeeId}",
                 employeeId);
+            throw;
+        }
+    }
+    
+    private async Task<List<PositionHierarchyWithEmployee>> GetAllCurrentSubordinates(Guid managerId)
+    {
+        try
+        {
+            List<PositionHierarchyWithEmployee> subordinates = new List<PositionHierarchyWithEmployee>();
+            var head = await _context.PositionHistoryDb.Where(e => e.EmployeeId == managerId && e.EndDate==null).FirstOrDefaultAsync();
+            if (head is null)
+                throw new PositionHistoryNotFoundException($"Current position for employee {managerId} not found");
+            var headPosition = await _context.PositionDb.Where(e => e.Id == head.PositionId).FirstOrDefaultAsync();
+            subordinates.Add(new PositionHierarchyWithEmployee(head.EmployeeId, head.PositionId, headPosition.ParentId, headPosition.Title, 0));
+            int i = 0;
+            while (i != subordinates.Count)
+            {
+                var subordinatesPositions =
+                    await _context.PositionDb.Where(e => e.ParentId == subordinates[i].PositionId).ToListAsync();
+                var children = await _context.PositionHistoryDb.Where(e => subordinatesPositions.Select(e => e.Id).ToList().Contains(e.PositionId) && e.EndDate == null)
+                    .ToListAsync();
+                var resultChildren = children.Select(e =>
+                {
+                    var position = subordinatesPositions.Where(p => p.Id == e.PositionId).FirstOrDefault();
+                    return new PositionHierarchyWithEmployee(e.EmployeeId, e.PositionId, position.ParentId,
+                        position.Title,
+                        subordinates[i].Level + 1);
+                });
+                ++i;
+            }
+
+            return subordinates;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Error getting current subordinates for manager {ManagerId}",
+                managerId);
             throw;
         }
     }

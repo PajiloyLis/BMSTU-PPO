@@ -189,7 +189,7 @@ public class PositionRepositoryTests : IAsyncLifetime
             "Senior Developer");
 
         // Act
-        var result = await _repository.UpdatePositionAsync(update);
+        var result = await _repository.UpdatePositionTitleAsync(update);
 
         // Assert
         Assert.Equal("Senior Developer", result.Title);
@@ -261,7 +261,7 @@ public class PositionRepositoryTests : IAsyncLifetime
         var architect = await _repository.AddPositionAsync(new CreatePosition(cto.Id, "Architect", company.Id));
 
         // Act
-        var result = await _repository.GetSubordinatesAsync(ceo.Id, 1, 10);
+        var result = await _repository.GetSubordinatesAsync(ceo.Id);
 
         // Assert
         Assert.Equal(5, result.Page.TotalItems); // CEO, CTO, CFO, Team Lead, Architect
@@ -300,8 +300,8 @@ public class PositionRepositoryTests : IAsyncLifetime
         }
 
         // Act
-        var page1 = await _repository.GetSubordinatesAsync(parentPosition.Id, 1, 5);
-        var page2 = await _repository.GetSubordinatesAsync(parentPosition.Id, 2, 5);
+        var page1 = await _repository.GetSubordinatesAsync(parentPosition.Id);
+        var page2 = await _repository.GetSubordinatesAsync(parentPosition.Id);
 
         // Assert
         Assert.Equal(5, page1.Items.Count);

@@ -1,22 +1,25 @@
 ﻿using Database.Context.Configuration;
 using Database.Models;
 using Microsoft.EntityFrameworkCore;
-using Project.Core.Models;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Project.Database.Context.Configuration;
 using Project.Database.Models;
 
 namespace Database.Context;
 
 /// <summary>
-/// Database context.
+///     Database context.
 /// </summary>
 public class ProjectDbContext : DbContext
 {
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options) : base(options)
     {
     }
-    
-    protected ProjectDbContext(){}
+
+    protected ProjectDbContext()
+    {
+    }
 
     public DbSet<EmployeeDb> EmployeeDb { get; set; }
 
@@ -33,6 +36,8 @@ public class ProjectDbContext : DbContext
     public DbSet<PostHistoryDb> PostHistoryDb { get; set; }
 
     public DbSet<PositionHistoryDb> PositionHistoryDb { get; set; }
+
+    public DbSet<UserDb> UserDb { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,13 +63,17 @@ public class ProjectDbContext : DbContext
                 entity.Property(e => e.ParentId).HasColumnName("parent_id");
             }
         );
-        
-        modelBuilder.HasDbFunction(
-            typeof(ProjectDbContext)
-                .GetMethod(nameof(GetCurrentSubordinatesIdByEmployeeId))!);
 
-        modelBuilder.HasDbFunction(() => GetCurrentSubordinatesIdByEmployeeId(Guid.Empty));
-        
+        // modelBuilder.HasDbFunction(
+        //     typeof(ProjectDbContext)
+        //         .GetMethod(nameof(GetCurrentSubordinatesIdByEmployeeId))!);
+        //
+        // modelBuilder.HasDbFunction(() => GetCurrentSubordinatesIdByEmployeeId(Guid.Empty));
+        //
+        // modelBuilder.HasDbFunction(typeof(ProjectDbContext).GetMethod(nameof(GetSubordinatesById))!);
+        //
+        // modelBuilder.HasDbFunction(() => GetSubordinatesById(Guid.Empty));
+
         modelBuilder.ApplyConfiguration(new EmployeeDbConfiguration());
         modelBuilder.ApplyConfiguration(new CompanyDbConfiguration());
         modelBuilder.ApplyConfiguration(new EducationDbConfiguration());
@@ -73,19 +82,47 @@ public class ProjectDbContext : DbContext
         modelBuilder.ApplyConfiguration(new PostHistoryDbConfiguration());
         modelBuilder.ApplyConfiguration(new ScoreDbConfiguration());
         modelBuilder.ApplyConfiguration(new PositionHistoryDbConfiguration());
+        modelBuilder.ApplyConfiguration(new UserDbConfiguration());
     }
-    
-    [DbFunction(Name = "get_current_subordinates_id_by_employee_id", Schema = "public")]
-    public IQueryable<PositionHierarchyWithEmployeeIdDb> GetCurrentSubordinatesIdByEmployeeId(Guid startId)
+
+    // [DbFunction(Name = "get_current_subordinates_id_by_employee_id", Schema = "public")]
+    // public IQueryable<PositionHierarchyWithEmployeeIdDb> GetCurrentSubordinatesIdByEmployeeId(Guid startId)
+    // {
+    //     return Set<PositionHierarchyWithEmployeeIdDb>()
+    //         .FromSqlRaw("SELECT * FROM get_current_subordinates_id_by_employee_id({0})", startId);
+    // }
+    //
+    // [DbFunction(Name = "get_subordinates_by_id", Schema = "public")]
+    // public IQueryable<PositionHierarchyDb> GetSubordinatesById(Guid startId)
+    // {
+    //     return Set<PositionHierarchyDb>()
+    //         .FromSqlRaw("SELECT * FROM get_subordinates_by_id({0})", startId);
+    // }
+}
+
+public class MongoDbContext
+{
+    private readonly IMongoDatabase _database;
+
+    public MongoDbContext(IOptions<MongoDbSettings> settings)
     {
-        return Set<PositionHierarchyWithEmployeeIdDb>()
-            .FromSqlRaw("SELECT * FROM get_current_subordinates_id_by_employee_id({0})", startId);
+        var client = new MongoClient(settings.Value.ConnectionString);
+        _database = client.GetDatabase(settings.Value.DatabaseName);
     }
-    
-    [DbFunction(Name = "get_subordinates_by_id", Schema = "public")]
-    public IQueryable<PositionHierarchyDb> GetSubordinatesById(Guid startId)
-    {
-        return Set<PositionHierarchyDb>()
-            .FromSqlRaw("SELECT * FROM get_subordinates_by_id({0})", startId);
-    }
+
+    public IMongoCollection<CompanyMongoDb> Companies => _database.GetCollection<CompanyMongoDb>("companies");
+    public IMongoCollection<PostMongoDb> Posts => _database.GetCollection<PostMongoDb>("posts");
+    public IMongoCollection<PositionMongoDb> Positions => _database.GetCollection<PositionMongoDb>("positions");
+    public IMongoCollection<EmployeeMongoDb> Employees => _database.GetCollection<EmployeeMongoDb>("employees");
+    public IMongoCollection<EducationMongoDb> Educations => _database.GetCollection<EducationMongoDb>("educations");
+    public IMongoCollection<ScoreMongoDb> Scores => _database.GetCollection<ScoreMongoDb>("scores");
+    public IMongoCollection<PostHistoryMongoDb> PostHistories => _database.GetCollection<PostHistoryMongoDb>("postHistories");
+    public IMongoCollection<PositionHistoryMongoDb> PositionHistories => _database.GetCollection<PositionHistoryMongoDb>("positionHistories");
+    public IMongoCollection<UserMongoDb> Users => _database.GetCollection<UserMongoDb>("users");
+}
+
+public class MongoDbSettings
+{
+    public string ConnectionString { get; set; } = string.Empty;
+    public string DatabaseName { get; set; } = string.Empty;
 }

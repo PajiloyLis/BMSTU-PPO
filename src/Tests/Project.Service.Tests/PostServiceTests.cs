@@ -5,6 +5,7 @@ using Project.Core.Models;
 using Project.Core.Models.Post;
 using Project.Core.Repositories;
 using Project.Services.PostService;
+using StackExchange.Redis;
 using Xunit;
 
 namespace Project.Service.Tests;
@@ -14,12 +15,13 @@ public class PostServiceTests
     private readonly Mock<ILogger<PostService>> _mockLogger;
     private readonly Mock<IPostRepository> _mockRepository;
     private readonly PostService _postService;
-
+    private readonly Mock<IConnectionMultiplexer> _mockCache;
     public PostServiceTests()
     {
         _mockRepository = new Mock<IPostRepository>();
         _mockLogger = new Mock<ILogger<PostService>>();
-        _postService = new PostService(_mockRepository.Object, _mockLogger.Object);
+        _mockCache = new Mock<IConnectionMultiplexer>();
+        _postService = new PostService(_mockRepository.Object, _mockLogger.Object, _mockCache.Object);
     }
 
     [Fact]
@@ -178,17 +180,17 @@ public class PostServiceTests
             new Page(pageNumber, 2, pageSize)
         );
 
-        _mockRepository.Setup(x => x.GetPostsAsync(companyId, pageNumber, pageSize))
+        _mockRepository.Setup(x => x.GetPostsAsync(companyId))
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _postService.GetPostsByCompanyIdAsync(companyId, pageNumber, pageSize);
+        var result = await _postService.GetPostsByCompanyIdAsync(companyId);
 
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Posts.Count, result.Posts.Count);
-        _mockRepository.Verify(x => x.GetPostsAsync(companyId, pageNumber, pageSize), Times.Once);
+        _mockRepository.Verify(x => x.GetPostsAsync(companyId), Times.Once);
     }
 
     [Fact]

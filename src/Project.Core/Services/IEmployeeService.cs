@@ -15,7 +15,7 @@ public interface IEmployeeService
 
     Task<BaseEmployee> GetEmployeeByIdAsync(Guid userId);
 
-    Task<EmployeePage> GetSubordinatesByDirectorIdAsync(Guid directorId);
+    Task<IEnumerable<BaseEmployee>> GetSubordinatesByDirectorIdAsync(Guid directorId);
 
     Task DeleteEmployeeAsync(Guid userId);
 }

@@ -294,8 +294,8 @@ public class CompanyRepositoryTests : IAsyncLifetime
         await _context.SaveChangesAsync();
 
         // Act
-        var page1 = await _repository.GetCompaniesAsync(1, 5);
-        var page2 = await _repository.GetCompaniesAsync(2, 5);
+        var page1 = await _repository.GetCompaniesAsync();
+        var page2 = await _repository.GetCompaniesAsync();
 
         // Assert
         Assert.Equal(5, page1.Companies.Count);

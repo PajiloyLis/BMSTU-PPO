@@ -266,9 +266,7 @@ public class PostHistoryRepositoryTests : IAsyncLifetime
 
         // Act
         var result = await _repository.GetPostHistoryByEmployeeIdAsync(
-            _employeeId1, 
-            pageNumber: 1, 
-            pageSize: 2,
+            _employeeId1,
             startDate: null,
             endDate: null);
 
@@ -298,9 +296,7 @@ public class PostHistoryRepositoryTests : IAsyncLifetime
 
         // Act
         var result = await _repository.GetPostHistoryByEmployeeIdAsync(
-            _employeeId1, 
-            pageNumber: 1, 
-            pageSize: 10,
+            _employeeId1,
             startDate: filterStartDate,
             endDate: null);
 
@@ -344,9 +340,7 @@ public class PostHistoryRepositoryTests : IAsyncLifetime
         
         // Act
         var result = await _repository.GetSubordinatesPostHistoryAsync(
-            _employeeId1, 
-            pageNumber: 1, 
-            pageSize: 3,
+            _employeeId1,
             startDate: null,
             endDate: null);
 
@@ -389,9 +383,7 @@ public class PostHistoryRepositoryTests : IAsyncLifetime
 
         // Act
         var result = await _repository.GetSubordinatesPostHistoryAsync(
-            _employeeId1, 
-            pageNumber: 1, 
-            pageSize: 4,
+            _employeeId1,
             startDate: filterStartDate,
             endDate: null);
 

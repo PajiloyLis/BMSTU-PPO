@@ -8,17 +8,18 @@ public interface IScoreRepository
     Task<BaseScore> GetScoreByIdAsync(Guid id);
     Task<BaseScore> UpdateScoreAsync(UpdateScore score);
     Task DeleteScoreAsync(Guid id);
-    Task<ScorePage> GetScoresAsync(int pageNumber, int pageSize, DateTimeOffset? startDate, DateTimeOffset? endDate);
-
-    Task<ScorePage> GetScoresByEmployeeIdAsync(Guid employeeId, int pageNumber, int pageSize, DateTimeOffset? startDate,
+    Task<IEnumerable<BaseScore>> GetScoresAsync(DateTimeOffset? startDate,
         DateTimeOffset? endDate);
 
-    Task<ScorePage> GetScoresByPositionIdAsync(Guid positionId, int pageNumber, int pageSize, DateTimeOffset? startDate,
+    Task<IEnumerable<BaseScore>> GetScoresByEmployeeIdAsync(Guid employeeId, DateTimeOffset? startDate,
         DateTimeOffset? endDate);
 
-    Task<ScorePage> GetScoresByAuthorIdAsync(Guid authorId, int pageNumber, int pageSize, DateTimeOffset? startDate,
+    Task<IEnumerable<BaseScore>> GetScoresByPositionIdAsync(Guid positionId, DateTimeOffset? startDate,
         DateTimeOffset? endDate);
 
-    Task<ScorePage> GetScoresSubordinatesByEmployeeIdAsync(Guid employeeId, int pageNumber, int pageSize,
+    Task<IEnumerable<BaseScore>> GetScoresByAuthorIdAsync(Guid authorId, DateTimeOffset? startDate,
+        DateTimeOffset? endDate);
+
+    Task<IEnumerable<BaseScore>> GetScoresSubordinatesByEmployeeIdAsync(Guid employeeId,
         DateTimeOffset? startDate, DateTimeOffset? endDate);
 }

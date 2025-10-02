@@ -51,4 +51,32 @@ public static class EducationConverter
             education.StartDate,
             education.EndDate);
     }
+    
+    public static EducationMongoDb ConvertMongo(CreateEducation education)
+    {
+        return new EducationMongoDb
+        {
+            Id = Guid.NewGuid(),
+            EmployeeId = education.EmployeeId,
+            Institution = education.Institution,
+            StudyField = education.StudyField,
+            Level = (education.Level as EducationLevel?).ToStringVal(),
+            StartDate = education.StartDate.ToDateTime(TimeOnly.MinValue),
+            EndDate = education.EndDate.Value.ToDateTime(TimeOnly.MinValue)
+        };
+    }
+
+    public static BaseEducation ConvertMongo(EducationMongoDb education)
+    {
+        return new BaseEducation
+        (
+            education.Id,
+            education.EmployeeId,
+            education.Institution,
+            education.StudyField,
+            education.Level,
+            DateOnly.FromDateTime(education.StartDate),
+            DateOnly.FromDateTime(education.EndDate.Value)
+        );
+    }
 }

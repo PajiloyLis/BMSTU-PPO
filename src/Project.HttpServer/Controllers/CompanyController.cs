@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Project.Dto.Http.Converters;
 using Microsoft.AspNetCore.Mvc;
 using Project.Core.Exceptions;
@@ -22,7 +23,7 @@ public class CompanyController : ControllerBase
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
     }
-
+    [AllowAnonymous]
     [HttpGet("{companyId:guid}")]
     [SwaggerOperation("getCompanyById")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(CompanyDto))]
@@ -50,6 +51,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin")]
     [SwaggerOperation("createCompany")]
     [SwaggerResponse(StatusCodes.Status201Created, type: typeof(CompanyDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
@@ -88,6 +90,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "admin")]
     [SwaggerOperation("updateCompany")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(CompanyDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
@@ -131,6 +134,7 @@ public class CompanyController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "admin")]
     [HttpDelete("{companyId:guid}")]
     [SwaggerOperation("deleteCompany")]
     [SwaggerResponse(StatusCodes.Status204NoContent, type: typeof(bool))]
@@ -156,7 +160,7 @@ public class CompanyController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new ErrorDto(e.GetType().Name, e.Message));
         }
     }
-    
+    [AllowAnonymous]
     [HttpGet]
     [SwaggerOperation("getCompanies")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(IEnumerable<CompanyDto>))]
@@ -166,9 +170,9 @@ public class CompanyController : ControllerBase
     {
         try
         {
-            var companies = await _companyService.GetCompaniesAsync(pageNumber, pageSize);
+            var companies = await _companyService.GetCompaniesAsync();
 
-            return Ok(companies.Companies.Select(CompanyConverter.Convert));
+            return Ok(companies.Select(CompanyConverter.Convert));
         }
         catch (Exception e)
         {

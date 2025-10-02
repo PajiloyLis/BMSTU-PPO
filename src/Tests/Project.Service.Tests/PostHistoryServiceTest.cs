@@ -5,6 +5,7 @@ using Project.Core.Models;
 using Project.Core.Models.PostHistory;
 using Project.Core.Repositories;
 using Project.Services.PostHistoryService;
+using StackExchange.Redis;
 using Xunit;
 
 namespace Project.Service.Tests;
@@ -14,12 +15,14 @@ public class PostHistoryServiceTests
     private readonly Mock<ILogger<PostHistoryService>> _mockLogger;
     private readonly Mock<IPostHistoryRepository> _mockRepository;
     private readonly PostHistoryService _postHistoryService;
+    private readonly Mock<IConnectionMultiplexer> _mockCache;
 
     public PostHistoryServiceTests()
     {
         _mockRepository = new Mock<IPostHistoryRepository>();
         _mockLogger = new Mock<ILogger<PostHistoryService>>();
-        _postHistoryService = new PostHistoryService(_mockRepository.Object, _mockLogger.Object);
+        _mockCache = new Mock<IConnectionMultiplexer>();
+        _postHistoryService = new PostHistoryService(_mockRepository.Object, _mockLogger.Object, _mockCache.Object);
     }
 
     [Fact]
@@ -228,12 +231,12 @@ public class PostHistoryServiceTests
         );
 
         _mockRepository.Setup(x =>
-                x.GetPostHistoryByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate))
+                x.GetPostHistoryByEmployeeIdAsync(employeeId, startDate, endDate))
             .ReturnsAsync(expectedPage);
 
         //Act
         var result =
-            await _postHistoryService.GetPostHistoryByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate,
+            await _postHistoryService.GetPostHistoryByEmployeeIdAsync(employeeId, startDate,
                 endDate);
 
         //Assert
@@ -241,7 +244,7 @@ public class PostHistoryServiceTests
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
         _mockRepository.Verify(
-            x => x.GetPostHistoryByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate), Times.Once);
+            x => x.GetPostHistoryByEmployeeIdAsync(employeeId, startDate, endDate), Times.Once);
     }
 
     [Fact]
@@ -276,12 +279,12 @@ public class PostHistoryServiceTests
         );
 
         _mockRepository.Setup(x =>
-                x.GetSubordinatesPostHistoryAsync(managerId, pageNumber, pageSize, startDate, endDate))
+                x.GetSubordinatesPostHistoryAsync(managerId, startDate, endDate))
             .ReturnsAsync(expectedPage);
 
         //Act
         var result =
-            await _postHistoryService.GetSubordinatesPostHistoryAsync(managerId, pageNumber, pageSize, startDate,
+            await _postHistoryService.GetSubordinatesPostHistoryAsync(managerId, startDate,
                 endDate);
 
         //Assert
@@ -289,6 +292,6 @@ public class PostHistoryServiceTests
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
         _mockRepository.Verify(
-            x => x.GetSubordinatesPostHistoryAsync(managerId, pageNumber, pageSize, startDate, endDate), Times.Once);
+            x => x.GetSubordinatesPostHistoryAsync(managerId, startDate, endDate), Times.Once);
     }
 }

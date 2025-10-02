@@ -148,9 +148,9 @@ public class PositionHistoryController : ControllerBase
     {
         try
         {
-            var positionHistories = await _positionHistoryService.GetPositionHistoryByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+            var positionHistories = await _positionHistoryService.GetPositionHistoryByEmployeeIdAsync(employeeId, startDate, endDate);
 
-            return Ok(positionHistories.Items.Select(PositionHistoryConverter.Convert));
+            return Ok(positionHistories.Select(PositionHistoryConverter.Convert));
         }
         catch (Exception e)
         {
@@ -169,9 +169,9 @@ public class PositionHistoryController : ControllerBase
     {
         try
         {
-            var positionHistories = await _positionHistoryService.GetCurrentSubordinatesPositionHistoryAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+            var positionHistories = await _positionHistoryService.GetCurrentSubordinatesPositionHistoryAsync(employeeId, startDate, endDate);
 
-            return Ok(positionHistories.Items.Select(PositionHistoryConverter.Convert));
+            return Ok(positionHistories.Select(PositionHistoryConverter.Convert));
         }
         catch (Exception e)
         {
@@ -190,9 +190,9 @@ public class PositionHistoryController : ControllerBase
     {
         try
         {
-            var positionHistories = await _positionHistoryService.GetCurrentSubordinatesAsync(employeeId, pageNumber, pageSize);
+            var positionHistories = await _positionHistoryService.GetCurrentSubordinatesAsync(employeeId);
 
-            return Ok(positionHistories.Items.Select(PositionHierarchyWithEmployeeWithEmployeeConverter.Convert));
+            return Ok(positionHistories.Select(PositionHierarchyWithEmployeeWithEmployeeConverter.Convert));
         }
         catch (Exception e)
         {

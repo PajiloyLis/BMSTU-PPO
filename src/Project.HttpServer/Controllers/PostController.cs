@@ -147,7 +147,7 @@ public class PostController :ControllerBase
         }
     }
 
-    [HttpGet("{companyId:guid}")]
+    [HttpGet("/postsPerCompany/{companyId:guid}")]
     [SwaggerOperation("getPostsByCompanyId")]
     [SwaggerResponse(StatusCodes.Status200OK, type: typeof(PostDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized, type: typeof(ErrorDto))]
@@ -157,9 +157,9 @@ public class PostController :ControllerBase
     {
         try
         {
-            var posts = await _postService.GetPostsByCompanyIdAsync(companyId, pageNumber, pageSize);
+            var posts = await _postService.GetPostsByCompanyIdAsync(companyId);
 
-            return Ok(posts.Posts.Select(PostConverter.Convert));
+            return Ok(posts.Select(PostConverter.Convert));
         }
         catch (Exception e)
         {

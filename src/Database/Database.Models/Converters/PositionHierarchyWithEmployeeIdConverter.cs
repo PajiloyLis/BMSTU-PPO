@@ -33,4 +33,32 @@ public static class PositionHierarchyWithEmployeeIdConverter
             positionHierarchyDb.Title,
             positionHierarchyDb.Level);
     }
+
+    [return: NotNullIfNotNull("positionHierarchy")]
+    public static PositionHierarchyWithEmployeeIdMongoDb? ConvertMongo(PositionHierarchyWithEmployee? positionHierarchy)
+    {
+        if (positionHierarchy == null)
+            return null;
+
+        return new PositionHierarchyWithEmployeeIdMongoDb(
+            positionHierarchy.EmployeeId,
+            positionHierarchy.PositionId,
+            positionHierarchy.ParentId,
+            positionHierarchy.Title,
+            positionHierarchy.Level);
+    }
+
+    [return: NotNullIfNotNull("positionHierarchyDb")]
+    public static PositionHierarchyWithEmployee? ConvertMongo(PositionHierarchyWithEmployeeIdMongoDb? positionHierarchyDb)
+    {
+        if (positionHierarchyDb == null)
+            return null;
+
+        return new PositionHierarchyWithEmployee(
+            positionHierarchyDb.EmployeeId,
+            positionHierarchyDb.PositionId,
+            positionHierarchyDb.ParentId,
+            positionHierarchyDb.Title,
+            positionHierarchyDb.Level);
+    }
 }

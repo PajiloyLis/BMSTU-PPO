@@ -196,8 +196,8 @@ public class PostRepositoryTests : IAsyncLifetime
                 new CreatePost($"Position {i}", 50000 + i * 1000, _companyId));
 
         // Act
-        var page1 = await _repository.GetPostsAsync(_companyId, 1, 5);
-        var page2 = await _repository.GetPostsAsync(_companyId, 2, 5);
+        var page1 = await _repository.GetPostsAsync(_companyId);
+        var page2 = await _repository.GetPostsAsync(_companyId);
 
         // Assert
         Assert.Equal(5, page1.Posts.Count);

@@ -1,21 +1,31 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Diagnostics;
+using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
 using Project.Core.Models.Company;
 using Project.Core.Repositories;
 using Project.Core.Services;
+using Project.Services.PostService;
+using StackExchange.Redis;
 
 namespace Project.Services.CompanyService;
 
 public class CompanyService : ICompanyService
 {
+    private readonly IDatabaseAsync _cache;
+    private readonly IConnectionMultiplexer _connectionMultiplexer;
     private readonly ICompanyRepository _companyRepository;
     private readonly ILogger<CompanyService> _logger;
+    private static bool _cacheDirty = false;
 
-    public CompanyService(ICompanyRepository companyRepository, ILogger<CompanyService> logger)
+    public CompanyService(ICompanyRepository companyRepository, ILogger<CompanyService> logger, IConnectionMultiplexer cache)
     {
         _companyRepository = companyRepository ?? throw new ArgumentNullException(nameof(companyRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _connectionMultiplexer = cache ?? throw new ArgumentNullException(nameof(cache));
+        _cache = cache.GetDatabase() ?? throw new ArgumentNullException(nameof(cache));
     }
 
     public async Task<BaseCompany> AddCompanyAsync(string title, DateOnly registrationDate, string phoneNumber,
@@ -25,7 +35,6 @@ public class CompanyService : ICompanyService
         {
             var createdCompany = await _companyRepository.AddCompanyAsync(new CreationCompany(title, registrationDate,
                 phoneNumber, email, inn, kpp, ogrn, address));
-
             return createdCompany;
         }
         catch (CompanyAlreadyExistsException e)
@@ -45,6 +54,9 @@ public class CompanyService : ICompanyService
     {
         try
         {
+            var cachedData = await _cache.StringGetAsync($"company_{companyId}");
+
+            
             var company = await _companyRepository.GetCompanyByIdAsync(companyId);
 
             return company;
@@ -89,12 +101,11 @@ public class CompanyService : ICompanyService
         }
     }
 
-    public async Task<CompanyPage> GetCompaniesAsync(int pageNumber, int pageSize)
+    public async Task<IEnumerable<BaseCompany>> GetCompaniesAsync()
     {
-        try
-        {
-            var companies = await _companyRepository.GetCompaniesAsync(pageNumber, pageSize);
-
+        try{
+            var companies = await _companyRepository.GetCompaniesAsync();
+         
             return companies;
         }
         catch (Exception e)
@@ -115,5 +126,10 @@ public class CompanyService : ICompanyService
             _logger.LogError(e, $"Error deleting company with id - {companyId}");
             throw;
         }
+    }
+    
+    private async Task DeleteCache()
+    {
+        await _cache.ExecuteAsync("FLUSHDB");
     }
 }

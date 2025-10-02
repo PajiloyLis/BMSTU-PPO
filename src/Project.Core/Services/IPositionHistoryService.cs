@@ -54,14 +54,10 @@ public interface IPositionHistoryService
     /// Gets paginated position history records for a specific employee within a date range
     /// </summary>
     /// <param name="employeeId">Employee ID</param>
-    /// <param name="pageNumber">Page number (1-based)</param>
-    /// <param name="pageSize">Number of items per page</param>
     /// <param name="startDate">Start date of the range</param>
     /// <param name="endDate">End date of the range</param>
     /// <returns>Paginated list of position history records</returns>
-    Task<PositionHistoryPage> GetPositionHistoryByEmployeeIdAsync(Guid employeeId,
-        int pageNumber,
-        int pageSize,
+    Task<IEnumerable<BasePositionHistory>> GetPositionHistoryByEmployeeIdAsync(Guid employeeId,
         DateOnly? startDate,
         DateOnly? endDate);
 
@@ -69,16 +65,9 @@ public interface IPositionHistoryService
     /// Gets paginated position history records for current subordinates of a specific manager
     /// </summary>
     /// <param name="managerId">Manager's employee ID</param>
-    /// <param name="pageNumber">Page number (1-based)</param>
-    /// <param name="pageSize">Number of items per page</param>
     /// <returns>Paginated list of current position history records for subordinates</returns>
-    Task<PositionHierarchyWithEmployeePage> GetCurrentSubordinatesAsync(
-        Guid managerId,
-        int pageNumber,
-        int pageSize);
+    Task<IEnumerable<PositionHierarchyWithEmployee>> GetCurrentSubordinatesAsync(Guid managerId);
     
-    Task<PositionHistoryPage> GetCurrentSubordinatesPositionHistoryAsync(
-        Guid managerId,
-        int pageNumber,
-        int pageSize, DateOnly? startDate, DateOnly? endDate);
+    Task<IEnumerable<BasePositionHistory>> GetCurrentSubordinatesPositionHistoryAsync(Guid managerId,
+        DateOnly? startDate, DateOnly? endDate);
 }

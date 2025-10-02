@@ -337,7 +337,7 @@ namespace Project.Tests.Controllers
             var page = new Page(1, 2, 10);
             var pagedResult = new EducationPage(educations, page);
 
-            _mockService.Setup(x => x.GetEducationsByEmployeeIdAsync(employeeId, 1, 10))
+            _mockService.Setup(x => x.GetEducationsByEmployeeIdAsync(employeeId))
                 .ReturnsAsync(pagedResult);
 
             // Act
@@ -369,7 +369,7 @@ namespace Project.Tests.Controllers
             var page = new Page(2, 1, 1);
             var pagedResult = new EducationPage(educations, page);
 
-            _mockService.Setup(x => x.GetEducationsByEmployeeIdAsync(employeeId, 2, 1))
+            _mockService.Setup(x => x.GetEducationsByEmployeeIdAsync(employeeId))
                 .ReturnsAsync(pagedResult);
 
             // Act

@@ -304,7 +304,7 @@ public class CompanyControllerTests
 
         var pagedResult = new CompanyPage(companies, new Page(1, 1, 2));
 
-        _mockService.Setup(x => x.GetCompaniesAsync(1, 2))
+        _mockService.Setup(x => x.GetCompaniesAsync())
             .ReturnsAsync(pagedResult);
 
         // Act

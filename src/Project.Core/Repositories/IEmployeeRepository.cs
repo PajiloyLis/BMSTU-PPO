@@ -11,7 +11,7 @@ public interface IEmployeeRepository
 
     Task<BaseEmployee> GetEmployeeByIdAsync(Guid employeeId);
 
-    Task<EmployeePage> GetSubordinatesByDirectorIdAsync(Guid directorId);
+    Task<IEnumerable<BaseEmployee>> GetSubordinatesByDirectorIdAsync(Guid directorId);
 
     Task DeleteEmployeeAsync(Guid employeeId);
 }

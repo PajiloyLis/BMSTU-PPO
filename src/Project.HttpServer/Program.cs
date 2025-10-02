@@ -28,7 +28,7 @@ public static class Program
 
             var webHost = CreateHostBuilder(args).Build();
 
-            await webHost.MigrateDatabaseAsync<ProjectDbContext>();
+            // await webHost.MigrateDatabaseAsync<ProjectDbContext>();
 
             await webHost.RunAsync();
         }

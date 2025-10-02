@@ -1,3 +1,4 @@
+using Database.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Project.Core.Exceptions;
@@ -5,6 +6,7 @@ using Project.Core.Models;
 using Project.Core.Models.Company;
 using Project.Core.Repositories;
 using Project.Services.CompanyService;
+using StackExchange.Redis;
 using Xunit;
 
 namespace Project.Service.Tests;
@@ -14,12 +16,14 @@ public class CompanyServiceTests
     private readonly CompanyService _companyService;
     private readonly Mock<ILogger<CompanyService>> _mockLogger;
     private readonly Mock<ICompanyRepository> _mockRepository;
+    private readonly Mock<IConnectionMultiplexer> _mockRedis;
 
     public CompanyServiceTests()
     {
         _mockRepository = new Mock<ICompanyRepository>();
         _mockLogger = new Mock<ILogger<CompanyService>>();
-        _companyService = new CompanyService(_mockRepository.Object, _mockLogger.Object);
+        _mockRedis = new Mock<IConnectionMultiplexer>();
+        _companyService = new CompanyService(_mockRepository.Object, _mockLogger.Object, _mockRedis.Object);
     }
 
 
@@ -228,17 +232,17 @@ public class CompanyServiceTests
                 10
             )
         );
-        _mockRepository.Setup(x => x.GetCompaniesAsync(pageNumber, pageSize))
+        _mockRepository.Setup(x => x.GetCompaniesAsync())
             .ReturnsAsync(expectedPage);
 
         // Act
-        var result = await _companyService.GetCompaniesAsync(pageNumber, pageSize);
+        var result = await _companyService.GetCompaniesAsync();
 
         // Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Companies.Count, result.Companies.Count);
-        _mockRepository.Verify(x => x.GetCompaniesAsync(pageNumber, pageSize), Times.Once);
+        _mockRepository.Verify(x => x.GetCompaniesAsync(), Times.Once);
     }
 
     [Fact]

@@ -1,20 +1,29 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using Project.Core.Models;
 using Project.Core.Models.Post;
 using Project.Core.Repositories;
 using Project.Core.Services;
+using StackExchange.Redis;
 
 namespace Project.Services.PostService;
 
 public class PostService : IPostService
 {
+    public static bool CacheDirty;
+    private readonly IDatabaseAsync _cache;
+    private readonly IConnectionMultiplexer _connectionMultiplexer;
     private readonly ILogger<PostService> _logger;
     private readonly IPostRepository _postRepository;
 
-    public PostService(IPostRepository postRepository, ILogger<PostService> logger)
+    public PostService(IPostRepository postRepository, ILogger<PostService> logger,
+        IConnectionMultiplexer connectionMultiplexer)
     {
-        _postRepository = postRepository;
-        _logger = logger;
+        _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _connectionMultiplexer =
+            connectionMultiplexer ?? throw new ArgumentNullException(nameof(connectionMultiplexer));
+        _cache = _connectionMultiplexer.GetDatabase();
     }
 
     public async Task<BasePost> AddPostAsync(string title, decimal salary, Guid companyId)
@@ -38,7 +47,8 @@ public class PostService : IPostService
         try
         {
             var result = await _postRepository.GetPostByIdAsync(postId);
-            _logger.LogInformation("Post with id {Id} was retrieved", postId);
+
+           _logger.LogInformation("Post with id {Id} was retrieved", postId);
             return result;
         }
         catch (Exception e)
@@ -48,7 +58,8 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<BasePost> UpdatePostAsync(Guid postId, Guid companyId, string? title = null, decimal? salary = null)
+    public async Task<BasePost> UpdatePostAsync(Guid postId, Guid companyId, string? title = null,
+        decimal? salary = null)
     {
         try
         {
@@ -64,11 +75,12 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<PostPage> GetPostsByCompanyIdAsync(Guid companyId, int pageNumber, int pageSize)
+    public async Task<IEnumerable<BasePost>> GetPostsByCompanyIdAsync(Guid companyId)
     {
         try
         {
-            var result = await _postRepository.GetPostsAsync(companyId, pageNumber, pageSize);
+            var result = await _postRepository.GetPostsAsync(companyId);
+
             _logger.LogInformation("Posts for company {CompanyId} were retrieved", companyId);
             return result;
         }
@@ -91,5 +103,10 @@ public class PostService : IPostService
             _logger.LogError(e, "Error occurred while deleting post with id {Id}", postId);
             throw;
         }
+    }
+
+    private async Task DeleteCache()
+    {
+        await _cache.ExecuteAsync("FLUSHDB");
     }
 }

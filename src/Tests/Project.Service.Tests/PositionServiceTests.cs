@@ -6,6 +6,7 @@ using Project.Core.Models.Position;
 using Project.Core.Models.PositionHistory;
 using Project.Core.Repositories;
 using Project.Services.PositionService;
+using StackExchange.Redis;
 using Xunit;
 
 namespace Project.Service.Tests;
@@ -15,12 +16,14 @@ public class PositionServiceTests
     private readonly Mock<ILogger<PositionService>> _mockLogger;
     private readonly Mock<IPositionRepository> _mockRepository;
     private readonly PositionService _positionService;
+    private readonly Mock<IConnectionMultiplexer> _mockCache;
 
     public PositionServiceTests()
     {
         _mockRepository = new Mock<IPositionRepository>();
         _mockLogger = new Mock<ILogger<PositionService>>();
-        _positionService = new PositionService(_mockRepository.Object, _mockLogger.Object);
+        _mockCache = new Mock<IConnectionMultiplexer>();
+        _positionService = new PositionService(_mockRepository.Object, _mockLogger.Object, _mockCache.Object);
     }
 
     [Fact]
@@ -108,17 +111,17 @@ public class PositionServiceTests
             companyId
         );
 
-        _mockRepository.Setup(x => x.UpdatePositionAsync(It.IsAny<UpdatePosition>()))
+        _mockRepository.Setup(x => x.UpdatePositionTitleAsync(It.IsAny<UpdatePosition>()))
             .ReturnsAsync(expectedPosition);
 
         //Act
-        var result = await _positionService.UpdatePositionAsync(positionId, companyId, parentId, title);
+        var result = await _positionService.UpdatePositionTitleAsync(positionId, companyId, parentId, title);
 
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPosition.Title, result.Title);
         Assert.Equal(expectedPosition.ParentId, result.ParentId);
-        _mockRepository.Verify(x => x.UpdatePositionAsync(It.IsAny<UpdatePosition>()), Times.Once);
+        _mockRepository.Verify(x => x.UpdatePositionTitleAsync(It.IsAny<UpdatePosition>()), Times.Once);
     }
 
     [Fact]
@@ -127,13 +130,13 @@ public class PositionServiceTests
         //Arrange
         var positionId = Guid.NewGuid();
         var companyId = Guid.NewGuid();
-        _mockRepository.Setup(x => x.UpdatePositionAsync(It.IsAny<UpdatePosition>()))
+        _mockRepository.Setup(x => x.UpdatePositionTitleAsync(It.IsAny<UpdatePosition>()))
             .ThrowsAsync(new PositionNotFoundException());
 
         //Act & Assert
         await Assert.ThrowsAsync<PositionNotFoundException>(() =>
-            _positionService.UpdatePositionAsync(positionId, companyId, null, "New Title"));
-        _mockRepository.Verify(x => x.UpdatePositionAsync(It.IsAny<UpdatePosition>()), Times.Once);
+            _positionService.UpdatePositionTitleAsync(positionId, companyId, null, "New Title"));
+        _mockRepository.Verify(x => x.UpdatePositionTitleAsync(It.IsAny<UpdatePosition>()), Times.Once);
     }
 
     [Fact]
@@ -164,17 +167,17 @@ public class PositionServiceTests
             new Page(pageNumber, 2, pageSize)
         );
 
-        _mockRepository.Setup(x => x.GetSubordinatesAsync(parentId, pageNumber, pageSize))
+        _mockRepository.Setup(x => x.GetSubordinatesAsync(parentId))
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _positionService.GetSubordinatesAsync(parentId, pageNumber, pageSize);
+        var result = await _positionService.GetSubordinatesAsync(parentId);
 
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
-        _mockRepository.Verify(x => x.GetSubordinatesAsync(parentId, pageNumber, pageSize), Times.Once);
+        _mockRepository.Verify(x => x.GetSubordinatesAsync(parentId), Times.Once);
     }
 
     [Fact]

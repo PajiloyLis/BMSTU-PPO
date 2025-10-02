@@ -13,7 +13,7 @@ public interface ICompanyService
     Task<BaseCompany> UpdateCompanyAsync(Guid companyId, string? title, DateOnly? registrationDate, string? phoneNumber,
         string? email, string? inn, string? kpp, string? ogrn, string? address);
 
-    Task<CompanyPage> GetCompaniesAsync(int pageNumber, int pageSize);
+    Task<IEnumerable<BaseCompany>> GetCompaniesAsync();
 
     Task DeleteCompanyAsync(Guid companyId);
 }

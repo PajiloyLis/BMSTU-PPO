@@ -1,11 +1,14 @@
 using Database.Context;
+using Database.Models;
 using Database.Models.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
+using Project.Core.Models.PositionHistory;
 using Project.Core.Models.PostHistory;
 using Project.Core.Repositories;
+using Project.Database.Models;
 
 namespace Database.Repositories;
 
@@ -158,18 +161,15 @@ public class PostHistoryRepository : IPostHistoryRepository
         }
     }
 
-    public async Task<PostHistoryPage> GetPostHistoryByEmployeeIdAsync(
-        Guid employeeId,
-        int pageNumber,
-        int pageSize,
+    public async Task<IEnumerable<BasePostHistory>> GetPostHistoryByEmployeeIdAsync(Guid employeeId,
         DateOnly? startDate,
         DateOnly? endDate)
     {
         try
         {
             _logger.LogInformation(
-                "Getting post history for employee {EmployeeId} from {StartDate} to {EndDate}, page {PageNumber}, size {PageSize}",
-                employeeId, startDate, endDate, pageNumber, pageSize);
+                "Getting post history for employee {EmployeeId} from {StartDate} to {EndDate}",
+                employeeId, startDate, endDate);
 
             var query = _context.PostHistoryDb
                 .Where(ph => ph.EmployeeId == employeeId);
@@ -180,10 +180,7 @@ public class PostHistoryRepository : IPostHistoryRepository
                 query = query.Where(ph =>
                     (ph.EndDate == null && endDate == DateOnly.FromDateTime(DateTime.Today)) || ph.EndDate <= endDate);
 
-            var totalItems = await query.CountAsync();
             var items = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .Select(ph => PostHistoryConverter.Convert(ph)!)
                 .ToListAsync();
 
@@ -191,7 +188,7 @@ public class PostHistoryRepository : IPostHistoryRepository
                 "Successfully retrieved {Count} post history records for employee {EmployeeId}",
                 items.Count, employeeId);
 
-            return new PostHistoryPage(items, new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems));
+            return items;
         }
         catch (Exception ex)
         {
@@ -200,42 +197,57 @@ public class PostHistoryRepository : IPostHistoryRepository
         }
     }
 
-    public async Task<PostHistoryPage> GetSubordinatesPostHistoryAsync(
-        Guid managerId,
-        int pageNumber,
-        int pageSize,
+    public async Task<IEnumerable<BasePostHistory>> GetSubordinatesPostHistoryAsync(Guid managerId,
         DateOnly? startDate,
         DateOnly? endDate)
     {
         try
         {
             _logger.LogInformation(
-                "Getting subordinates post history for manager {ManagerId} from {StartDate} to {EndDate}, page {PageNumber}, size {PageSize}",
-                managerId, startDate, endDate, pageNumber, pageSize);
+                "Getting subordinates post history for manager {ManagerId} from {StartDate} to {EndDate}",
+                managerId, startDate, endDate);
 
-            var employees = await _context.GetCurrentSubordinatesIdByEmployeeId(managerId).Select(ph => ph.EmployeeId)
-                .ToListAsync();
+            // var employees = await _context.GetCurrentSubordinatesIdByEmployeeId(managerId).Select(ph => ph.EmployeeId).ToListAsync();
+
+            var head = await _context.PositionHistoryDb.Where(ph => ph.EmployeeId == managerId && ph.EndDate == null)
+                .FirstOrDefaultAsync();
+
+            if (head is null)
+                throw new PositionHistoryNotFoundException($"Current position not found for employee {managerId}");
             
-            var query = _context.PostHistoryDb.Where(ph => employees.Contains(ph.EmployeeId));
+            List<PositionHistoryDb> subordinatesPositionHistories = new  List<PositionHistoryDb>();
+            
+            subordinatesPositionHistories.Add(head);
+            
+            int i = 0;
+            while (i != subordinatesPositionHistories.Count)
+            {
+                var subordinatesPositions =
+                    await _context.PositionDb.Where(e => e.ParentId == subordinatesPositionHistories[i].PositionId).ToListAsync();
+                var children = await _context.PositionHistoryDb.Where(e => subordinatesPositions.Select(e => e.Id).ToList().Contains(e.PositionId) && e.EndDate == null)
+                    .ToListAsync();
+                subordinatesPositionHistories.AddRange(children);
+                ++i;
+            }
+
+            var subordinatesId = subordinatesPositionHistories.Select(e => e.EmployeeId).ToList();
+
+            var query = _context.PostHistoryDb.Where(ph => subordinatesId.Contains(ph.EmployeeId));
             
             if (startDate.HasValue)
-                query = query.Where(ph => ph.EndDate == null || ph.EndDate >= startDate);
+                query = _context.PostHistoryDb.Where(ph => ph.EndDate == null || ph.EndDate >= startDate);
             if (endDate.HasValue)
-                query = query.Where(ph =>
+                query = _context.PostHistoryDb.Where(ph =>
                     (ph.EndDate == null && endDate == DateOnly.FromDateTime(DateTime.Today)) || ph.EndDate <= endDate);
-            
-            var totalItems = await query.CountAsync();
-            var items = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(ph => PostHistoryConverter.Convert(ph)!)
-                .ToListAsync();
 
+           
+            var items = await query.Select(ph => PostHistoryConverter.Convert(ph)!).ToListAsync();
+            
             _logger.LogInformation(
                 "Successfully retrieved {Count} subordinates post history records for manager {ManagerId}",
                 items.Count, managerId);
 
-            return new PostHistoryPage(items, new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems));
+            return items;
         }
         catch (Exception ex)
         {

@@ -1,10 +1,12 @@
 ﻿using Database.Context;
+using Database.Models;
 using Database.Models.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
 using Project.Core.Models.Employee;
+using Project.Core.Models.Position;
 using Project.Core.Repositories;
 
 namespace Database.Repositories;
@@ -52,6 +54,8 @@ public class EmployeeRepository : IEmployeeRepository
             var employee = await _context.EmployeeDb.FirstOrDefaultAsync(u => u.Id == employeeId);
             if (employee is null) throw new EmployeeNotFoundException($"Employee with id - {employeeId} not found");
 
+            var educations = await _context.EducationDb.Where(e=>e.EmployeeId==employeeId).ToListAsync();
+            _context.EducationDb.RemoveRange(educations);
             _context.EmployeeDb.Remove(employee);
             await _context.SaveChangesAsync();
         }
@@ -67,9 +71,42 @@ public class EmployeeRepository : IEmployeeRepository
         }
     }
 
-    public async Task<EmployeePage> GetSubordinatesByDirectorIdAsync(Guid employeeId)
+    public async Task<IEnumerable<BaseEmployee>> GetSubordinatesByDirectorIdAsync(Guid employeeId)
     {
-        return new EmployeePage();
+        try
+        {
+            var currentPositionHistory = await _context.PositionHistoryDb
+                .Where(e => e.EmployeeId == employeeId && e.EndDate == null).FirstOrDefaultAsync();
+            if (currentPositionHistory is null)
+                throw new PositionHistoryNotFoundException($"Current position for employee {employeeId} not found");
+            
+            
+            List<Guid> positionsId = new List<Guid>();
+            var head = await _context.PositionDb.Where(e => e.Id == currentPositionHistory.PositionId).Select(e => e.Id).FirstOrDefaultAsync();
+            if (head == Guid.Empty)
+                throw new PositionNotFoundException($"Position with id {currentPositionHistory.PositionId} not found");
+            positionsId.Add(head);
+            int i = 0;
+            while (i != positionsId.Count)
+            {
+                var children = await _context.PositionDb.Where(e => e.ParentId == positionsId[i]).Select(e=>e.Id).ToListAsync();
+                positionsId.AddRange(children);
+                ++i;
+            }
+
+            var employeesId = await _context.PositionHistoryDb
+                .Where(e => positionsId.Contains(e.PositionId) && e.EndDate == null).Select(e => e.EmployeeId)
+                .ToListAsync();
+            
+            var employees = await _context.EmployeeDb.Where(e => employeesId.Contains(e.Id)).ToListAsync();
+
+            return employees.Select(e => EmployeeConverter.Convert(e)).ToList();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Error getting current position for employee - {employeeId}");
+            throw;
+        }
     }
 
     public async Task<BaseEmployee> GetEmployeeByIdAsync(Guid employeeId)

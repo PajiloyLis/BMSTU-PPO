@@ -23,6 +23,6 @@ public class UpdatePosition
 
     public Guid Id { get; init; }
     public Guid CompanyId { get; init; }
-    public Guid? ParentId { get; init; }
+    public Guid? ParentId { get; set; }
     public string? Title { get; init; }
 }

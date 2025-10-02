@@ -205,17 +205,17 @@ public class ScoreServiceTests
             new Page(pageNumber, 2, pageSize)
         );
 
-        _mockRepository.Setup(x => x.GetScoresAsync(pageNumber, pageSize, startDate, endDate))
+        _mockRepository.Setup(x => x.GetScoresAsync(startDate, endDate))
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _scoreService.GetScoresAsync(pageNumber, pageSize, startDate, endDate);
+        var result = await _scoreService.GetScoresAsync(startDate, endDate);
 
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
-        _mockRepository.Verify(x => x.GetScoresAsync(pageNumber, pageSize, startDate, endDate), Times.Once);
+        _mockRepository.Verify(x => x.GetScoresAsync(startDate, endDate), Times.Once);
     }
 
     [Fact]
@@ -247,17 +247,17 @@ public class ScoreServiceTests
             new Page(pageNumber, 1, pageSize)
         );
 
-        _mockRepository.Setup(x => x.GetScoresByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate))
+        _mockRepository.Setup(x => x.GetScoresByEmployeeIdAsync(employeeId, startDate, endDate))
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _scoreService.GetScoresByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+        var result = await _scoreService.GetScoresByEmployeeIdAsync(employeeId, startDate, endDate);
 
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
-        _mockRepository.Verify(x => x.GetScoresByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate),
+        _mockRepository.Verify(x => x.GetScoresByEmployeeIdAsync(employeeId, startDate, endDate),
             Times.Once);
     }
 
@@ -290,17 +290,17 @@ public class ScoreServiceTests
             new Page(pageNumber, 1, pageSize)
         );
 
-        _mockRepository.Setup(x => x.GetScoresByAuthorIdAsync(authorId, pageNumber, pageSize, startDate, endDate))
+        _mockRepository.Setup(x => x.GetScoresByAuthorIdAsync(authorId, startDate, endDate))
             .ReturnsAsync(expectedPage);
 
         //Act
-        var result = await _scoreService.GetScoresByAuthorIdAsync(authorId, pageNumber, pageSize, startDate, endDate);
+        var result = await _scoreService.GetScoresByAuthorIdAsync(authorId, startDate, endDate);
 
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
-        _mockRepository.Verify(x => x.GetScoresByAuthorIdAsync(authorId, pageNumber, pageSize, startDate, endDate),
+        _mockRepository.Verify(x => x.GetScoresByAuthorIdAsync(authorId, startDate, endDate),
             Times.Once);
     }
 
@@ -333,18 +333,18 @@ public class ScoreServiceTests
             new Page(pageNumber, 1, pageSize)
         );
 
-        _mockRepository.Setup(x => x.GetScoresByPositionIdAsync(positionId, pageNumber, pageSize, startDate, endDate))
+        _mockRepository.Setup(x => x.GetScoresByPositionIdAsync(positionId, startDate, endDate))
             .ReturnsAsync(expectedPage);
 
         //Act
         var result =
-            await _scoreService.GetScoresByPositionIdAsync(positionId, pageNumber, pageSize, startDate, endDate);
+            await _scoreService.GetScoresByPositionIdAsync(positionId, startDate, endDate);
 
         //Assert
         Assert.NotNull(result);
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
-        _mockRepository.Verify(x => x.GetScoresByPositionIdAsync(positionId, pageNumber, pageSize, startDate, endDate),
+        _mockRepository.Verify(x => x.GetScoresByPositionIdAsync(positionId, startDate, endDate),
             Times.Once);
     }
 
@@ -378,12 +378,12 @@ public class ScoreServiceTests
         );
 
         _mockRepository.Setup(x =>
-                x.GetScoresSubordinatesByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate))
+                x.GetScoresSubordinatesByEmployeeIdAsync(employeeId, startDate, endDate))
             .ReturnsAsync(expectedPage);
 
         //Act
         var result =
-            await _scoreService.GetScoresSubordinatesByEmployeeAsync(employeeId, pageNumber, pageSize, startDate,
+            await _scoreService.GetScoresSubordinatesByEmployeeAsync(employeeId, startDate,
                 endDate);
 
         //Assert
@@ -391,7 +391,7 @@ public class ScoreServiceTests
         Assert.Equal(expectedPage.Page.TotalItems, result.Page.TotalItems);
         Assert.Equal(expectedPage.Items.Count, result.Items.Count);
         _mockRepository.Verify(
-            x => x.GetScoresSubordinatesByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate),
+            x => x.GetScoresSubordinatesByEmployeeIdAsync(employeeId, startDate, endDate),
             Times.Once);
     }
 

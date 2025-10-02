@@ -36,7 +36,7 @@ public class PostHistoryController : ControllerBase
     {
         try
         {
-            var postHistory = await _postHistoryService.GetPostHistoryAsync(employeeId, postId);
+            var postHistory = await _postHistoryService.GetPostHistoryAsync(postId, employeeId);
 
             return Ok(PostHistoryConverter.Convert(postHistory));
         }
@@ -151,9 +151,9 @@ public class PostHistoryController : ControllerBase
     {
         try
         {
-            var postHistories = await _postHistoryService.GetPostHistoryByEmployeeIdAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+            var postHistories = await _postHistoryService.GetPostHistoryByEmployeeIdAsync(employeeId, startDate, endDate);
 
-            return Ok(postHistories.Items.Select(PostHistoryConverter.Convert));
+            return Ok(postHistories.Select(PostHistoryConverter.Convert));
         }
         catch (Exception e)
         {
@@ -172,9 +172,9 @@ public class PostHistoryController : ControllerBase
     {
         try
         {
-            var postHistories = await _postHistoryService.GetSubordinatesPostHistoryAsync(employeeId, pageNumber, pageSize, startDate, endDate);
+            var postHistories = await _postHistoryService.GetSubordinatesPostHistoryAsync(employeeId, startDate, endDate);
 
-            return Ok(postHistories.Items.Select(PostHistoryConverter.Convert));
+            return Ok(postHistories.Select(PostHistoryConverter.Convert));
         }
         catch (Exception e)
         {

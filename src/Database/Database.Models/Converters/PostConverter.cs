@@ -42,4 +42,41 @@ public static class PostConverter
             post.Salary,
             post.CompanyId);
     }
+
+    [return: NotNullIfNotNull(nameof(post))]
+    public static PostMongoDb? ConvertMongo(CreatePost? post)
+    {
+        if (post == null)
+            return null;
+
+        return new PostMongoDb(Guid.NewGuid(),
+            post.Title,
+            post.Salary,
+            post.CompanyId
+        );
+    }
+
+    [return: NotNullIfNotNull(nameof(post))]
+    public static PostMongoDb? ConvertMongo(BasePost? post)
+    {
+        if (post == null)
+            return null;
+
+        return new PostMongoDb(post.Id,
+            post.Title,
+            post.Salary,
+            post.CompanyId);
+    }
+
+    [return: NotNullIfNotNull(nameof(post))]
+    public static BasePost? ConvertMongo(PostMongoDb? post)
+    {
+        if (post == null)
+            return null;
+
+        return new BasePost(post.Id,
+            post.Title,
+            post.Salary,
+            post.CompanyId);
+    }
 }

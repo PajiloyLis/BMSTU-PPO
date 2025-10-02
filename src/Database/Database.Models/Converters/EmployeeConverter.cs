@@ -68,4 +68,52 @@ public static class EmployeeConverter
             employee.Duties
         );
     }
+
+    [return: NotNullIfNotNull(nameof(employee))]
+    public static EmployeeMongoDb? ConvertMongo(CreationEmployee? employee)
+    {
+        if (employee == null)
+            return null;
+
+        return new EmployeeMongoDb(Guid.NewGuid(),
+            employee.FullName,
+            employee.PhoneNumber,
+            employee.Email,
+            employee.BirthDate.ToDateTime(TimeOnly.MinValue),
+            employee.Photo,
+            employee.Duties
+        );
+    }
+
+    [return: NotNullIfNotNull(nameof(employee))]
+    public static EmployeeMongoDb? ConvertMongo(BaseEmployee? employee)
+    {
+        if (employee == null)
+            return null;
+
+        return new EmployeeMongoDb(employee.EmployeeId,
+            employee.FullName,
+            employee.PhoneNumber,
+            employee.Email,
+            employee.BirthDate.ToDateTime(TimeOnly.MinValue),
+            employee.Photo,
+            employee.Duties
+        );
+    }
+
+    [return: NotNullIfNotNull(nameof(employee))]
+    public static BaseEmployee? ConvertMongo(EmployeeMongoDb? employee)
+    {
+        if (employee == null)
+            return null;
+
+        return new BaseEmployee(employee.Id,
+            employee.FullName,
+            employee.Phone,
+            employee.Email,
+            DateOnly.FromDateTime(employee.BirthDate),
+            employee.Photo,
+            employee.Duties
+        );
+    }
 }

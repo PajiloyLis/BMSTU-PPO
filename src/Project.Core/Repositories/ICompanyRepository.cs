@@ -28,7 +28,7 @@ public interface ICompanyRepository
 
     public Task<BaseCompany> UpdateCompanyAsync(UpdateCompany company);
 
-    public Task<CompanyPage> GetCompaniesAsync(int pageNumber, int pageSize);
+    public Task<IEnumerable<BaseCompany>> GetCompaniesAsync();
 
     public Task DeleteCompanyAsync(Guid companyId);
 }

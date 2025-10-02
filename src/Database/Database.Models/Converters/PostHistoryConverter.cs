@@ -43,4 +43,43 @@ public static class PostHistoryConverter
             postHistory.StartDate,
             postHistory.EndDate);
     }
+
+    [return: NotNullIfNotNull(nameof(postHistory))]
+    public static PostHistoryMongoDb? ConvertMongo(CreatePostHistory? postHistory)
+    {
+        if (postHistory == null)
+            return null;
+
+        return new PostHistoryMongoDb(
+            postHistory.PostId,
+            postHistory.EmployeeId,
+            postHistory.StartDate.ToDateTime(TimeOnly.MinValue),
+            postHistory.EndDate?.ToDateTime(TimeOnly.MinValue));
+    }
+
+    [return: NotNullIfNotNull(nameof(postHistory))]
+    public static PostHistoryMongoDb? ConvertMongo(BasePostHistory? postHistory)
+    {
+        if (postHistory == null)
+            return null;
+
+        return new PostHistoryMongoDb(
+            postHistory.PostId,
+            postHistory.EmployeeId,
+            postHistory.StartDate.ToDateTime(TimeOnly.MinValue),
+            postHistory.EndDate?.ToDateTime(TimeOnly.MinValue));
+    }
+
+    [return: NotNullIfNotNull(nameof(postHistory))]
+    public static BasePostHistory? ConvertMongo(PostHistoryMongoDb? postHistory)
+    {
+        if (postHistory == null)
+            return null;
+
+        return new BasePostHistory(
+            postHistory.PostId,
+            postHistory.EmployeeId,
+            DateOnly.FromDateTime(postHistory.StartDate),
+            postHistory.EndDate.HasValue ? DateOnly.FromDateTime(postHistory.EndDate.Value) : null);
+    }
 }

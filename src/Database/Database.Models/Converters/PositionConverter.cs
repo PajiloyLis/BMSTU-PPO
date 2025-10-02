@@ -47,4 +47,46 @@ public static class PositionConverter
             position.CompanyId
         );
     }
+
+    [return: NotNullIfNotNull("position")]
+    public static PositionMongoDb? ConvertMongo(CreatePosition? position)
+    {
+        if (position is null)
+            return null;
+
+        return new PositionMongoDb(
+            Guid.NewGuid(),
+            position.ParentId,
+            position.Title,
+            position.CompanyId
+        );
+    }
+
+    [return: NotNullIfNotNull("position")]
+    public static PositionMongoDb? ConvertMongo(BasePosition? position)
+    {
+        if (position is null)
+            return null;
+
+        return new PositionMongoDb(
+            position.Id,
+            position.ParentId,
+            position.Title,
+            position.CompanyId
+        );
+    }
+
+    [return: NotNullIfNotNull("position")]
+    public static BasePosition? ConvertMongo(PositionMongoDb? position)
+    {
+        if (position is null)
+            return null;
+
+        return new BasePosition(
+            position.Id,
+            position.ParentId ?? Guid.Empty,
+            position.Title,
+            position.CompanyId
+        );
+    }
 }

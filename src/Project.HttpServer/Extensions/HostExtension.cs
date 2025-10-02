@@ -8,7 +8,7 @@ public static class HostExtension
     {
         await using var serviceScope = host.Services.CreateAsyncScope();
         await using var context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
-        await context.Database.MigrateAsync();
+        // await context.Database.MigrateAsync();
 
         return host;
     }

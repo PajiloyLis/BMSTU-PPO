@@ -31,6 +31,11 @@ public class PositionDbConfiguration : IEntityTypeConfiguration<PositionDb>
             .HasColumnName("company_id")
             .HasColumnType("uuid")
             .IsRequired();
+        
+        builder.Property(p=>p.IsDeleted)
+            .HasColumnName("_is_deleted")
+            .HasColumnType("bool")
+            .IsRequired();
 
         builder.HasOne<PositionDb>()
             .WithMany(p => p.Children)

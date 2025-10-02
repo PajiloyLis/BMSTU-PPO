@@ -266,8 +266,6 @@ public class PositionHistoryRepositoryTests : IAsyncLifetime
         // Act
         var result = await _repository.GetPositionHistoryByEmployeeIdAsync(
             _employeeId1,
-            1,
-            2,
             DateOnly.MinValue, null);
 
         // Assert
@@ -300,9 +298,7 @@ public class PositionHistoryRepositoryTests : IAsyncLifetime
 
         // Act
         var result = await _repository.GetCurrentSubordinatesAsync(
-            _employeeId1,
-            1,
-            10);
+            _employeeId1);
 
         // Assert
         Assert.NotNull(result);

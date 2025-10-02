@@ -58,4 +58,58 @@ public static class ScoreConverter
             score.CompetencyScore
         );
     }
+
+    [return: NotNullIfNotNull(nameof(score))]
+    public static ScoreMongoDb? ConvertMongo(CreateScore? score)
+    {
+        if (score == null)
+            return null;
+
+        return new ScoreMongoDb(
+            Guid.NewGuid(),
+            score.EmployeeId,
+            score.AuthorId,
+            score.PositionId,
+            DateTimeOffset.UtcNow,
+            score.EfficiencyScore,
+            score.EngagementScore,
+            score.CompetencyScore
+        );
+    }
+
+    [return: NotNullIfNotNull(nameof(score))]
+    public static ScoreMongoDb? ConvertMongo(BaseScore? score)
+    {
+        if (score == null)
+            return null;
+
+        return new ScoreMongoDb(
+            score.Id,
+            score.EmployeeId,
+            score.AuthorId,
+            score.PositionId,
+            score.CreatedAt.ToUniversalTime(),
+            score.EfficiencyScore,
+            score.EngagementScore,
+            score.CompetencyScore
+        );
+    }
+
+    [return: NotNullIfNotNull(nameof(score))]
+    public static BaseScore? ConvertMongo(ScoreMongoDb? score)
+    {
+        if (score == null)
+            return null;
+
+        return new BaseScore(
+            score.Id,
+            score.EmployeeId,
+            score.AuthorId,
+            score.PositionId,
+            score.CreatedAt.ToLocalTime(),
+            score.EfficiencyScore,
+            score.EngagementScore,
+            score.CompetencyScore
+        );
+    }
 }

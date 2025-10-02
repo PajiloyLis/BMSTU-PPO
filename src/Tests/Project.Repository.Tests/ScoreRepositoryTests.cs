@@ -229,8 +229,8 @@ public class ScoreRepositoryTests : IAsyncLifetime
         await _context.SaveChangesAsync();;
         
         // Act
-        var page1 = await _repository.GetScoresAsync(1, 5, null, null);
-        var page2 = await _repository.GetScoresAsync(2, 5, null, null);
+        var page1 = await _repository.GetScoresAsync(null, null);
+        var page2 = await _repository.GetScoresAsync(null, null);
 
         // Assert
         Assert.Equal(5, page1.Items.Count);
@@ -249,7 +249,7 @@ public class ScoreRepositoryTests : IAsyncLifetime
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.GetScoresByEmployeeIdAsync(_employeeId, 1, 10, null, null);
+        var result = await _repository.GetScoresByEmployeeIdAsync(_employeeId, null, null);
 
         // Assert
         Assert.Single(result.Items);
@@ -267,7 +267,7 @@ public class ScoreRepositoryTests : IAsyncLifetime
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.GetScoresByPositionIdAsync(_positionId, 1, 10, null, null);
+        var result = await _repository.GetScoresByPositionIdAsync(_positionId, null, null);
 
         // Assert
         Assert.Single(result.Items);
@@ -285,7 +285,7 @@ public class ScoreRepositoryTests : IAsyncLifetime
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.GetScoresByAuthorIdAsync(_authorId, 1, 10, null, null);
+        var result = await _repository.GetScoresByAuthorIdAsync(_authorId, null, null);
 
         // Assert
         Assert.Single(result.Items);
@@ -312,7 +312,7 @@ public class ScoreRepositoryTests : IAsyncLifetime
     
         // Act
         var result = await _repository.GetScoresSubordinatesByEmployeeIdAsync(
-            _employeeId, 1, 10, DateTimeOffset.Now.AddDays(-8*30).ToUniversalTime(),  DateTimeOffset.Now.AddDays(-2*30).ToUniversalTime());
+            _employeeId, DateTimeOffset.Now.AddDays(-8*30).ToUniversalTime(),  DateTimeOffset.Now.AddDays(-2*30).ToUniversalTime());
     
         // Assert
         Assert.Equal(2, result.Page.TotalPages);
@@ -331,8 +331,7 @@ public class ScoreRepositoryTests : IAsyncLifetime
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.GetScoresAsync(1, 10, 
-            DateTimeOffset.UtcNow.AddDays(-3), 
+        var result = await _repository.GetScoresAsync(DateTimeOffset.UtcNow.AddDays(-3), 
             DateTimeOffset.UtcNow);
 
         // Assert

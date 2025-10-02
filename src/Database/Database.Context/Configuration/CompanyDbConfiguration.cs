@@ -45,6 +45,9 @@ public class CompanyDbConfiguration : IEntityTypeConfiguration<CompanyDb>
 
         builder.Property(keyExpression => keyExpression.Address).HasColumnName("address").HasColumnType("text").IsRequired();
 
+        builder.Property((keyExpression => keyExpression.IsDeleted)).HasColumnName("_is_deleted").HasColumnType("bool")
+            .IsRequired();
+
         builder.HasMany<PostDb>(c => c.Posts)
             .WithOne()
             .HasForeignKey(p => p.CompanyId)

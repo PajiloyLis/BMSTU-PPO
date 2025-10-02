@@ -1,4 +1,8 @@
+using System.Data;
+using System.Data.Common;
+using Dapper;
 using Database.Context;
+using Database.Models;
 using Database.Models.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -120,11 +124,25 @@ public class CompanyRepository : ICompanyRepository
     {
         try
         {
-            var company = await _context.CompanyDb.AsNoTracking().FirstOrDefaultAsync(e => e.Id == companyId);
+            var company = await _context.CompanyDb.FirstOrDefaultAsync(e => e.Id == companyId);
             if (company is null)
                 throw new CompanyNotFoundException($"Company with id {companyId} not found");
+            company.IsDeleted = true;
+            
+            var posts = await _context.PostDb.Where(e => e.CompanyId == companyId).ToListAsync();
+            posts.ForEach(e => e.IsDeleted=true);
 
-            _context.CompanyDb.Remove(company);
+            var positions = await _context.PositionDb.Where(e => e.CompanyId == companyId).ToListAsync();
+            positions.ForEach(e => e.IsDeleted = true);
+
+            var postHistories = await _context.PostHistoryDb.Where(e => posts.Select(x => x.Id).ToList().Contains(e.PostId))
+                .ToListAsync();
+            postHistories.ForEach(e => e.EndDate=DateOnly.FromDateTime(DateTime.Now));
+
+            var positionHistories = await _context.PositionHistoryDb
+                .Where(e => positions.Select(x => x.Id).ToList().Contains(e.PositionId)).ToListAsync();
+            positionHistories.ForEach(e => e.EndDate=DateOnly.FromDateTime(DateTime.Now));
+            
             await _context.SaveChangesAsync();
         }
         catch (CompanyNotFoundException e)
@@ -138,21 +156,13 @@ public class CompanyRepository : ICompanyRepository
         }
     }
 
-    public async Task<CompanyPage> GetCompaniesAsync(int pageNumber, int pageSize)
+    public async Task<IEnumerable<BaseCompany>> GetCompaniesAsync()
     {
         try
         {
-            var query = _context.CompanyDb.OrderBy(e => e.Id).AsNoTracking();
-            var usersCount = await query.CountAsync();
-            var pagesCount = (int)Math.Ceiling((double)usersCount / pageSize);
-
-            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-
-            var companyPage =
-                new CompanyPage(await query.Select(company => CompanyConverter.Convert(company)).ToListAsync(),
-                    new Page(pageNumber, pagesCount, pageSize));
-
-            return companyPage;
+            var companies = await _context.CompanyDb.OrderBy(e => e.RegistrationDate).AsNoTracking().ToListAsync();
+            
+            return companies.Select(e => CompanyConverter.Convert(e)).ToList();
         }
         catch (Exception e)
         {

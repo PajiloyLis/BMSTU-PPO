@@ -63,12 +63,12 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresAsync(int pageNumber, int pageSize, DateTimeOffset? startDate,
+    public async Task<IEnumerable<BaseScore>> GetScoresAsync(DateTimeOffset? startDate,
         DateTimeOffset? endDate)
     {
         try
         {
-            var result = await _repository.GetScoresAsync(pageNumber, pageSize, startDate, endDate);
+            var result = await _repository.GetScoresAsync(startDate, endDate);
             _logger.LogInformation("Scores were retrieved with pagination");
             return result;
         }
@@ -79,12 +79,12 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByEmployeeIdAsync(Guid employeeId, int page, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresByEmployeeIdAsync(Guid employeeId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
-            var result = await _repository.GetScoresByEmployeeIdAsync(employeeId, page, pageSize, startDate, endDate);
+            var result = await _repository.GetScoresByEmployeeIdAsync(employeeId, startDate, endDate);
             _logger.LogInformation("Scores for employee {EmployeeId} were retrieved", employeeId);
             return result;
         }
@@ -95,12 +95,12 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByAuthorIdAsync(Guid authorId, int page, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresByAuthorIdAsync(Guid authorId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
-            var result = await _repository.GetScoresByAuthorIdAsync(authorId, page, pageSize, startDate, endDate);
+            var result = await _repository.GetScoresByAuthorIdAsync(authorId, startDate, endDate);
             _logger.LogInformation("Scores by author {AuthorId} were retrieved", authorId);
             return result;
         }
@@ -111,13 +111,13 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresSubordinatesByEmployeeAsync(Guid employeeId, int page, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresSubordinatesByEmployeeAsync(Guid employeeId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
             var result =
-                await _repository.GetScoresSubordinatesByEmployeeIdAsync(employeeId, page, pageSize, startDate,
+                await _repository.GetScoresSubordinatesByEmployeeIdAsync(employeeId, startDate,
                     endDate);
             _logger.LogInformation("Subordinates scores for employee {EmployeeId} were retrieved", employeeId);
             return result;
@@ -130,12 +130,12 @@ public class ScoreService : IScoreService
         }
     }
 
-    public async Task<ScorePage> GetScoresByPositionIdAsync(Guid positionId, int page, int pageSize,
+    public async Task<IEnumerable<BaseScore>> GetScoresByPositionIdAsync(Guid positionId,
         DateTimeOffset? startDate, DateTimeOffset? endDate)
     {
         try
         {
-            var result = await _repository.GetScoresByPositionIdAsync(positionId, page, pageSize, startDate, endDate);
+            var result = await _repository.GetScoresByPositionIdAsync(positionId, startDate, endDate);
             _logger.LogInformation("Scores for position {PositionId} were retrieved", positionId);
             return result;
         }

@@ -119,24 +119,15 @@ public class PostRepository : IPostRepository
         }
     }
 
-    public async Task<PostPage> GetPostsAsync(Guid companyId, int pageNumber, int pageSize)
+    public async Task<IEnumerable<BasePost>> GetPostsAsync(Guid companyId)
     {
         try
         {
             var posts = await _context.PostDb
                 .Where(p => p.CompanyId == companyId)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
-
-            var totalItems = await _context.PostDb
-                .CountAsync(p => p.CompanyId == companyId);
-
-            var page = new Page(pageNumber, (int)Math.Ceiling(totalItems/(double)pageSize), totalItems);
-            var result = new PostPage(posts.Select(p => PostConverter.Convert(p)!).ToList(), page);
-
             _logger.LogInformation("Posts for company {CompanyId} were retrieved", companyId);
-            return result;
+            return posts.Select(e => PostConverter.Convert(e)).ToList();
         }
         catch (Exception e)
         {

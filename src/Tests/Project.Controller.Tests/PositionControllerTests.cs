@@ -205,7 +205,7 @@ namespace Project.Tests.Controllers
                 request.Title!,
                 request.CompanyId);
 
-            _mockService.Setup(x => x.UpdatePositionAsync(
+            _mockService.Setup(x => x.UpdatePositionTitleAsync(
                 request.Id,
                 request.CompanyId,
                 request.ParentId,
@@ -213,7 +213,7 @@ namespace Project.Tests.Controllers
                 .ReturnsAsync(expectedPosition);
 
             // Act
-            var result = await _controller.UpdatePosition(request);
+            var result = await _controller.UpdatePositionTitle(request);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -236,7 +236,7 @@ namespace Project.Tests.Controllers
                 "Old Title",
                 request.CompanyId);
 
-            _mockService.Setup(x => x.UpdatePositionAsync(
+            _mockService.Setup(x => x.UpdatePositionTitleAsync(
                 request.Id,
                 request.CompanyId,
                 request.ParentId,
@@ -248,7 +248,7 @@ namespace Project.Tests.Controllers
                     request.CompanyId));
 
             // Act
-            var result = await _controller.UpdatePosition(request);
+            var result = await _controller.UpdatePositionTitle(request);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -266,7 +266,7 @@ namespace Project.Tests.Controllers
                 Guid.NewGuid(),
                 title: "New Title");
 
-            _mockService.Setup(x => x.UpdatePositionAsync(
+            _mockService.Setup(x => x.UpdatePositionTitleAsync(
                 request.Id,
                 request.CompanyId,
                 request.ParentId,
@@ -274,7 +274,7 @@ namespace Project.Tests.Controllers
                 .ThrowsAsync(new PositionNotFoundException("Not found"));
 
             // Act
-            var result = await _controller.UpdatePosition(request);
+            var result = await _controller.UpdatePositionTitle(request);
 
             // Assert
             var notFoundResult = Assert.IsType<ObjectResult>(result);
@@ -334,7 +334,7 @@ namespace Project.Tests.Controllers
             var page = new Page(1, 2, 10);
             var pagedResult = new PositionHierarchyPage(subordinates, page);
 
-            _mockService.Setup(x => x.GetSubordinatesAsync(positionId, 1, 10))
+            _mockService.Setup(x => x.GetSubordinatesAsync(positionId))
                 .ReturnsAsync(pagedResult);
 
             // Act
@@ -359,7 +359,7 @@ namespace Project.Tests.Controllers
             var page = new Page(2, 1, 1);
             var pagedResult = new PositionHierarchyPage(subordinates, page);
 
-            _mockService.Setup(x => x.GetSubordinatesAsync(positionId, 2, 1))
+            _mockService.Setup(x => x.GetSubordinatesAsync(positionId))
                 .ReturnsAsync(pagedResult);
 
             // Act
@@ -407,7 +407,7 @@ namespace Project.Tests.Controllers
                 Guid.NewGuid(),
                 parentId: Guid.NewGuid());
 
-            _mockService.Setup(x => x.UpdatePositionAsync(
+            _mockService.Setup(x => x.UpdatePositionTitleAsync(
                 request.Id,
                 request.CompanyId,
                 request.ParentId,
@@ -415,7 +415,7 @@ namespace Project.Tests.Controllers
                 .ThrowsAsync(new ArgumentException("Circular reference detected"));
 
             // Act
-            var result = await _controller.UpdatePosition(request);
+            var result = await _controller.UpdatePositionTitle(request);
 
             // Assert
             var badRequestResult = Assert.IsType<ObjectResult>(result);

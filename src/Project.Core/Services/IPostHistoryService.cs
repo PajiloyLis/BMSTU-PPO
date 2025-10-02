@@ -51,15 +51,10 @@ public interface IPostHistoryService
     /// Gets paginated post history records for a specific employee within a date range
     /// </summary>
     /// <param name="employeeId">Employee ID</param>
-    /// <param name="pageNumber">Page number (1-based)</param>
-    /// <param name="pageSize">Number of items per page</param>
     /// <param name="startDate">Start date of the range</param>
     /// <param name="endDate">End date of the range</param>
     /// <returns>Paginated list of post history records</returns>
-    Task<PostHistoryPage> GetPostHistoryByEmployeeIdAsync(
-        Guid employeeId,
-        int pageNumber,
-        int pageSize,
+    Task<IEnumerable<BasePostHistory>> GetPostHistoryByEmployeeIdAsync(Guid employeeId,
         DateOnly? startDate,
         DateOnly? endDate);
 
@@ -67,15 +62,10 @@ public interface IPostHistoryService
     /// Gets paginated post history records for subordinates of a specific manager within a date range
     /// </summary>
     /// <param name="managerId">Manager's employee ID</param>
-    /// <param name="pageNumber">Page number (1-based)</param>
-    /// <param name="pageSize">Number of items per page</param>
     /// <param name="startDate">Start date of the range</param>
     /// <param name="endDate">End date of the range</param>
     /// <returns>Paginated list of post history records for subordinates</returns>
-    Task<PostHistoryPage> GetSubordinatesPostHistoryAsync(
-        Guid managerId,
-        int pageNumber,
-        int pageSize,
+    Task<IEnumerable<BasePostHistory>> GetSubordinatesPostHistoryAsync(Guid managerId,
         DateOnly? startDate,
         DateOnly? endDate);
 }

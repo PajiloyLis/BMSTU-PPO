@@ -32,6 +32,11 @@ public class PostDbConfiguration : IEntityTypeConfiguration<PostDb>
             .IsRequired();
 
         builder.HasCheckConstraint("salary_check", "salary > 0");
+        
+        builder.Property(x=>x.IsDeleted)
+            .HasColumnName("_is_deleted")
+            .HasColumnType("bool")
+            .IsRequired();
 
         builder.HasOne<CompanyDb>()
             .WithMany(c => c.Posts)

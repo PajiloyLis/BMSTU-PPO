@@ -1,21 +1,28 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using Project.Core.Exceptions;
 using Project.Core.Models;
 using Project.Core.Models.Employee;
 using Project.Core.Repositories;
 using Project.Core.Services;
+using StackExchange.Redis;
 
 namespace Project.Services.EmployeeService;
 
 public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IConnectionMultiplexer _connectionMultiplexer;
     private readonly ILogger<EmployeeService> _logger;
+    private readonly IDatabaseAsync _cache;
+    private static bool _cacheDirty = false;
 
-    public EmployeeService(IEmployeeRepository employeeRepository, ILogger<EmployeeService> logger)
+    public EmployeeService(IEmployeeRepository employeeRepository, ILogger<EmployeeService> logger, IConnectionMultiplexer cache)
     {
         _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _connectionMultiplexer = cache ?? throw new ArgumentNullException(nameof(cache));
+        _cache = cache.GetDatabase() ?? throw new ArgumentNullException(nameof(cache));
     }
 
     public async Task<BaseEmployee> AddEmployeeAsync(string fullName, string phoneNumber, string email, DateOnly birthday,
@@ -54,7 +61,6 @@ public class EmployeeService : IEmployeeService
         {
             var employeeToUpdate = new UpdateEmployee(id, fullName, phoneNumber, email, birthday, photoPath, duties);
             var employee = await _employeeRepository.UpdateEmployeeAsync(employeeToUpdate);
-
             return employee;
         }
         catch (EmployeeAlreadyExistsException e)
@@ -111,7 +117,7 @@ public class EmployeeService : IEmployeeService
         }
     }
 
-    public async Task<EmployeePage> GetSubordinatesByDirectorIdAsync(Guid directorId)
+    public async Task<IEnumerable<BaseEmployee>> GetSubordinatesByDirectorIdAsync(Guid directorId)
     {
         try
         {
